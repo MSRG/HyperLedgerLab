@@ -1,0 +1,16 @@
+---
+# Run a script using a executable in a system path
+- name: Delete Openstack instances for Kubernetes HA setup
+  script:
+    cmd: >
+      openstack_instance.py delete
+      --os-username {{ os_username }} --os-password {{ os_password }}
+      --os-base-url {{ os_base_url }} --os-project-domain-name {{ os_project_domain_name }}
+      --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
+      {{ k8s_instances }}
+  args:
+    executable: python3
+  register: cmd_output
+
+#- name: Print Output of command
+#  debug: msg="{{ cmd_output.stdout }}"

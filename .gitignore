@@ -102,3 +102,15 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.idea
+.DS_store
+
+# ignore files and dirs with .ignore extension
+*.ignore
+
+# Ignore local data needed for development
+local_data
+
+# Ansible
+*.retry

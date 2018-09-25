@@ -1,0 +1,8 @@
+# Ansible Playbook to create Openstack Instances for Kubernetes cluster setup
+---
+- hosts: localhost
+#  remote_user: eit # Logged in User
+#  become: true    # Change User , default root by sudo
+  roles:
+    - { "role": os_instance, "create": true }
+
