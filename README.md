@@ -14,8 +14,12 @@ Environment Variables: Set the following
 
 Ansible Commands:
 1. Create instances:
+    
     `cd kubernetes-ha`
+    
     `ansible-playbook -v create_instances.yaml`
 2. Delete instances:
+    
     `cd kubernetes-ha`
+    
     `ansible-playbook -v delete_cluster.yaml`
