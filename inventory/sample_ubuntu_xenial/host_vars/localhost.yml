@@ -6,8 +6,8 @@ os_project_name: "pn-hyperledger"
 os_user_domain_name: "default"
 os_project_domain_name: "default"
 
-# Cluster instances 3 control nodes, 3 worker nodes and 1 lb/dns node
-k8s_instances: "k8sctl1 k8sctl2 k8sctl3 k8swrk1 k8swrk2 k8swrk3"
+# Cluster instances 3 control nodes, 3 worker nodes, 1 lb/dns node and 1 nfs
+k8s_instances: "k8sctl1 k8sctl2 k8sctl3 k8swrk1 k8swrk2 k8swrk3 haprx1 nfs"
 k8s_instance_flavour: "m1.medium"
 k8s_instance_image: "kvm-ubuntu-xenial"
 k8s_instance_availability_zone: "kvm"

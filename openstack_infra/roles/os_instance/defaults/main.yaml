@@ -1,0 +1,16 @@
+# OS params
+os_username: "'{{ lookup('env', 'OS_USERNAME') }}'"
+os_password: "'{{ lookup('env', 'OS_PASSWORD') }}'"
+os_base_url: "https://openstack.cluster.msrg.in.tum.de"
+os_project_name: "pn-hyperledger"
+os_user_domain_name: "default"
+os_project_domain_name: "default"
+
+# Cluster instances 3 control nodes, 3 worker nodes and 1 lb/dns node
+#k8s_instances: "k8sctl1 k8sctl2 k8sctl3 k8swrk1 k8swrk2 k8swrk3"
+k8s_instances:
+k8s_instance_flavour: "m1.medium"
+k8s_instance_image: "kvm-ubuntu-xenial"
+k8s_instance_availability_zone: "kvm"
+ks8_instance_security_groups: ["kube-cluster"]
+k8s_instance_image_key: "default-image-key"

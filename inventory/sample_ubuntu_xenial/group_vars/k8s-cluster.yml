@@ -1,0 +1,401 @@
+# Kubernetes configuration dirs and system namespace.
+# Those are where all the additional config stuff goes
+# the kubernetes normally puts in /srv/kubernetes.
+# This puts them in a sane location and namespace.
+# Editing those values will almost surely break something.
+kube_config_dir: /etc/kubernetes
+kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
+kube_manifest_dir: "{{ kube_config_dir }}/manifests"
+
+# This is where all the cert scripts and certs will be located
+kube_cert_dir: "{{ kube_config_dir }}/ssl"
+
+# This is where all of the bearer tokens will be stored
+kube_token_dir: "{{ kube_config_dir }}/tokens"
+
+# This is where to save basic auth file
+kube_users_dir: "{{ kube_config_dir }}/users"
+
+kube_api_anonymous_auth: true
+
+## Change this to use another Kubernetes version, e.g. a current beta release
+kube_version: v1.11.3
+etcd_version: v3.2.24
+weave_version: "2.4.1"
+docker_version: "18.03"
+kubeadm_version: "{{ kube_version }}"
+kubeadm_checksum: 422a7a32ed9a7b1eaa2a4f9d121674dfbe80eb41e206092c13017d097f75aaec
+
+# Where the binaries will be downloaded.
+# Note: ensure that you've enough disk space (about 1G)
+local_release_dir: "/tmp/releases"
+# Random shifts for retrying failed ops like pushing/downloading
+retry_stagger: 5
+
+# This is the group that the cert creation scripts chgrp the
+# cert files to. Not really changeable...
+kube_cert_group: kube-cert
+
+# Cluster Loglevel configuration
+kube_log_level: 2
+
+# Users to create for basic auth in Kubernetes API via HTTP
+# Optionally add groups for user
+kube_api_pwd: "{{ lookup('password', inventory_dir + '/credentials/kube_user.creds length=15 chars=ascii_letters,digits') }}"
+kube_users:
+  kube:
+    pass: "{{kube_api_pwd}}"
+    role: admin
+    groups:
+      - system:masters
+
+## It is possible to activate / deactivate selected authentication methods (basic auth, static token auth)
+#kube_oidc_auth: false
+#kube_basic_auth: false
+#kube_token_auth: false
+
+
+## Variables for OpenID Connect Configuration https://kubernetes.io/docs/admin/authentication/
+## To use OpenID you have to deploy additional an OpenID Provider (e.g Dex, Keycloak, ...)
+
+# kube_oidc_url: https:// ...
+# kube_oidc_client_id: kubernetes
+## Optional settings for OIDC
+# kube_oidc_ca_file: {{ kube_cert_dir }}/ca.pem
+# kube_oidc_username_claim: sub
+# kube_oidc_username_prefix: oidc:
+# kube_oidc_groups_claim: groups
+# kube_oidc_groups_prefix: oidc:
+
+
+# Choose network plugin (cilium, calico, contiv, weave or flannel)
+# Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
+kube_network_plugin: weave
+
+# Weave deployment
+# weave_password: ~
+# weave_checkpoint_disable: false
+# weave_conn_limit: 100
+# weave_hairpin_mode: true
+# weave_ipalloc_range: {{ kube_pods_subnet }}
+# weave_expect_npc: {{ enable_network_policy }}
+# weave_kube_peers: ~
+# weave_ipalloc_init: ~
+# weave_expose_ip: ~
+# weave_metrics_addr: ~
+# weave_status_addr: ~
+# weave_mtu: 1376
+# weave_no_masq_local: true
+# weave_extra_args: ~
+
+# Enable kubernetes network policies
+enable_network_policy: true
+
+# Kubernetes internal network for services, unused block of space.
+kube_service_addresses: 10.15.0.0/16
+
+# internal network. When used, it will assign IP
+# addresses from this range to individual pods.
+# This network must be unused in your network infrastructure!
+kube_pods_subnet: 10.16.0.0/16
+
+# internal network node size allocation (optional). This is the size allocated
+# to each node on your network.  With these defaults you should have
+# room for 4096 nodes with 254 pods per node.
+kube_network_node_prefix: 24
+
+# The port the API Server will be listening on.
+kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
+kube_apiserver_port: 6443 # (https)
+kube_apiserver_insecure_port: 8080 # (http)
+# Set to 0 to disable insecure port - Requires RBAC in authorization_modes and kube_api_anonymous_auth: true
+#kube_apiserver_insecure_port: 0 # (disabled)
+
+# Kube-proxy proxyMode configuration.
+# Can be ipvs, iptables
+kube_proxy_mode: iptables
+
+## Encrypting Secret Data at Rest (experimental)
+kube_encrypt_secret_data: false
+
+# DNS configuration.
+# Kubernetes cluster name, also will be used as DNS domain
+cluster_name: cluster.local
+# Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
+ndots: 2
+# Can be dnsmasq_kubedns, kubedns, coredns, coredns_dual, manual or none
+dns_mode: coredns
+# Set manual server if using a custom cluster DNS server
+#manual_dns_server: 10.x.x.x
+
+# Can be docker_dns, host_resolvconf or none
+resolvconf_mode: none
+# Deploy netchecker app to verify DNS resolve as an HTTP service
+deploy_netchecker: false
+# Ip address of the kubernetes skydns service
+skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') }}"
+skydns_server_secondary: "{{ kube_service_addresses|ipaddr('net')|ipaddr(4)|ipaddr('address') }}"
+dnsmasq_dns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(2)|ipaddr('address') }}"
+dns_domain: "{{ cluster_name }}"
+
+# Path used to store Docker data
+docker_daemon_graph: "/var/lib/docker"
+
+## Used to set docker daemon iptables options to true
+#docker_iptables_enabled: "true"
+
+## A string of extra options to pass to the docker daemon.
+## This string should be exactly as you wish it to appear.
+## An obvious use case is allowing insecure-registry access
+## to self hosted registries like so:
+
+docker_options: "--insecure-registry={{ kube_service_addresses }} --graph={{ docker_daemon_graph }}  {{ docker_log_opts }}"
+docker_bin_dir: "/usr/bin"
+
+## If non-empty will override default system MounFlags value.
+## This option takes a mount propagation flag: shared, slave
+## or private, which control whether mounts in the file system
+## namespace set up for docker will receive or propagate mounts
+## and unmounts. Leave empty for system default
+docker_mount_flags:
+
+
+# Settings for containerized control plane (etcd/kubelet/secrets)
+etcd_deployment_type: docker
+kubelet_deployment_type: host
+vault_deployment_type: docker
+helm_deployment_type: host
+
+# K8s image pull policy (imagePullPolicy)
+k8s_image_pull_policy: IfNotPresent
+
+# Kubernetes dashboard
+# RBAC required. see docs/getting-started.md for access details.
+dashboard_enabled: true
+
+# Monitoring apps for k8s
+efk_enabled: true
+
+# Helm deployment
+helm_enabled: true
+
+# Registry deployment
+registry_enabled: false
+# registry_namespace: "{{ system_namespace }}"
+# registry_storage_class: ""
+# registry_disk_size: "10Gi"
+
+# Local volume provisioner deployment
+local_volume_provisioner_enabled: false
+# local_volume_provisioner_namespace: "{{ system_namespace }}"
+# local_volume_provisioner_base_dir: /mnt/disks
+# local_volume_provisioner_mount_dir: /mnt/disks
+# local_volume_provisioner_storage_class: local-storage
+
+# CephFS provisioner deployment
+cephfs_provisioner_enabled: false
+# cephfs_provisioner_namespace: "cephfs-provisioner"
+# cephfs_provisioner_cluster: ceph
+# cephfs_provisioner_monitors: "172.24.0.1:6789,172.24.0.2:6789,172.24.0.3:6789"
+# cephfs_provisioner_admin_id: admin
+# cephfs_provisioner_secret: secret
+# cephfs_provisioner_storage_class: cephfs
+# cephfs_provisioner_reclaim_policy: Delete
+# cephfs_provisioner_claim_root: /volumes
+# cephfs_provisioner_deterministic_names: true
+
+# Nginx ingress controller deployment
+ingress_nginx_enabled: false
+# ingress_nginx_host_network: false
+# ingress_nginx_nodeselector:
+#   node-role.kubernetes.io/master: "true"
+# ingress_nginx_namespace: "ingress-nginx"
+# ingress_nginx_insecure_port: 80
+# ingress_nginx_secure_port: 443
+# ingress_nginx_configmap:
+#   map-hash-bucket-size: "128"
+#   ssl-protocols: "SSLv2"
+# ingress_nginx_configmap_tcp_services:
+#   9000: "default/example-go:8080"
+# ingress_nginx_configmap_udp_services:
+#   53: "kube-system/kube-dns:53"
+
+# Cert manager deployment
+cert_manager_enabled: false
+# cert_manager_namespace: "cert-manager"
+
+# Add Persistent Volumes Storage Class for corresponding cloud provider ( OpenStack is only supported now )
+persistent_volumes_enabled: false
+
+# Make a copy of kubeconfig on the host that runs Ansible in {{ inventory_dir }}/artifacts
+kubeconfig_localhost: true
+# Download kubectl onto the host that runs Ansible in {{ bin_dir }}
+kubectl_localhost: true
+
+# dnsmasq
+# dnsmasq_upstream_dns_servers:
+#  - /resolvethiszone.with/10.0.4.250
+#  - 8.8.8.8
+
+#  Enable creation of QoS cgroup hierarchy, if true top level QoS and pod cgroups are created. (default true)
+# kubelet_cgroups_per_qos: true
+
+# A comma separated list of levels of node allocatable enforcement to be enforced by kubelet.
+# Acceptable options are 'pods', 'system-reserved', 'kube-reserved' and ''. Default is "".
+# kubelet_enforce_node_allocatable: pods
+
+## Supplementary addresses that can be added in kubernetes ssl keys.
+## That can be useful for example to setup a keepalived virtual IP
+supplementary_addresses_in_ssl_keys: [10.27.252.178]
+
+## Running on top of openstack vms with cinder enabled may lead to unschedulable pods due to NoVolumeZoneConflict restriction in kube-scheduler.
+## See https://github.com/kubernetes-incubator/kubespray/issues/2141
+## Set this variable to true to get rid of this issue
+volume_cross_zone_attachment: false
+
+
+
+####################################################
+####################################################
+####################################################
+####### ALL OPTIONAL KUBESPRAY VARIABLES ###############
+####################################################
+####################################################
+####################################################
+
+
+
+# Valid bootstrap options (required): ubuntu, coreos, centos, none
+bootstrap_os: ubuntu
+
+#Directory where etcd data stored
+etcd_data_dir: /var/lib/etcd
+
+# Directory where the binaries will be installed
+bin_dir: /usr/local/bin
+
+## The access_ip variable is used to define how other nodes should access
+## the node.  This is used in flannel to allow other flannel nodes to see
+## this node for example.  The access_ip is really useful AWS and Google
+## environments where the nodes are accessed remotely by the "public" ip,
+## but don't know about that address themselves.
+#access_ip: 1.1.1.1
+
+### LOADBALANCING AND ACCESS MODES
+## Enable multiaccess to configure etcd clients to access all of the etcd members directly
+## as the "http://hostX:port, http://hostY:port, ..." and ignore the proxy loadbalancers.
+## This may be the case if clients support and loadbalance multiple etcd servers natively.
+#etcd_multiaccess: true
+
+### ETCD: disable peer client cert authentication.
+# This affects ETCD_PEER_CLIENT_CERT_AUTH variable
+#etcd_peer_client_auth: true
+
+## External LB example config
+apiserver_loadbalancer_domain_name: "k8slb.public.infra.hybris.com"
+loadbalancer_apiserver:
+  address: 10.27.252.178
+  port: 6443
+
+## Internal loadbalancers for apiservers
+loadbalancer_apiserver_localhost: false
+
+## Local loadbalancer should use this port instead, if defined.
+## Defaults to kube_apiserver_port (6443)
+#nginx_kube_apiserver_port: 8443
+
+### OTHER OPTIONAL VARIABLES
+## For some things, kubelet needs to load kernel modules.  For example, dynamic kernel services are needed
+## for mounting persistent volumes into containers.  These may not be loaded by preinstall kubernetes
+## processes.  For example, ceph and rbd backed volumes.  Set to true to allow kubelet to load kernel
+## modules.
+#kubelet_load_modules: false
+
+## Internal network total size. This is the prefix of the
+## entire network. Must be unused in your environment.
+#kube_network_prefix: 18
+
+## With calico it is possible to distributed routes with border routers of the datacenter.
+## Warning : enabling router peering will disable calico's default behavior ('node mesh').
+## The subnets of each nodes will be distributed by the datacenter router
+#peer_with_router: false
+
+## Upstream dns servers used by dnsmasq
+#upstream_dns_servers:
+#  - 8.8.8.8
+#  - 8.8.4.4
+
+## There are some changes specific to the cloud providers
+## for instance we need to encapsulate packets with some network plugins
+## If set the possible values are either 'gce', 'aws', 'azure', 'openstack', 'vsphere', or 'external'
+## When openstack is used make sure to source in the openstack credentials
+## like you would do when using nova-client before starting the playbook.
+#cloud_provider:
+
+## When azure is used, you need to also set the following variables.
+## see docs/azure.md for details on how to get these values
+#azure_tenant_id:
+#azure_subscription_id:
+#azure_aad_client_id:
+#azure_aad_client_secret:
+#azure_resource_group:
+#azure_location:
+#azure_subnet_name:
+#azure_security_group_name:
+#azure_vnet_name:
+#azure_vnet_resource_group:
+#azure_route_table_name:
+
+## When OpenStack is used, Cinder version can be explicitly specified if autodetection fails (Fixed in 1.9: https://github.com/kubernetes/kubernetes/issues/50461)
+#openstack_blockstorage_version: "v1/v2/auto (default)"
+## When OpenStack is used, if LBaaSv2 is available you can enable it with the following 2 variables.
+#openstack_lbaas_enabled: True
+#openstack_lbaas_subnet_id: "Neutron subnet ID (not network ID) to create LBaaS VIP"
+## To enable automatic floating ip provisioning, specify a subnet.
+#openstack_lbaas_floating_network_id: "Neutron network ID (not subnet ID) to get floating IP from, disabled by default"
+## Override default LBaaS behavior
+#openstack_lbaas_use_octavia: False
+#openstack_lbaas_method: "ROUND_ROBIN"
+#openstack_lbaas_provider: "haproxy"
+#openstack_lbaas_create_monitor: "yes"
+#openstack_lbaas_monitor_delay: "1m"
+#openstack_lbaas_monitor_timeout: "30s"
+#openstack_lbaas_monitor_max_retries: "3"
+
+## Uncomment to enable experimental kubeadm deployment mode
+kubeadm_enabled: true
+## Set these proxy values in order to update package manager and docker daemon to use proxies
+#http_proxy: ""
+#https_proxy: ""
+## Refer to roles/kubespray-defaults/defaults/main.yml before modifying no_proxy
+#no_proxy: ""
+
+## Uncomment this if you want to force overlay/overlay2 as docker storage driver
+## Please note that overlay2 is only supported on newer kernels
+#docker_storage_options: -s overlay2
+
+# Uncomment this if you have more than 3 nameservers, then we'll only use the first 3.
+#docker_dns_servers_strict: false
+
+## Certificate Management
+## This setting determines whether certs are generated via scripts or whether a
+## cluster of Hashicorp's Vault is started to issue certificates (using etcd
+## as a backend). Options are "script" or "vault"
+#cert_management: script
+
+# Set to true to allow pre-checks to fail and continue deployment
+#ignore_assert_errors: false
+
+## Etcd auto compaction retention for mvcc key value store in hour
+#etcd_compaction_retention: 0
+
+## Set level of detail for etcd exported metrics, specify 'extensive' to include histogram metrics.
+#etcd_metrics: basic
+
+## Etcd is restricted by default to 512M on systems under 4GB RAM, 512MB is not enough for much more than testing.
+## Set this if your etcd nodes have less than 4GB but you want more RAM for etcd. Set to 0 for unrestricted RAM.
+#etcd_memory_limit: "512M"
+
+# The read-only port for the Kubelet to serve on with no authentication/authorization. Uncomment to enable.
+#kube_read_only_port: 10255
+

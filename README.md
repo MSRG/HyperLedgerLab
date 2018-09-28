@@ -13,13 +13,13 @@ Environment Variables: Set the following
 * `OS_PASSWORD`: Password for the Openstack user 
 
 Ansible Commands:
-1. Create instances:
+1. Setup cluster:
     
     `cd kubernetes-ha`
     
-    `ansible-playbook -v create_instances.yaml`
-2. Delete instances:
+    `ansible-playbook -v cluster_setup.yaml`
+2. Delete cluster:
     
     `cd kubernetes-ha`
     
-    `ansible-playbook -v delete_cluster.yaml`
+    `ansible-playbook -v cluster_delete.yaml`
