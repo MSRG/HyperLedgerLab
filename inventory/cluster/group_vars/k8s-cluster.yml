@@ -246,7 +246,7 @@ kubectl_localhost: true
 
 ## Supplementary addresses that can be added in kubernetes ssl keys.
 ## That can be useful for example to setup a keepalived virtual IP
-supplementary_addresses_in_ssl_keys: ["{{ groups['kube-lb'][0] }}"]
+supplementary_addresses_in_ssl_keys: ["{{ hostvars[groups['kube-lb'][0]].ansible_host }}"]
 
 ## Running on top of openstack vms with cinder enabled may lead to unschedulable pods due to NoVolumeZoneConflict restriction in kube-scheduler.
 ## See https://github.com/kubernetes-incubator/kubespray/issues/2141
@@ -293,9 +293,9 @@ bin_dir: /usr/local/bin
 
 ## External LB example config
 ## Assuming that instance_name will be set at host of kube-lb group
-apiserver_loadbalancer_domain_name: "{{ hostvars[groups['kube-lb'][0]].instance_name }}.openstacklocal"
+apiserver_loadbalancer_domain_name: "{{ groups['kube-lb'][0] }}.openstacklocal"
 loadbalancer_apiserver:
-  address: "groups['kube-lb'][0]"
+  address: "{{ hostvars[groups['kube-lb'][0]].ansible_host }}"
   port: 6443
 
 ## Internal loadbalancers for apiservers
