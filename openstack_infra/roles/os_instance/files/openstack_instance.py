@@ -258,6 +258,7 @@ def create_instances(os_helper, kwargs):
                 success = False
                 print("Failure: {1} {0}".format(result[1], server_name))
         else:
+            # TODO: Return IP of existing node and consider success
             print("Failure: Instance with name {} already exists".format(server_name))
 
     exit(0 if success else 1)

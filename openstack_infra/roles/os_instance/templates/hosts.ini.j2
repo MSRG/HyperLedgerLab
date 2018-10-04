@@ -4,7 +4,7 @@
 
 # ## configure a bastion host if your nodes are not directly reachable
 # bastion ansible_host=x.x.x.x ansible_user=some_user
-{% for ip in (groups['kube-master']+groups['kube-node']+groups['etcd']+groups['kube-lb']+groups['kube-dns']+groups['nfs']) | unique  %}
+{% for ip in (groups['kube-master']+groups['kube-node']+groups['etcd']+groups['kube-lb']+groups['kube-dns']+groups['kube-nfs']) | unique  %}
 {{ hostvars[ip].instance_name }} ansible_host={{ ip }}
 {% endfor %}
 
