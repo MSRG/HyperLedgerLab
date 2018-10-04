@@ -7,7 +7,7 @@ Setup:
 2. `git submodule sync; git submodule update --init`
 2. `sudo apt install python-pip`
 2. `pip install virtualenv`
-2. `virtualenv --python=<path-to-python3> venv`
+2. `virtualenv --python=python3 venv`
 3. `source venv/bin/activate`
 4. `pip install -r requirements.txt`
 5. `pip install -r kubespray/requirements.txt`
