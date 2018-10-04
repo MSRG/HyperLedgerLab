@@ -3,10 +3,14 @@ This Repository contains the code for my Master thesis.
 Topic: Hyperledger Fabric testbed on kubernetes
 
 Setup:
-1. `pip instal virtualenv`
+1. clone the repo `git clone git@github.com:sahilkalra1991/master_thesis.git`
+2. `git submodule sync; git submodule update --init`
+2. `sudo apt install python-pip`
+2. `pip install virtualenv`
 2. `virtualenv --python=<path-to-python3> venv`
 3. `source venv/bin/activate`
 4. `pip install -r requirements.txt`
+5. `pip install -r kubespray/requirements.txt`
 
 Environment Variables: Set the following
 * `OS_USERNAME`: Username to access Openstack cluster
