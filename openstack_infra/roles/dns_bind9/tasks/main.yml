@@ -1,0 +1,70 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=1800
+
+- name: Install bind9
+  apt: pkg=bind9 state=present
+
+- name: Install bind9utils
+  apt: pkg=bind9utils state=present
+
+- name: Install bind9-doc
+  apt: pkg=bind9-doc state=present
+
+- name: Create bind9 logs directory
+  file: path={{ bind9_logs_dir }} owner={{ bind9_user }} group={{ bind9_group }} mode=0755 state=directory
+
+- name: Create zones directory
+  file: path={{ bind9_zones_dir }} owner={{ bind9_user }} group={{ bind9_group }} mode=0755 state=directory
+
+- name: Create bind9 default config file
+  copy: src=bind9 dest=/etc/default/bind9 mode=0644
+  notify: Restart bind9
+
+- name: Remove disable link for named
+  file: path=/etc/apparmor.d/disable/usr.sbin.named state=absent
+
+- name: Configure named  apparmor
+  template: src=named.apparmor.j2 dest=/etc/apparmor.d/local/usr.sbin.named
+  notify: reparse apparmor
+
+- meta: flush_handlers
+
+- name: Create bind9 config file
+  copy: src=named.conf dest={{ bind9_conf_dir }}/named.conf mode=0644
+  notify: Restart bind9
+
+- name: Create bind options config file
+  template: src=named.conf.options.j2 dest={{ bind9_conf_dir }}/named.conf.options mode=0644
+  notify: Restart bind9
+
+- name: Create bind local zones config file
+  template: src=named.conf.local.j2 dest={{ bind9_conf_dir }}/named.conf.local mode=0644
+  notify: Restart bind9
+
+- name: Create bind logs config file
+  template: src=named.conf.logs.j2 dest={{ bind9_conf_dir }}/named.conf.logs mode=0644
+  notify: Restart bind9
+
+- name: Check bind configuration
+  shell: named-checkconf
+
+#- name: Check if internal zone file exists
+#  stat: path={{ bind9_zones_dir }}/db.{{ bind9_internal_domain_name }}
+#  register: internal_zone
+
+- name: Create internal zone file
+  template: src=db.zone.j2 dest={{ bind9_zones_dir }}/db.{{ item.domain }} owner={{ bind9_user }} group={{ bind9_group }} mode=0644
+  with_items:
+    - domain: "{{ bind9_internal_domain_name }}"
+#  when: not internal_zone.stat.exists
+  notify: Restart bind9
+
+- name: Check bind zone configuration
+  shell: named-checkzone {{ item.domain }} {{ bind9_zones_dir }}/db.{{ item.domain }}
+  with_items:
+  - domain: "{{ bind9_internal_domain_name }}"
+
+- name: Ensure bind9 starts on boot
+  service: name=bind9 enabled=yes
+

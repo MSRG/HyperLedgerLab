@@ -246,7 +246,7 @@ kubectl_localhost: true
 
 ## Supplementary addresses that can be added in kubernetes ssl keys.
 ## That can be useful for example to setup a keepalived virtual IP
-supplementary_addresses_in_ssl_keys: [10.27.252.178]
+supplementary_addresses_in_ssl_keys: ["{{ groups['kube-lb'][0] }}"]
 
 ## Running on top of openstack vms with cinder enabled may lead to unschedulable pods due to NoVolumeZoneConflict restriction in kube-scheduler.
 ## See https://github.com/kubernetes-incubator/kubespray/issues/2141
@@ -292,9 +292,10 @@ bin_dir: /usr/local/bin
 #etcd_peer_client_auth: true
 
 ## External LB example config
-apiserver_loadbalancer_domain_name: "k8slb.public.infra.hybris.com"
+## Assuming that instance_name will be set at host of kube-lb group
+apiserver_loadbalancer_domain_name: "{{ hostvars[groups['kube-lb'][0]].instance_name }}.openstacklocal"
 loadbalancer_apiserver:
-  address: 10.27.252.178
+  address: "groups['kube-lb'][0]"
   port: 6443
 
 ## Internal loadbalancers for apiservers

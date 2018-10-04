@@ -1,0 +1,30 @@
+$TTL    1h
+$ORIGIN  {{ item.domain }}.
+@       IN      SOA     ns1.{{ item.domain }}. admin.{{ item.domain }}. (
+                          {{ ansible_date_time['epoch'] }}    ; Serial
+                          1m       ; Refresh after 1 minute
+                          1m       ; Retry after 1 minute
+                          1m       ; Expire after 1 minute
+                          5s )     ; Negative caching TTL of 1 minute
+;
+
+{% if bind9_dns_authoritative|default(false) %}
+@       IN      NS      ns1.{{ item.domain }}.
+ns1     IN      A       {{ ansible_default_ipv4.address }}
+{% endif %}
+
+{% set id = 2 %}
+{% for address in bind9_nameservers %}
+{% if address == ansible_default_ipv4.address %}
+@       IN      NS      ns1.{{ item.domain }}.
+ns1     IN      A       {{ ansible_default_ipv4.address }}
+{% else %}
+@       IN      NS      ns{{ id }}.{{ item.domain }}.
+ns{{ id }}     IN      A       {{ address }}
+{% set id = id + 1 %}
+{% endif %}
+{% endfor %}
+
+{% for address in groups['k8s-all'] %}
+{{ hostvars[address].instance_name }}     IN      A      {{ address }}
+{% endfor %}

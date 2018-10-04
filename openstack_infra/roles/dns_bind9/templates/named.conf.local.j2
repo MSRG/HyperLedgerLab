@@ -1,0 +1,20 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+{% for zone in bind9_dns_zones %}
+zone {{ zone }} {
+        type master;
+        multi-master yes;
+        zone-statistics yes;
+        file "{{ bind9_zones_dir }}/db.{{ zone }}";
+{#        allow-update { key "internal." ; };#}
+};
+
+{% endfor %}
+
+// ToDo: Configure forwarders below here

@@ -1,0 +1,2 @@
+---
+- import_playbook: playbooks/delete_instances.yaml

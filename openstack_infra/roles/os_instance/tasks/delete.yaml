@@ -7,7 +7,7 @@
       --os-username {{ os_username }} --os-password {{ os_password }}
       --os-base-url {{ os_base_url }} --os-project-domain-name {{ os_project_domain_name }}
       --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
-      {{ k8s_instances }}
+      {% for instance in k8s_ctl_instances + k8s_wrk_instances + [k8s_lb_instance, k8s_nfs_instance] %}{{ instance }} {% endfor %}
   args:
     executable: python3
   register: cmd_output

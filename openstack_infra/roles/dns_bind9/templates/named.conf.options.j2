@@ -1,0 +1,41 @@
+acl openstack {
+    172.24.0.0/16;
+};
+
+options {
+        directory "/var/cache/bind";
+
+        // If there is a firewall between you and nameservers you want
+        // to talk to, you may need to fix the firewall to allow multiple
+        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+        // If your ISP provided one or more IP addresses for stable
+        // nameservers, you probably want to use them as forwarders.
+        // Uncomment the following block, and insert the addresses replacing
+        // the all-0's placeholder.
+
+        //========================================================================
+        // If BIND logs error messages about the root key being expired,
+        // you will need to update your keys.  See https://www.isc.org/bind-keys
+        //========================================================================
+{#        dnssec-validation {{ bind9_dnssec_validation|default(auto) }};#}
+        dnssec-enable yes;
+        dnssec-validation yes;
+
+        auth-nxdomain no;    # conform to RFC1035
+
+        allow-query { 127.0.0.1; openstack; };
+{#        allow-query-cache { 127.0.0.1; openstack; };#}
+        recursion yes;
+{#        max-ncache-ttl 5;#}
+        forwarders { {% for forwarder in bind9_dns_forwarders['default'] %} {{ forwarder }}; {% endfor %} };
+{#        allow-recursion { 127.0.0.1; openstack; };#}
+      	// Listen on all IP addresses
+        listen-on { any; };
+{#        allow-transfer { none; };#}
+};
+{##}
+{#key "openstack." {#}
+{#        algorithm HMAC-SHA512 ;#}
+{#        secret "+v8ygDBbvBkXnPG8gqvJuW1zB/fevvYVu+nMSyVY2k5Xdn+6zTPFbdMD GcRo4+PUi3tT5nRgnd/eNIjYo73pbQ==";#}
+{#};#}

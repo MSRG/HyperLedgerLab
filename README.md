@@ -11,6 +11,15 @@ Setup:
 Environment Variables: Set the following
 * `OS_USERNAME`: Username to access Openstack cluster
 * `OS_PASSWORD`: Password for the Openstack user 
+* `OS_IMAGE_SSH_KEY`: Path to ssh privite key file for Openstack instances
+* `INVENTORY_DIR_PATH`: Path to inventory directory e.g. "$pwd/inventory"
+
+Configuration:
+1. Kubernetes Cluster
+* Provide hosts info similar to `sample_ubuntu_xenial/hosts.ini`
+* Provide Loadbalancer IP in `supplementary_addresses_in_ssl_keys` variable
+* Provide Loadbalancer domain and IP in `apiserver_loadbalancer_domain_name` and `loadbalancer_apiserver.address` variables
+2. 
 
 Ansible Commands:
 1. Setup cluster:

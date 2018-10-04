@@ -1,0 +1,14 @@
+---
+bind9_user: bind
+bind9_group: "{{ bind9_user }}"
+bind9_home: /var/cache/bind
+bind9_logs_dir: "/var/log/named"
+bind9_conf_dir: /etc/bind
+bind9_zones_dir: "{{ bind9_conf_dir }}/zones"
+bind9_dns_forwarders:
+  default: [ '131.159.254.1', '131.159.254.2' ]
+bind9_dns_zones: [ 'openstacklocal']
+bind9_dnssec_validation: no
+bind9_nameservers: []
+bind9_dns_authoritative: true
+bind9_internal_domain_name: "openstacklocal"

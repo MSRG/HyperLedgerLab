@@ -38,7 +38,7 @@ def parse_cmd_line_args():
             parser.add_argument('--image', action='store', dest='os_image', help="OS instance base image to use")
             parser.add_argument('--availability-zone', action='store', dest='os_availability_zone',
                                 help="OS instance availability zone")
-            parser.add_argument('--security-group', metavar='Group', action='store', nargs="*",
+            parser.add_argument('--security-group', metavar='Group', action="append",
                                 dest='os_security_groups', help="A list of OS Security groups to add in instance")
             parser.add_argument('--key', action='store', dest='os_image_key', help="OS keypair to inject in instance")
 
@@ -115,7 +115,7 @@ class MsrgComputeHelper(object):
             self.delete_instance_by_id(newserver.id)
             return False, newserver.to_dict()
         else:
-            # Get the IP address of forst interface
+            # Get the IP address of first interface
             interface = newserver.interface_list()[0]
             while interface.port_state != 'ACTIVE':
                 time.sleep(1)
@@ -252,7 +252,7 @@ def create_instances(os_helper, kwargs):
                 key=kwargs.os_image_key
             )
             if result[0]:
-                print("Success: {2} {0} {1}".format(result[1].id, result[2], server_name))
+                print("{0},{1}".format(server_name, result[2]))
             else:
                 # Mark command fail if any instance fails
                 success = False
@@ -278,7 +278,6 @@ def delete_instances(os_helper, kwargs):
 
 if __name__ == "__main__":
     kwargs_obj = parse_cmd_line_args()
-
     os_helper_obj = create_msrg_compute_helper(
         os_username=kwargs_obj.os_username or os.environ.get('OS_USERNAME'),
         os_password=kwargs_obj.os_password or os.environ.get('OS_PASSWORD'),

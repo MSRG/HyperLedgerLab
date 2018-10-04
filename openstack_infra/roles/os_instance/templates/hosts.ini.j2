@@ -1,0 +1,53 @@
+###############################################
+######### KUBESPRAY HOSTS ######################
+###############################################
+
+# ## configure a bastion host if your nodes are not directly reachable
+# bastion ansible_host=x.x.x.x ansible_user=some_user
+
+[kube-lb]
+# Loadbalancer Node: To be added dynamically
+{% for ip in groups['kube-lb'] %}
+{{ ip }} instance_name={{ hostvars[ip].instance_name }}
+{% endfor %}
+
+[kube-dns]
+# DNS node: To be added dynamically
+{% for ip in groups['kube-dns'] %}
+{{ ip }} instance_name={{ hostvars[ip].instance_name }}
+{% endfor %}
+
+[kube-nfs]
+# NFS server Node: To be added dynamically
+{% for ip in groups['kube-nfs'] %}
+{{ ip }} instance_name={{ hostvars[ip].instance_name }}
+{% endfor %}
+
+[kube-master]
+# Control Nodes: To be added dynamically
+{% for ip in groups['kube-master'] %}
+{{ ip }} instance_name={{ hostvars[ip].instance_name }}
+{% endfor %}
+
+[etcd]
+# ETCD Nodes: To be added dynamically
+{% for ip in groups['etcd'] %}
+{{ ip }} instance_name={{ hostvars[ip].instance_name }}
+{% endfor %}
+
+[kube-node]
+# Worker Nodes: To be added dynamically
+{% for ip in groups['kube-node'] %}
+{{ ip }} instance_name={{ hostvars[ip].instance_name }}
+{% endfor %}
+
+[k8s-cluster:children]
+kube-master
+kube-node
+
+[k8s-all:children]
+kube-master
+kube-node
+kube-nfs
+kube-lb
+kube-dns

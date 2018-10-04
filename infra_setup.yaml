@@ -1,0 +1,2 @@
+---
+- import_playbook: playbooks/create_instances.yaml

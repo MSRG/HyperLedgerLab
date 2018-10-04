@@ -1,0 +1,9 @@
+---
+- name: Restart apparmor
+  service: name=apparmor state=restarted
+
+- name: Restart bind9
+  service: name=bind9 state=restarted
+
+- name: reparse apparmor
+  command: apparmor_parser -r /etc/apparmor.d/usr.sbin.named

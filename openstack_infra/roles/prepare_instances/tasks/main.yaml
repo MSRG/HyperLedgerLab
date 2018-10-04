@@ -1,0 +1,6 @@
+---
+- include: tasks/pre.yaml
+  when: pre|default(false)
+
+- include: tasks/post.yaml
+  when: post|default(false)

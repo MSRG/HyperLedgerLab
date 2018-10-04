@@ -1,0 +1,35 @@
+# Ansible Playbook to prepare Instances for Kubernetes cluster setup
+# Note: Call with
+---
+# Pre setup tasks
+- hosts: localhost
+  roles:
+    - { "role": prepare_instances, "pre": true }
+
+# Setup DNS
+- hosts: kube-dns
+  remote_user: ubuntu
+  become: true
+  roles:
+    - { "role": dns_bind9 }
+
+# Setup Loadbalancer
+- hosts: kube-lb
+  remote_user: ubuntu
+  become: true
+  roles:
+    - { "role": lb_haproxy }
+
+# Setup NFS server
+- hosts: kube-nfs
+  remote_user: ubuntu
+  become: true
+  roles:
+    - { "role": nfs_server }
+
+# post setup tasks
+- hosts: k8s-all
+  remote_user: ubuntu
+  become: true
+  roles:
+    - { "role": prepare_instances, "post": true }

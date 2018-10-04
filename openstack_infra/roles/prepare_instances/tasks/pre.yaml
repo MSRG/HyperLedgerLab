@@ -1,0 +1,9 @@
+---
+- name: Install python on all instances
+  shell: >
+    echo {{ item }};
+    ssh ubuntu@{{ item }} -i '"{{ lookup('env', 'OS_IMAGE_SSH_KEY') }}"' -o StrictHostKeyChecking=no
+    'sudo apt-get update; sudo apt-get install python-minimal -y'
+  args:
+    creates: /usr/bin/python
+  with_items: "{{ groups['k8s-all']}}"

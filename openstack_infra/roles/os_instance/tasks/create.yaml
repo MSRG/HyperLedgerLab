@@ -1,6 +1,6 @@
 ---
 # Run a script using a executable in a system path
-- name: Create Openstack instances for Kubernetes HA setup
+- name: Create Openstack instances for Kubernetes Control nodes
   script:
     cmd: >
       openstack_instance.py create
@@ -9,12 +9,106 @@
       --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
       --flavour {{ k8s_instance_flavour }} --image {{ k8s_instance_image }}
       --availability-zone {{ k8s_instance_availability_zone }}
-      {% for group in ks8_instance_security_groups %}--security-group {{ group }}{% endfor %}
+      {% for group in ks8_instance_security_groups %}--security-group {{ group }} {% endfor %}
       --key {{ k8s_instance_image_key }}
-      {{ k8s_instances }}
+      {{ item }}
   args:
     executable: python3
-  register: cmd_output
+  with_items: "{{ k8s_ctl_instances }}"
+  register: k8sctl_nodes
 
-#- name: Print Output of command
-#  debug: msg="{{ cmd_output.stdout }}"
+#- debug: msg="{{ k8sctl_nodes }}"
+
+- name: Add Kubernetes Control nodes to inventory
+  add_host:
+    name: "{{ item.stdout.split(',')[1] | replace('\n', '') }}"
+    instance_name: "{{ item.stdout.split(',')[0] }}"
+    groups:
+      - kube-master
+      - etcd
+  with_items: "{{ k8sctl_nodes.results }}"
+  when: k8sctl_nodes.results is defined
+
+- name: Create Openstack instances for Kubernetes Worker nodes
+  script:
+    cmd: >
+      openstack_instance.py create
+      --os-username {{ os_username }} --os-password {{ os_password }}
+      --os-base-url {{ os_base_url }} --os-project-domain-name {{ os_project_domain_name }}
+      --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
+      --flavour {{ k8s_instance_flavour }} --image {{ k8s_instance_image }}
+      --availability-zone {{ k8s_instance_availability_zone }}
+      {% for group in ks8_instance_security_groups %}--security-group {{ group }} {% endfor %}
+      --key {{ k8s_instance_image_key }}
+      {{ item }}
+  args:
+    executable: python3
+  with_items: "{{ k8s_wrk_instances }}"
+  register: k8swrk_nodes
+
+- name: Add Kubernetes Worker nodes to inventory
+  add_host:
+    name: "{{ item.stdout.split(',')[1] | replace('\n', '') }}"
+    instance_name: "{{ item.stdout.split(',')[0] }}"
+    groups:
+      - kube-node
+  with_items: "{{ k8swrk_nodes.results }}"
+  when: k8swrk_nodes.results is defined
+
+- name: Create Openstack instances for Kubernetes Load balancer node
+  script:
+    cmd: >
+      openstack_instance.py create
+      --os-username {{ os_username }} --os-password {{ os_password }}
+      --os-base-url {{ os_base_url }} --os-project-domain-name {{ os_project_domain_name }}
+      --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
+      --flavour {{ k8s_instance_flavour }} --image {{ k8s_instance_image }}
+      --availability-zone {{ k8s_instance_availability_zone }}
+      {% for group in k8s_instance_dns_security_groups %}--security-group={{ group }} {% endfor %}
+      --key {{ k8s_instance_image_key }}
+      {{ k8s_lb_instance }}
+  args:
+    executable: python3
+  register: k8slb_node
+
+- name: Add Kubernetes Load balancer nodes to inventory
+  add_host:
+    host: "{{ k8slb_node.stdout.split(',')[1] | replace('\n', '') }}"
+    instance_name: "{{ k8slb_node.stdout.split(',')[0] }}"
+    groups:
+      - kube-lb
+      - kube-dns
+  when: k8slb_node is defined
+
+- name: Create Openstack instances for Kubernetes NFS node
+  script:
+    cmd: >
+      openstack_instance.py create
+      --os-username {{ os_username }} --os-password {{ os_password }}
+      --os-base-url {{ os_base_url }} --os-project-domain-name {{ os_project_domain_name }}
+      --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
+      --flavour {{ k8s_instance_flavour }} --image {{ k8s_instance_image }}
+      --availability-zone {{ k8s_instance_availability_zone }}
+      --key {{ k8s_instance_image_key }}
+      {{ k8s_nfs_instance }}
+  args:
+    executable: python3
+  register: k8snfs_node
+
+- name: Add Kubernetes NFS nodes to inventory
+  add_host:
+    name: "{{ k8snfs_node.stdout.split(',')[1] | replace('\n', '') }}"
+    instance_name: "{{ k8snfs_node.stdout.split(',')[0] }}"
+    groups:
+      - kube-nfs
+  when: k8snfs_node is defined
+
+
+- name: Create cluster setup inventory
+  template:
+    src=hosts.ini.j2 dest={{ k8s_cluster_inventory_file }} mode=0644
+
+#- debug:
+#    msg: "{{ hostvars[item].instance_name }}: {{ item }}"
+#  with_items: "{{ groups['k8s-cluster'] }}"
+
