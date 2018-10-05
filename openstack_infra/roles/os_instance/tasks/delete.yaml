@@ -12,5 +12,10 @@
     executable: python3
   register: cmd_output
 
+- name: Mark python uninstalled
+  file:
+      path: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/install_python.ignore"
+      state: absent
+
 #- name: Print Output of command
 #  debug: msg="{{ cmd_output.stdout }}"

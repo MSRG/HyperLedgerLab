@@ -16,6 +16,7 @@ k8s_instance_image: "kvm-ubuntu-xenial"
 k8s_instance_availability_zone: "kvm"
 ks8_instance_security_groups: ["kube-cluster"]
 k8s_instance_dns_security_groups: ["kube-cluster", "dns", "load-balancer"]
+k8s_instance_nfs_security_groups: ["default"]
 k8s_instance_image_key: "default-image-key"
 
 # Cluster Inventory location

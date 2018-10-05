@@ -6,7 +6,10 @@
     'sudo apt-get update; sudo apt-get install python-minimal -y'
   with_items: "{{ groups['k8s-all']}}"
   args:
-    creates: install_python.ignore
+    creates: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/install_python.ignore"
 
 - name: Mark python installed
-  shell: touch install_python.ignore
+  file:
+      path: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/install_python.ignore"
+      state: touch
+      mode: 664

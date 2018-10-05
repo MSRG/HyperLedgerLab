@@ -89,6 +89,7 @@
       --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
       --flavour {{ k8s_instance_flavour }} --image {{ k8s_instance_image }}
       --availability-zone {{ k8s_instance_availability_zone }}
+      {% for group in k8s_instance_nfs_security_groups %}--security-group={{ group }} {% endfor %}
       --key {{ k8s_instance_image_key }}
       {{ k8s_nfs_instance }}
   args:
