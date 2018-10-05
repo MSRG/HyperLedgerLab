@@ -4,6 +4,14 @@
     name: nfs-kernel-server
     state: present
 
+- name: Create /opt/share directory
+  file:
+    path: /opt/share
+    state: directory
+    mode: 0664
+    owner: nobody
+    group: nogroup
+
 - name: setup nfs exports
   copy: src=etc.exports dest=/etc/exports mode=0644
   notify: restart nfs

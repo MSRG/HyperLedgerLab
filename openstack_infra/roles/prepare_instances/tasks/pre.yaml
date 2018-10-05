@@ -5,3 +5,7 @@
     ssh ubuntu@{{ hostvars[item].ansible_host }} -i "{{ lookup('env', 'OS_IMAGE_SSH_KEY') }}" -o StrictHostKeyChecking=no
     'sudo apt-get update; sudo apt-get install python-minimal -y'
   with_items: "{{ groups['k8s-all']}}"
+  creates: install_python.ignore
+
+- name: Mark python installed
+  shell: touch install_python.ignore

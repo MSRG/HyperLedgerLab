@@ -172,6 +172,8 @@ k8s_image_pull_policy: IfNotPresent
 # Kubernetes dashboard
 # RBAC required. see docs/getting-started.md for access details.
 dashboard_enabled: true
+dashboard_svc_type: NodePort
+dashboard_node_port: 30843
 
 # Monitoring apps for k8s
 efk_enabled: true
