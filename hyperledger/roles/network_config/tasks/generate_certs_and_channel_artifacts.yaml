@@ -3,9 +3,15 @@
   script: |
     bin_{{ fabric_version }}/cryptogen generate --config={{ cryptogen_config }} --output={{ crpto_config_dir }}
 
+- name: Create channel artifacts dir
+  file:
+    name: "{{ channel_artifacts_dir }}"
+    state: directory
+
 - name: Generate channel artifacts
-  script: |
-    bin_{{ fabric_version }}/configtxgen -configPath {{ configtxgen_config }}  -profile TwoOrgsOrdererGenesis -outputBlock {{ channel_artifacts_dir }}/genesis.block
+  script: >
+    bin_{{ fabric_version }}/configtxgen -configPath {{ configtxgen_config_path }}  -profile TwoOrgsOrdererGenesis
+    -outputBlock {{ channel_artifacts_dir }}/genesis.block -channelID orderer-system-channel
 
 - name: Set permission for channel artifacts
   shell: |
@@ -17,7 +23,7 @@
 
 - name: Copy genesis block to orderer
   shell: |
-    cp {{ channel_artifacts_dir }}/genesis.block {{ channel_artifacts_dir }}/ordererOrganizations/
+    cp {{ channel_artifacts_dir }}/genesis.block {{ crpto_config_dir }}/ordererOrganizations/
 
 - name: Copy channel artifacts to NFS
   shell: |

@@ -114,3 +114,10 @@ local_data
 
 # Ansible
 *.retry
+
+# Kubespray
+inventory/cluster/artifacts/
+
+# Hyperledger Fabric
+inventory/blockchain/fabric-config/channel-artifacts/
+inventory/blockchain/fabric-config/crypto-config/

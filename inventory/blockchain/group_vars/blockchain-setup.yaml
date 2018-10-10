@@ -13,7 +13,7 @@ channel_artifacts_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ chann
 templates_dirname: templates
 templates_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ templates_dir }}"
 cryptogen_config: "{{ inventory_dir }}/{{ fabric_config_dirname }}/crypto-config.yaml"
-configtxgen_config: "{{ inventory_dir }}/{{ fabric_config_dirname }}/configtx.yaml"
+configtxgen_config_path: "{{ inventory_dir }}/{{ fabric_config_dirname }}"
 
 # Dynamic Variables
 nfs_server_ip: "{{ groups['kube-nfs'][0] }}"
