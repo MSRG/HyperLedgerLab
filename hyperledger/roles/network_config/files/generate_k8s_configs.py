@@ -53,7 +53,7 @@ def render(src, dest, **kw):
 # #d.write(t.substitute(**kw))      	##
 # #########################################
 def getTemplate(templateName):
-    configTemplate = os.path.join(TEMPLATES_DIR + templateName)
+    configTemplate = os.path.join(TEMPLATES_DIR + "/" + templateName)
     return configTemplate
 
 

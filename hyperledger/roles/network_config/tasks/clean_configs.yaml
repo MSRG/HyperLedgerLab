@@ -14,3 +14,8 @@
   with_items:
     - "{{ nfs_server_mount_dir }}/{{ channel_artifacts_dirname }}"
     - "{{ channel_artifacts_dir }}"
+
+- name: Remove kubernetes templates
+  file:
+    path: "{{ templates_dir }}"
+    state: absent

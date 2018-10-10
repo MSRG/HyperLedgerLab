@@ -11,7 +11,7 @@ crpto_config_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ crypto_con
 channel_artifacts_dirname: channel-artifacts
 channel_artifacts_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ channel_artifacts_dirname }}"
 templates_dirname: templates
-templates_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ templates_dir }}"
+templates_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ templates_dirname }}"
 cryptogen_config: "{{ inventory_dir }}/{{ fabric_config_dirname }}/crypto-config.yaml"
 configtxgen_config_path: "{{ inventory_dir }}/{{ fabric_config_dirname }}"
 

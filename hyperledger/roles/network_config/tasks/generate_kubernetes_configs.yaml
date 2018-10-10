@@ -1,4 +1,9 @@
 ---
+- name: Create templates Dir
+  file:
+    path: "{{ templates_dir }}"
+    state: directory
+
 - name: Provide Kubernetes templates
   template: src={{ item.src }} dest={{ templates_dir }}/{{ item.dest }} mode=0644
   with_items:
@@ -10,6 +15,6 @@
 
 - name: generate kubernetes configs
   script: |
-    generate_k8s_config.py {{ crpto_config_dir }} {{ templates_dir }}
+    generate_k8s_configs.py {{ crpto_config_dir }} {{ templates_dir }}
   args:
     executable: /usr/bin/python3

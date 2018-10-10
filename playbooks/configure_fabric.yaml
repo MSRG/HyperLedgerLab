@@ -9,5 +9,6 @@
 
 # Create Fabric Configs
 - hosts: blockchain-setup
+  become: true
   roles:
     - { "role": network_config }
