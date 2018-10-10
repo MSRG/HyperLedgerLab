@@ -1,2 +1,3 @@
+# To be called with -i inventory/infra/hosts.ini
 ---
 - import_playbook: playbooks/delete_instances.yaml

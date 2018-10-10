@@ -1,6 +1,13 @@
 # Ansible Playbook to delete Openstack Instances of Kubernetes cluster
+# Note: Call with -i inventory/infra/hosts.ini
 ---
+# Prepare CLI node: Un-mount NFS
+- hosts: localhost
+  become: true
+  roles:
+    - { "role": prepare_cli, "nfs_state": "absent" }
+
+# Delete Instances
 - hosts: os-infra
   roles:
     - { "role": os_instance, "delete": true }
-

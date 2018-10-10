@@ -1,0 +1,28 @@
+---
+- name: Generate Certs
+  script: |
+    bin_{{ fabric_version }}/cryptogen generate --config={{ cryptogen_config }} --output={{ crpto_config_dir }}
+
+- name: Generate channel artifacts
+  script: |
+    bin_{{ fabric_version }}/configtxgen -configPath {{ configtxgen_config }}  -profile TwoOrgsOrdererGenesis -outputBlock {{ channel_artifacts_dir }}/genesis.block
+
+- name: Set permission for channel artifacts
+  shell: |
+    chmod -R 777 {{ channel_artifacts_dir }}
+
+- name: Set permission for crypto configs
+  shell: |
+    chmod -R 777 {{ crpto_config_dir }}
+
+- name: Copy genesis block to orderer
+  shell: |
+    cp {{ channel_artifacts_dir }}/genesis.block {{ channel_artifacts_dir }}/ordererOrganizations/
+
+- name: Copy channel artifacts to NFS
+  shell: |
+    cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
+
+- name: Copy crypto configs to NFS
+  shell: |
+    cp -r {{ crpto_config_dir }} {{ nfs_server_mount_dir }}

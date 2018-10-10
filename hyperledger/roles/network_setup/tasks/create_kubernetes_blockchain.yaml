@@ -1,0 +1,5 @@
+- name: Create kubernetes blockchain
+  script: |
+    create_k8s_blockchain.py {{ crpto_config_dir }} {{ k8s_kubectl_cmd }}
+  args:
+    executable: /usr/bin/python3

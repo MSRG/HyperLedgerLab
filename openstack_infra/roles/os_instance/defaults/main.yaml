@@ -18,3 +18,7 @@ k8s_instance_availability_zone: "kvm"
 k8s_instance_security_groups: ["kube-cluster"]
 k8s_instance_dns_security_groups: ["kube-cluster", "dns", "load-balancer"]
 k8s_instance_image_key: "default-image-key"
+
+# Cluster Inventory location
+k8s_cluster_inventory_file: ""
+k8s_blockchain_inventory_file: ""

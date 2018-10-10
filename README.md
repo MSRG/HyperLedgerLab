@@ -31,11 +31,15 @@ Hyperledger Testbed on Kubernetes Cluster: Automated Deployment of a Distributed
 * `OS_USERNAME`: Username to access Openstack cluster
 * `OS_PASSWORD`: Password for the Openstack user 
 * `OS_IMAGE_SSH_KEY`: Path to ssh privite key file for Openstack instances
-* `INVENTORY_DIR_PATH`: Path to inventory directory e.g. "$pwd/inventory"
+* `INVENTORY_DIR_PATH`: Path to project's main inventory directory e.g. "$pwd/inventory"
 
 
 **Configuration**:
-Provide cluster details in `inventory/infra/group_vars/os-infra.yml`
+1. Provide Openstack infrastructure details in `inventory/infra/group_vars/os-infra.yml`
+2. Provide Fabric configuration in:
+    * Crypto Configuration: `inventory/blockchain/fabric-config/crypto-config.yaml`
+    * Network Configuration: `inventory/blockchain/fabric-config/configtx.yaml`
+
 
 TODO: Add more configuration details
 
@@ -50,3 +54,12 @@ TODO: Add more configuration details
     * Setup nodes: DNS, LB, NFS, basic config on all
     * Creates k8s cluster using kuberspray
     * Creates inventory/blockchain/hosts.ini
+  * **blockchain_setup**: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_setup.yaml `
+    * Mount NFS on CLI node
+    * Create configuration for Hyperldger Fabric on CLI node
+    * Install Fabric network on kubernetes
+  * **blockchain_delete**: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_delete.yaml `
+    * Delete Fabric network from kubernetes
+    * Unmount NFS on CLI node
+    * Delete Fabric Configurations from CLI node
+

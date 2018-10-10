@@ -1,0 +1,6 @@
+---
+- include: tasks/clean_configs.yaml
+- include: tasks/generate_certs_and_channel_artifacts.yaml
+  when: not delete|default(false)
+- include: tasks/generate_kubernetes_configs.yaml
+  when: not delete|default(false)

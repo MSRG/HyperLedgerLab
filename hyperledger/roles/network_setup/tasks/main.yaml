@@ -1,0 +1,6 @@
+---
+- include: tasks/create_kubernetes_blockchain.yaml
+  when: install|default(false)
+
+- include: tasks/delete_kubernetes_blockchain.yaml
+  when: delete|default(false)

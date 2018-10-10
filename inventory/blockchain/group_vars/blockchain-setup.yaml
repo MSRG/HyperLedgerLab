@@ -1,0 +1,23 @@
+# Provide fabric versions as defined here:
+# https://hyperledger-fabric.readthedocs.io/en/release-1.2/install.html
+fabric_version: 1.2.1
+fabric_ca_version: 1.2.1
+fabric_couchdb_version: 0.4.12
+
+# Config Directories
+fabric_config_dirname: fabric-configs
+crypto_config_dirname: crypto-config
+crpto_config_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ crypto_config_dirname }}"
+channel_artifacts_dirname: channel-artifacts
+channel_artifacts_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ channel_artifacts_dirname }}"
+templates_dirname: templates
+templates_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ templates_dir }}"
+cryptogen_config: "{{ inventory_dir }}/{{ fabric_config_dirname }}/crypto-config.yaml"
+configtxgen_config: "{{ inventory_dir }}/{{ fabric_config_dirname }}/configtx.yaml"
+
+# Dynamic Variables
+nfs_server_ip: "{{ groups['kube-nfs'][0] }}"
+nfs_server_mount_dir: "/opt/share"
+
+# kubernetes kubectl command
+k8s_kubectl_cmd: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl --kubeconfig={{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/admin.conf"

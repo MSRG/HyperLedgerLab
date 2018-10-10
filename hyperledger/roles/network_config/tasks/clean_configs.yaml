@@ -1,0 +1,14 @@
+---
+- name: Remove crypto configs
+  file: "{{ item }}"
+  state: absent
+  with_items:
+    - "{{ nfs_server_mount_dir }}/{{ crypto_config_dirname }}"
+    - "{{ crpto_config_dir }}"
+
+- name: Remove channel artifacts
+  file: "{{ item }}"
+  state: absent
+  with_items:
+    - "{{ nfs_server_mount_dir }}/{{ channel_artifacts_dirname }}"
+    - "{{ channel_artifacts_dir }}"

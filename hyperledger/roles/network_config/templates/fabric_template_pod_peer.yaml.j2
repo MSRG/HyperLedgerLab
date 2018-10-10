@@ -1,0 +1,148 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: $namespace
+  name:	$podName
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+       app: hyperledger
+       role: peer
+       peer-id: $peerID
+       org: $namespace
+    spec:
+      containers:
+        # CouchDB to store chaincodes
+      - name: couchdb
+        image: hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}
+        ports:
+         - containerPort: 5984
+
+        # Docker in Docker Daemon
+      - name: dind-daemon
+        image: docker:stable-dind
+#        resources:
+#          requests:
+#            cpu: 20m
+#            memory: 512Mi
+        ports:
+          - containerPort: 2375
+        securityContext:
+          privileged: true
+#        args: ["--debug"]
+        readinessProbe:
+          exec:
+            command:
+              - /bin/sh
+              - -c
+              - "ping -c 3 -t 10 google.com"
+          initialDelaySeconds: 10 # how long to wait before checking
+          periodSeconds: 3 # how long to wait between checks
+          successThreshold: 1 # how many successes to hit before accepting
+          failureThreshold: 1 # how many failures to accept before failing
+          timeoutSeconds: 11 # how long to wait for a response
+        volumeMounts:
+          - name: dind-graph-storage
+            mountPath: /var/lib/docker
+
+        # Fabric Peer
+      - name: $podName 
+        image: hyperledger/fabric-peer:{{ fabric_version }}
+        env:
+        - name: CORE_LEDGER_STATE_STATEDATABASE
+          value: "CouchDB"
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+          value: "localhost:5984"
+        - name: CORE_VM_ENDPOINT
+          value: "tcp://localhost:2375"
+        - name: CORE_LOGGING_LEVEL
+          value: "DEBUG"
+        - name: CORE_PEER_TLS_ENABLED
+          value: "false"
+        - name: CORE_PEER_GOSSIP_USELEADERELECTION
+          value: "true"
+        - name: CORE_PEER_GOSSIP_ORGLEADER
+          value: "false" 
+        - name: CORE_PEER_PROFILE_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: "/etc/hyperledger/fabric/tls/server.crt" 
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: "/etc/hyperledger/fabric/tls/server.key"
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: "/etc/hyperledger/fabric/tls/ca.crt"
+        - name: CORE_PEER_ID
+          value: $corePeerID
+        - name: CORE_PEER_ADDRESS
+          value: $peerAddress
+        - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+          value: $peerGossip
+        - name: CORE_PEER_LOCALMSPID
+          value: $localMSPID
+# Added as mentioned here: https://github.com/MCLDG/fabric-on-kubernetes#peers-cannot-start-chaincode-server
+# Error: panic: Failed to create chaincode server: listen tcp ip:7052: bind: cannot assign requested address
+        - name: CORE_PEER_CHAINCODELISTENADDRESS
+          value: localhost:7052
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        ports:
+         - containerPort: 7051
+         - containerPort: 7052
+         - containerPort: 7053
+        command: ["peer"]
+        args: ["node","start"]
+        volumeMounts:
+         #- mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts 
+         #  name: certificate
+         #  subPath: channel-artifacts
+         - mountPath: /etc/hyperledger/fabric/msp 
+           name: certificate
+           #subPath: crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+           subPath: $mspPath
+         - mountPath: /etc/hyperledger/fabric/tls
+           name: certificate
+           #subPath: crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/
+           subPath: $tlsPath
+#         - mountPath: /host/var/run/
+#           name: run
+      volumes:
+       - name: certificate
+         persistentVolumeClaim:
+             claimName: $pvName
+#       - name: run
+#         hostPath:
+#           path: /run
+       - name: dind-graph-storage
+         emptyDir: {}
+       
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+   namespace: $namespace
+   name: $peerID
+spec:
+ selector:
+   app: hyperledger
+   role: peer
+   peer-id: $peerID
+   org: $namespace
+ type: NodePort
+ ports:
+   - name: externale-listen-endpoint
+     protocol: TCP
+     port: 7051
+     targetPort: 7051
+     nodePort: $nodePort1
+
+   - name: chaincode-listen
+     protocol: TCP
+     port: 7052
+     targetPort: 7052
+     nodePort: $nodePort2
+
+---

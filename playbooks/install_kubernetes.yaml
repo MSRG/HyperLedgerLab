@@ -1,7 +1,0 @@
-# Ansible Playbook to install kubernetes High Availability cluster using kubespray
----
-#- hosts: localhost
-##  remote_user: eit # Logged in User
-##  become: true    # Change User , default root by sudo
-#  roles:
-#    - { "role": kubernetes }

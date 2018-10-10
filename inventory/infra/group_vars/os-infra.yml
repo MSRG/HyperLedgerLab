@@ -21,3 +21,4 @@ k8s_instance_image_key: "default-image-key"
 
 # Cluster Inventory location
 k8s_cluster_inventory_file: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/hosts.ini"
+k8s_blockchain_inventory_file: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/blockchain/hosts.ini"

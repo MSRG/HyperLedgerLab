@@ -4,3 +4,8 @@
     src=resolv.conf.d.head.j2 dest=/etc/resolvconf/resolv.conf.d/head mode=0644
   notify:
   - restart networking
+
+- name: Install NFS client on all server
+  apt:
+    name: nfs-common
+    state: present

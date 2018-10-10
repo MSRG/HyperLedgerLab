@@ -1,0 +1,12 @@
+##################################
+######### Blockchain hosts #######
+##################################
+
+[blockchain-setup]
+localhost
+
+[kube-nfs]
+# NFS server Node: To be added dynamically
+{% for ip in groups['kube-nfs'] %}
+    {{ ip }}
+{% endfor %}

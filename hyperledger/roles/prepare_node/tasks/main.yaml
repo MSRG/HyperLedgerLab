@@ -1,0 +1,12 @@
+---
+- name: Install NFS client on CLI
+  apt:
+    name: nfs-common
+    state: present
+
+- name: Mount {{ groups["kube-nfs"][0] }}:/opt/share on /opt/share in CLI
+  mount:
+    path: /opt/share
+    src: "{{ groups['kube-nfs'][0] }}:/opt/share"
+    fstype: nfs4
+    state: "{{ nfs_state|default('mounted') }}"

@@ -1,0 +1,13 @@
+# Ansible Playbook to create configuration for Hyperledger Fabric
+# Note: Call with -i inventory/blockchain/hosts.ini
+---
+# Prepare CLI node: Mount NFS
+- hosts: blockchain-setup
+  become: true
+  roles:
+    - { "role": prepare_node }
+
+# Create Fabric Configs
+- hosts: blockchain-setup
+  roles:
+    - { "role": network_config }

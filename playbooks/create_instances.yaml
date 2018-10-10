@@ -1,4 +1,5 @@
 # Ansible Playbook to create Openstack Instances for Kubernetes cluster setup
+# Note: Call with -i inventory/infra/hosts.ini
 ---
 - hosts: os-infra
   roles:
