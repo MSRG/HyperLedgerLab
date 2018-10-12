@@ -1,11 +1,17 @@
 ###channel-artifacts is no room to place, however bind it to the orderer is an good idea
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: $namespace
   name: $podName
 spec:
+  selector:
+    matchLabels:
+        app: hyperledger
+        role: orderer
+        org: $namespace
+        orderer-id: $ordererID
   replicas: 1
   strategy: {}
   template:

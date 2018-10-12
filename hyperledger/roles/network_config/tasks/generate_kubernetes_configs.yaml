@@ -17,4 +17,4 @@
   script: |
     generate_k8s_configs.py {{ crpto_config_dir }} {{ templates_dir }}
   args:
-    executable: /usr/bin/python3
+    executable: python3

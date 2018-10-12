@@ -23,7 +23,7 @@
 
 - name: Copy genesis block to orderer
   shell: |
-    cp {{ channel_artifacts_dir }}/genesis.block {{ crpto_config_dir }}/ordererOrganizations/
+    cp {{ channel_artifacts_dir }}/genesis.block {{ crpto_config_dir }}/ordererOrganizations/*
 
 - name: Copy channel artifacts to NFS
   shell: |

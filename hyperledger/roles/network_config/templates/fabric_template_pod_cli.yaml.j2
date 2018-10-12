@@ -29,12 +29,15 @@ spec:
 
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
    namespace: $namespace
    name: $name
 spec:
+  selector:
+    matchLabels:
+      app: cli
   replicas: 1
   strategy: {}
   template:

@@ -1,9 +1,15 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: $namespace
   name:	$podName
 spec:
+  selector:
+    matchLabels:
+       app: hyperledger
+       role: peer
+       peer-id: $peerID
+       org: $namespace
   replicas: 1
   strategy: {}
   template:

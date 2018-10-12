@@ -34,8 +34,8 @@ def set_global_vars(crypto_config_dir, templates_dir):
     global CRYPTO_CONFIG_DIR, TEMPLATES_DIR, ORDERER, PEER
     CRYPTO_CONFIG_DIR = crypto_config_dir
     TEMPLATES_DIR = templates_dir
-    ORDERER = os.path.join(CRYPTO_CONFIG_DIR, "./ordererOrganizations")
-    PEER = os.path.join(CRYPTO_CONFIG_DIR, "./peerOrganizations")
+    ORDERER = os.path.join(CRYPTO_CONFIG_DIR, "ordererOrganizations")
+    PEER = os.path.join(CRYPTO_CONFIG_DIR, "peerOrganizations")
 
 ############################################
 ########### CONFIG.PY START ################
@@ -60,9 +60,10 @@ def getTemplate(templateName):
 # create org/namespace
 def configORGS(name, path):  # name means if of org, path describe where is the namespace yaml to be created.
     namespaceTemplate = getTemplate("fabric_template_namespace.yaml")
+
     render(namespaceTemplate, path + "/" + name + "-namespace.yaml", org=name,
            pvName=name + "-pv",
-           path=path.replace("transform/../", "/opt/share/")
+           path= "/opt/share/crypto-config{0}".format(path.split("crypto-config")[-1])
            )
 
     if path.find("peer") != -1:
@@ -85,7 +86,7 @@ def configORGS(name, path):  # name means if of org, path describe where is the 
 
         ###Need to expose pod's port to worker ! ####
         ##org format like this org1-f-1##
-        addressSegment = (int(name.split("-")[0].split("org")[-1]) - 1) * GAP
+        addressSegment = (int(name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
         exposedPort = PORTSTARTFROM + addressSegment
 
         caTemplate = getTemplate("fabric_template_pod_ca.yaml")
@@ -127,11 +128,11 @@ def configPEERS(name, path):  # name means peerid.
     tlsPathTemplate = 'peers/{}/tls'
     # mspPathTemplate = './msp'
     # tlsPathTemplate = './tls'
-    nameSplit = name.split(".")
+    nameSplit = name.split(".", 1)
     peerName = nameSplit[0]
     orgName = nameSplit[1]
 
-    addressSegment = (int(orgName.split("-")[0].split("org")[-1]) - 1) * GAP
+    addressSegment = (int(orgName.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
     ##peer from like this peer 0##
     peerOffset = int((peerName.split("peer")[-1])) * 2
     exposedPort1 = PORTSTARTFROM + addressSegment + peerOffset + 1
@@ -161,12 +162,11 @@ def configORDERERS(name, path):  # name means ordererid
     mspPathTemplate = 'orderers/{}/msp'
     tlsPathTemplate = 'orderers/{}/tls'
 
-    nameSplit = name.split(".")
+    nameSplit = name.split(".", 1)
     ordererName = nameSplit[0]
     orgName = nameSplit[1]
 
-    ordererOffset = int(ordererName.split("orderer")[-1])
-    exposedPort = 32000 + ordererOffset
+    exposedPort = 32000 + int(ordererName.split("orderer")[-1] if ordererName.split("orderer")[-1] != ''  else 0)
 
     render(configTemplate, path + "/" + name + ".yaml",
            namespace=orgName,
@@ -205,9 +205,7 @@ def generateNamespacePod(DIR):
         ## generate namespace first.
         configORGS(org, orgDIR)
         orgs.append(orgDIR)
-    # orgs.append(orgDIR + "/" + DIR.lower())
 
-    # print(orgs)
     return orgs
 
 
@@ -221,10 +219,7 @@ def generateDeploymentPod(orgs):
 
         members = os.listdir(org + suffix)
         for member in members:
-            # print(member)
             memberDIR = os.path.join(org + suffix, member)
-            # print(memberDIR)
-            # print(os.listdir(memberDIR))
             generateYaml(member, memberDIR, suffix)
 
 
