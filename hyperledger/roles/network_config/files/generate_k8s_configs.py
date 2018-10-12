@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+import re
 from string import Template
 
 # To be set via command line args
@@ -12,6 +13,12 @@ PEER = None
 PORTSTARTFROM = 30000
 GAP = 100  # interval for worker's port
 
+
+def dns_name(name):
+    """
+    Convert string to dns-name compatible string
+    """
+    return re.sub(r'[^a-zA-Z0-9-]+', '-', name)
 
 def parse_cmd_line_args():
     """
@@ -61,7 +68,8 @@ def getTemplate(templateName):
 def configORGS(name, path):  # name means if of org, path describe where is the namespace yaml to be created.
     namespaceTemplate = getTemplate("fabric_template_namespace.yaml")
 
-    render(namespaceTemplate, path + "/" + name + "-namespace.yaml", org=name,
+    render(namespaceTemplate, path + "/" + name + "-namespace.yaml",
+           org=dns_name(name),
            pvName=name + "-pv",
            path= "/opt/share/crypto-config{0}".format(path.split("crypto-config")[-1])
            )
@@ -72,12 +80,13 @@ def configORGS(name, path):  # name means if of org, path describe where is the 
 
         mspPathTemplate = 'users/Admin@{}/msp'
 
-        render(cliTemplate, path + "/" + name + "-cli.yaml", name="cli",
-               namespace=name,
+        render(cliTemplate, path + "/" + name + "-cli.yaml",
+               name="cli",
+               namespace=dns_name(name),
                mspPath=mspPathTemplate.format(name),
                pvName=name + "-pv",
                artifactsName=name + "-artifacts-pv",
-               peerAddress="peer0." + name + ":7051",
+               peerAddress="peer0." + dns_name(name) + ":7051",
                mspid=name.split('-')[0].capitalize() + "MSP",
                )
         #######
@@ -101,7 +110,8 @@ def configORGS(name, path):  # name means if of org, path describe where is the 
             if f.endswith("_sk"):
                 skFile = f
 
-        render(caTemplate, path + "/" + name + "-ca.yaml", namespace=name,
+        render(caTemplate, path + "/" + name + "-ca.yaml",
+               namespace=dns_name(name),
                command='"' + cmdTemplate.format("ca." + name, skFile) + '"',
                caPath=caPathTemplate,
                tlsKey=tlsKeyTemplate.format(skFile),
@@ -139,13 +149,13 @@ def configPEERS(name, path):  # name means peerid.
     exposedPort2 = PORTSTARTFROM + addressSegment + peerOffset + 2
 
     render(configTemplate, path + "/" + name + ".yaml",
-           namespace=orgName,
-           podName=peerName + "-" + orgName,
-           peerID=peerName,
+           namespace=dns_name(orgName),
+           podName=dns_name(peerName + "-" + orgName),
+           peerID=dns_name(peerName),
            org=orgName,
            corePeerID=name,
-           peerAddress=name + ":7051",
-           peerGossip=name + ":7051",
+           peerAddress=dns_name(name) + ":7051",
+           peerGossip=dns_name(name) + ":7051",
            localMSPID=orgName.split('-')[0].capitalize() + "MSP",
            mspPath=mspPathTemplate.format(name),
            tlsPath=tlsPathTemplate.format(name),
@@ -169,9 +179,9 @@ def configORDERERS(name, path):  # name means ordererid
     exposedPort = 32000 + int(ordererName.split("orderer")[-1] if ordererName.split("orderer")[-1] != ''  else 0)
 
     render(configTemplate, path + "/" + name + ".yaml",
-           namespace=orgName,
-           ordererID=ordererName,
-           podName=ordererName + "-" + orgName,
+           namespace=dns_name(orgName),
+           ordererID=dns_name(ordererName),
+           podName=dns_name(ordererName + "-" + orgName),
            localMSPID=orgName.capitalize() + "MSP",
            mspPath=mspPathTemplate.format(name),
            tlsPath=tlsPathTemplate.format(name),
