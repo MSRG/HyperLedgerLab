@@ -1,0 +1,26 @@
+# Ansible Playbook to install Hyperledger Fabric on kubernetes
+# Note: Call with -i inventory/cluster/hosts.ini
+---
+# Add kubectl command and kube-dashboard admin_user
+- hosts: localhost
+  tasks:
+    - name: Add Alias for Kubctl command
+      shell: |
+        alias kubectl="$INVENTORY_DIR_PATH/cluster/artifacts/kubectl --kubeconfig=$INVENTORY_DIR_PATH/cluster/artifacts/admin.conf"
+        alias k=kubectl
+        alias ks="k -n kube-system"
+        alias kget="k get -o wide --all-namespaces"
+
+    - name: Add Admin user for Kubernetes Dashboard
+      shell: |
+        cat $INVENTORY_DIR_PATH/cluster/admin_user.yaml
+        kubectl apply -f $INVENTORY_DIR_PATH/cluster/admin_user.yaml
+
+    - name: Print Dashboard Access Infromation
+      debug:
+        msg:
+          - "######################################################## INFROMATION ########################################################"
+          - "#### Access Kubernetes Dashboard at :-   https://{{ hostvars[groups['kube-lb'][0]]['ansible_host'] }}:8443                                                       ####"
+          - "#### Get Access Token for Authentication with following command :-                                                       ####"
+          - "####   kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')  ####"
+          - "#############################################################################################################################"

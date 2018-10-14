@@ -2,3 +2,4 @@
 ---
 - import_playbook: playbooks/setup_instances.yaml
 - import_playbook: kubespray/cluster.yml
+- import_playbook: playbooks/cluster_admin.yaml
