@@ -111,7 +111,7 @@
 
 - name: Create blockchain setup inventory
   template:
-    src=blockchain.hosts.ini.j2 dest={{ k8s_cluster_inventory_file }} mode=0644
+    src=blockchain.hosts.ini.j2 dest={{ k8s_blockchain_inventory_file }} mode=0644
 
 #- debug:
 #    msg: "{{ hostvars[item].instance_name }}: {{ item }}"
