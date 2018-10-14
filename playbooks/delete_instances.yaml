@@ -2,7 +2,7 @@
 # Note: Call with -i inventory/infra/hosts.ini
 ---
 # Prepare CLI node: Un-mount NFS
-- hosts: localhost
+- hosts: os-infra
   become: true
   tasks:
     - name: Unmount /opt/share in CLI

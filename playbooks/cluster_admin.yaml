@@ -2,7 +2,7 @@
 # Note: Call with -i inventory/cluster/hosts.ini
 ---
 # Add kubectl command and kube-dashboard admin_user
-- hosts: localhost
+- hosts: cluster-setup
   tasks:
     - name: Add Alias for Kubctl command
       shell: |

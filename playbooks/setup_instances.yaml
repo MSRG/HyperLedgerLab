@@ -2,7 +2,7 @@
 # Note: Call with -i inventory/cluster/hosts.ini
 ---
 # Pre setup tasks
-- hosts: localhost
+- hosts: cluster-setup
   roles:
     - { "role": prepare_instances, "pre": true }
 
@@ -35,7 +35,7 @@
     - { "role": prepare_instances, "post": true }
 
 # Prepare CLI node: Add DNS
-- hosts: localhost
+- hosts: cluster-setup
   become: true
   roles:
     - { "role": prepare_instances, "post": true  }
