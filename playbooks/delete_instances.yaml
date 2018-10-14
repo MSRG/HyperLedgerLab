@@ -4,8 +4,12 @@
 # Prepare CLI node: Un-mount NFS
 - hosts: localhost
   become: true
-  roles:
-    - { "role": prepare_cli, "nfs_state": "absent" }
+  tasks:
+    - name: Unmount /opt/share in CLI
+      mount:
+        path: /opt/share
+        fstype: nfs4
+        state: "absent"
 
 # Delete Instances
 - hosts: os-infra

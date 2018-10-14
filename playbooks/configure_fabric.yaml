@@ -5,7 +5,7 @@
 - hosts: blockchain-setup
   become: true
   roles:
-    - { "role": prepare_node }
+    - { "role": prepare_cli_node }
 
 # Create Fabric Configs
 - hosts: blockchain-setup
