@@ -314,6 +314,10 @@ loadbalancer_apiserver_localhost: false
 ## modules.
 #kubelet_load_modules: false
 
+# Configure the amount of pods able to run on single node
+# default is equal to application default
+kubelet_max_pods: 110
+
 ## Internal network total size. This is the prefix of the
 ## entire network. Must be unused in your environment.
 #kube_network_prefix: 18
