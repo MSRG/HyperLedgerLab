@@ -18,3 +18,8 @@
     generate_k8s_configs.py {{ crpto_config_dir }} {{ templates_dir }}
   args:
     executable: python3
+
+- name: Set owner and permission for kubernetes templates
+  shell: |
+    chown -R ubuntu:ubuntu {{ templates_dir }}
+    chmod -R 777 {{ templates_dir }}

@@ -122,3 +122,4 @@ inventory/cluster/artifacts/
 inventory/blockchain/fabric-config/channel-artifacts/
 inventory/blockchain/fabric-config/crypto-config/
 inventory/blockchain/fabric-config/templates/
+inventory/blockchain/fabric-config/bin/

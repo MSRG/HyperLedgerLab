@@ -19,3 +19,8 @@
   file:
     path: "{{ templates_dir }}"
     state: absent
+
+- name: Remove fabric binaries
+  file:
+    path: "{{ configtxgen_config_path }}/bin/"
+    state: absent
