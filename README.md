@@ -9,10 +9,9 @@ Hyperledger Testbed on Kubernetes Cluster: Automated Deployment of a Distributed
 
 **STUDENT**: Sahil Kalra MTK 03680993 (sahil.kalra@tum.de, sahilkalra1991@gmail.com)
 
-**ADVISOR**: Nasirifard, Pezhman, M.Sc. https://campus.tum.de/tumonline/visitenkarte.show_vcard?pPersonenId=69107A54C9A9AFFE&pPersonenGruppe=3
+**ADVISOR**: Nasirifard, Pezhman, M.Sc. 
 
-**SUPERVISOR**: Jacobsen, Hans-Arno, Prof. Dr. rer. pol. https://campus.tum.de/tumonline/visitenkarte.show_vcard?pPersonenId=D04C0FA2A1AB7B18&pPersonenGruppe=3
-
+**SUPERVISOR**: Jacobsen, Hans-Arno, Prof. Dr. rer. pol. 
 
 **Setup**:
 1. clone the repo `git clone git@github.com:sahilkalra1991/master_thesis.git`
