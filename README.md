@@ -1,17 +1,14 @@
-This Repository contains the code for my Master thesis.
+This Repository contains scripts we are developing to deploy a Hyperledger Testbed on a Kubernetes cluster, itself running on cloud resources. For the latter, we assume, resources provisioned via an OpenStack environment.
 
 **Topic**: 
 
-Hyperledger Testbed auf dem Kubernetes Cluster: Automatisierter Verteilung eines Verteiltes Enterprise Blockchain
-Netzwerks zur Analyse
+Hyperledger Testbed on Kubernetes Cluster: Automated Deployment of a Distributed Enterprise Blockchain Network for Analysis and Testing
 
-Hyperledger Testbed on Kubernetes Cluster: Automated Deployment of a Distributed Enterprise Blockchain Network for Analysis
+**CONTRIBUTOR**: Sahil Kalra MTK  (sahilkalra1991@gmail.com)
 
-**STUDENT**: Sahil Kalra MTK 03680993 (sahil.kalra@tum.de, sahilkalra1991@gmail.com)
+**CONTRIBUTOR**: Pezhman Nasirifard 
 
-**ADVISOR**: Nasirifard, Pezhman, M.Sc. 
-
-**SUPERVISOR**: Jacobsen, Hans-Arno, Prof. Dr. rer. pol. 
+**CONTRIBUTOR**: Arno Jacobsen
 
 **Setup**:
 1. clone the repo `git clone git@github.com:sahilkalra1991/master_thesis.git`
