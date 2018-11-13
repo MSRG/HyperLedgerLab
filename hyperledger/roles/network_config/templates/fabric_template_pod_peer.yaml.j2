@@ -151,4 +151,9 @@ spec:
      targetPort: 7052
      nodePort: $nodePort2
 
+# TODO: Very Insecure. Remove after development is completed
+   - name: couchdb
+     protocol: TCP
+     port: 5984
+     targetPort: 5984
 ---
