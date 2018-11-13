@@ -40,17 +40,17 @@ spec:
         securityContext:
           privileged: true
 #        args: ["--debug"]
-        readinessProbe:
-          exec:
-            command:
-              - /bin/sh
-              - -c
-              - "ping -c 3 -t 10 google.com"
-          initialDelaySeconds: 10 # how long to wait before checking
-          periodSeconds: 3 # how long to wait between checks
-          successThreshold: 1 # how many successes to hit before accepting
-          failureThreshold: 1 # how many failures to accept before failing
-          timeoutSeconds: 11 # how long to wait for a response
+#        readinessProbe:
+#          exec:
+#            command:
+#              - /bin/sh
+#              - -c
+#              - "ping -c 3 -t 10 google.com"
+#          initialDelaySeconds: 10 # how long to wait before checking
+#          periodSeconds: 3 # how long to wait between checks
+#          successThreshold: 1 # how many successes to hit before accepting
+#          failureThreshold: 3 # how many failures to accept before failing
+#          timeoutSeconds: 11 # how long to wait for a response
         volumeMounts:
           - name: dind-graph-storage
             mountPath: /var/lib/docker
@@ -66,7 +66,7 @@ spec:
         - name: CORE_VM_ENDPOINT
           value: "tcp://localhost:2375"
         - name: CORE_LOGGING_LEVEL
-          value: "DEBUG"
+          value: {{ fabric_peer_loglevel }}
         - name: CORE_PEER_TLS_ENABLED
           value: "false"
         - name: CORE_PEER_GOSSIP_USELEADERELECTION

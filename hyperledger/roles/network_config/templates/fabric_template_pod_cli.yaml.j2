@@ -62,7 +62,7 @@ spec:
           - name: GOPATH
             value: /opt/gopath
           - name: CORE_LOGGING_LEVEL
-            value: DEBUG
+            value: {{ fabric_cli_loglevel }}
           - name: CORE_PEER_ID
             value: $name
           - name: CORE_PEER_ADDRESS

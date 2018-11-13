@@ -27,7 +27,7 @@ spec:
         image: hyperledger/fabric-orderer:{{ fabric_version }}
         env:
         - name: ORDERER_GENERAL_LOGLEVEL
-          value: debug
+          value: {{ fabric_orderer_loglevel }}
         - name: ORDERER_GENERAL_LISTENADDRESS
           value: 0.0.0.0
         - name: ORDERER_GENERAL_GENESISMETHOD
