@@ -7,7 +7,7 @@
       --os-username {{ os_username }} --os-password {{ os_password }}
       --os-base-url {{ os_base_url }} --os-project-domain-name {{ os_project_domain_name }}
       --os-user-domain-name {{ os_user_domain_name }} --os-project-name {{ os_project_name }}
-      --flavour {{ k8s_instance_flavour }} --image {{ k8s_instance_image }}
+      --flavour {{ k8s_ctl_instance_flavour }} --image {{ k8s_instance_image }}
       --availability-zone {{ k8s_instance_availability_zone }}
       {% for group in ks8_instance_security_groups %}--security-group {{ group }} {% endfor %}
       --key {{ k8s_instance_image_key }}

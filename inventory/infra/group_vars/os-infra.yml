@@ -12,6 +12,8 @@ k8s_wrk_instances: ["k8swrk1", "k8swrk2", "k8swrk3"]
 k8s_lb_instance: "k8slb"
 k8s_nfs_instance: "k8snfs"
 k8s_instance_flavour: "m1.medium"
+k8s_ctl_instance_flavour: "m1.medium"
+k8s_wrk_instance_flavour: "m1.large"
 k8s_instance_image: "kvm-ubuntu-xenial"
 k8s_instance_availability_zone: "kvm"
 ks8_instance_security_groups: ["kube-cluster"]
