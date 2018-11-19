@@ -86,6 +86,7 @@ def configORGS(name, path):  # name means if of org, path describe where is the 
                mspPath=mspPathTemplate.format(name),
                pvName=name + "-pv",
                artifactsName=name + "-artifacts-pv",
+               cryptoName=name + "-crypto-pv",
                peerAddress="peer0." + dns_name(name) + ":7051",
                mspid=name.split('-')[0].capitalize() + "MSP",
                )
@@ -154,8 +155,8 @@ def configPEERS(name, path):  # name means peerid.
            peerID=dns_name(peerName),
            org=orgName,
            corePeerID=name,
-           peerAddress=dns_name(name) + ":7051",
-           peerGossip=dns_name(name) + ":7051",
+           peerAddress=name + ":7051",
+           peerGossip=name + ":7051",
            localMSPID=orgName.split('-')[0].capitalize() + "MSP",
            mspPath=mspPathTemplate.format(name),
            tlsPath=tlsPathTemplate.format(name),

@@ -12,7 +12,7 @@ spec:
 #       - nfsvers=4.1
     nfs: 
       path: /opt/share/channel-artifacts
-      server: {{ nfs_server_ip }} #change to your nfs server ip here
+      server: {{ nfs_server_ip }}
 ---
 
 apiVersion: v1
@@ -20,6 +20,36 @@ kind: PersistentVolumeClaim
 metadata:
     namespace: $namespace
     name: $artifactsName
+spec:
+   accessModes:
+     - ReadWriteMany
+   resources:
+      requests:
+        storage: 10Mi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: $cryptoName
+spec:
+    capacity:
+       storage: 500Mi
+    accessModes:
+       - ReadWriteMany
+#    mountOptions:
+#       - hard
+#       - nfsvers=4.1
+    nfs:
+      path: /opt/share/crypto-config
+      server: {{ nfs_server_ip }}
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    namespace: $namespace
+    name: $cryptoName
 spec:
    accessModes:
      - ReadWriteMany
@@ -88,6 +118,8 @@ spec:
              subPath: $mspPath
            - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
              name: artifacts
+           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config
+             name: crypto
       volumes:
         - name: certificate
           persistentVolumeClaim:
@@ -95,6 +127,9 @@ spec:
         - name: artifacts
           persistentVolumeClaim:
               claimName: $artifactsName
+        - name: crypto
+          persistentVolumeClaim:
+              claimName: $cryptoName
 #        - name: run
 #          hostPath:
 #            path: /var/run
