@@ -39,7 +39,7 @@ spec:
         - name: ORDERER_GENERAL_LOCALMSPDIR
           value: /var/hyperledger/orderer/msp
         - name: ORDERER_GENERAL_TLS_ENABLED
-          value: "false"
+          value: "true"
         - name: ORDERER_GENERAL_TLS_PRIVATEKEY
           value: /var/hyperledger/orderer/tls/server.key
         - name: ORDERER_GENERAL_TLS_CERTIFICATE
@@ -53,11 +53,9 @@ spec:
         volumeMounts:
          - mountPath: /var/hyperledger/orderer/msp 
            name: certificate
-           #subPath: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp
            subPath: $mspPath
          - mountPath: /var/hyperledger/orderer/tls
            name: certificate
-           #subPath: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/
            subPath: $tlsPath
          - mountPath: /var/hyperledger/orderer/orderer.genesis.block
            name: certificate
@@ -66,9 +64,6 @@ spec:
        - name: certificate
          persistentVolumeClaim:
              claimName: $pvName
-           #path: /opt/share
-         #persistentVolumeClaim:
-         #  claimName: nfs
 
 
 ---

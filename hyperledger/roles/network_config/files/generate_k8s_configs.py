@@ -82,6 +82,7 @@ def configORGS(name, path):  # name means if of org, path describe where is the 
 
         render(cliTemplate, path + "/" + name + "-cli.yaml",
                name="cli",
+               orgName=name,
                namespace=dns_name(name),
                mspPath=mspPathTemplate.format(name),
                pvName=name + "-pv",
