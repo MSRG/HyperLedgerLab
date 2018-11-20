@@ -82,11 +82,11 @@ spec:
           - name: CORE_PEER_TLS_ENABLED
             value: "true"
           - name: CORE_PEER_TLS_CERT_FILE
-            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.crt
+            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.crt
           - name: CORE_PEER_TLS_KEY_FILE
-            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.key
+            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.key
           - name: CORE_PEER_TLS_ROOTCERT_FILE
-            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/$orgName/peers/peer0.$orgName/tls/ca.crt
+            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/ca.crt
           - name: CORE_VM_ENDPOINT
             value: "tcp://localhost:2375"
           - name: GOPATH
