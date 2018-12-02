@@ -23,3 +23,6 @@ fabric_orderer_loglevel: "INFO"
 # Dynamic Variables
 nfs_server_ip: ""
 nfs_server_mount_dir: "/opt/share"
+
+# kubernetes kubectl command
+k8s_kubectl_cmd: ""

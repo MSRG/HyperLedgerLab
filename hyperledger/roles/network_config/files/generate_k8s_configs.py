@@ -1,5 +1,4 @@
 import os
-import sys
 import argparse
 import re
 from string import Template
@@ -10,7 +9,7 @@ TEMPLATES_DIR = None
 ORDERER = None
 PEER = None
 
-PORTSTARTFROM = 30000
+PORT_START_FROM = 30000
 GAP = 100  # interval for worker's port
 
 
@@ -20,16 +19,20 @@ def dns_name(name):
     """
     return re.sub(r'[^a-zA-Z0-9-]+', '-', name)
 
+
 def parse_cmd_line_args():
     """
     Command line arguments
     """
+
     def add_args(parser):
         # Required args
-        parser.add_argument('crypto_config_dir', metavar='CryptoDir', type=str, nargs=1, help='Path to cryto config directory')
-        parser.add_argument('templates_dir', metavar='TemplatesDir', type=str, nargs=1, help='Path to kubernetes pod templates directory')
+        parser.add_argument('crypto_config_dir', metavar='CryptoDir', type=str, nargs=1,
+                            help='Path to cryto config directory')
+        parser.add_argument('templates_dir', metavar='TemplatesDir', type=str, nargs=1,
+                            help='Path to kubernetes pod templates directory')
 
-    parser_obj =  argparse.ArgumentParser(description='Generate Kubernetes configs for peers and orderers')
+    parser_obj = argparse.ArgumentParser(description='Generate Kubernetes configs for peers and orderers')
     add_args(parser_obj)
     return parser_obj.parse_args()
 
@@ -43,6 +46,7 @@ def set_global_vars(crypto_config_dir, templates_dir):
     TEMPLATES_DIR = templates_dir
     ORDERER = os.path.join(CRYPTO_CONFIG_DIR, "ordererOrganizations")
     PEER = os.path.join(CRYPTO_CONFIG_DIR, "peerOrganizations")
+
 
 ############################################
 ########### CONFIG.PY START ################
@@ -59,32 +63,31 @@ def render(src, dest, **kw):
 # #with open(TestDir+testDest, 'w') as d:##
 # #d.write(t.substitute(**kw))      	##
 # #########################################
-def getTemplate(templateName):
-    configTemplate = os.path.join(TEMPLATES_DIR + "/" + templateName)
-    return configTemplate
+def get_template(template_name):
+    return os.path.join(TEMPLATES_DIR + "/" + template_name)
 
 
 # create org/namespace
-def configORGS(name, path):  # name means if of org, path describe where is the namespace yaml to be created.
-    namespaceTemplate = getTemplate("fabric_template_namespace.yaml")
+def config_orgs(name, path):  # name means if of org, path describe where is the namespace yaml to be created.
+    namespace_template = get_template("fabric_template_namespace.yaml")
 
-    render(namespaceTemplate, path + "/" + name + "-namespace.yaml",
+    render(namespace_template, path + "/" + name + "-namespace.yaml",
            org=dns_name(name),
            pvName=name + "-pv",
-           path= "/opt/share/crypto-config{0}".format(path.split("crypto-config")[-1])
+           path="/opt/share/crypto-config{0}".format(path.split("crypto-config")[-1])
            )
 
     if path.find("peer") != -1:
         ####### pod config yaml for org cli
-        cliTemplate = getTemplate("fabric_template_pod_cli.yaml")
+        cli_template = get_template("fabric_template_pod_cli.yaml")
 
-        mspPathTemplate = 'users/Admin@{}/msp'
+        msp_path_template = 'users/Admin@{}/msp'
 
-        render(cliTemplate, path + "/" + name + "-cli.yaml",
+        render(cli_template, path + "/" + name + "-cli.yaml",
                name="cli",
                orgName=name,
                namespace=dns_name(name),
-               mspPath=mspPathTemplate.format(name),
+               mspPath=msp_path_template.format(name),
                pvName=name + "-pv",
                artifactsName=name + "-artifacts-pv",
                cryptoName=name + "-crypto-pv",
@@ -97,27 +100,27 @@ def configORGS(name, path):  # name means if of org, path describe where is the 
 
         ###Need to expose pod's port to worker ! ####
         ##org format like this org1-f-1##
-        addressSegment = (int(name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
-        exposedPort = PORTSTARTFROM + addressSegment
+        address_segment = (int(name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
+        exposedPort = PORT_START_FROM + address_segment
 
-        caTemplate = getTemplate("fabric_template_pod_ca.yaml")
+        ca_template = get_template("fabric_template_pod_ca.yaml")
 
-        tlsCertTemplate = '/etc/hyperledger/fabric-ca-server-config/{}-cert.pem'
-        tlsKeyTemplate = '/etc/hyperledger/fabric-ca-server-config/{}'
-        caPathTemplate = 'ca/'
-        cmdTemplate = ' fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/{}-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/{} -b admin:adminpw -d '
+        tls_cert_template = '/etc/hyperledger/fabric-ca-server-config/{}-cert.pem'
+        tls_key_template = '/etc/hyperledger/fabric-ca-server-config/{}'
+        ca_path_template = 'ca/'
+        cmd_template = ' fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/{}-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/{} -b admin:adminpw -d '
 
-        skFile = ""
+        sk_file = ""
         for f in os.listdir(path + "/ca"):  # find out sk!
             if f.endswith("_sk"):
-                skFile = f
+                sk_file = f
 
-        render(caTemplate, path + "/" + name + "-ca.yaml",
+        render(ca_template, path + "/" + name + "-ca.yaml",
                namespace=dns_name(name),
-               command='"' + cmdTemplate.format("ca." + name, skFile) + '"',
-               caPath=caPathTemplate,
-               tlsKey=tlsKeyTemplate.format(skFile),
-               tlsCert=tlsCertTemplate.format("ca." + name),
+               command='"' + cmd_template.format("ca." + name, sk_file) + '"',
+               caPath=ca_path_template,
+               tlsKey=tls_key_template.format(sk_file),
+               tlsCert=tls_cert_template.format("ca." + name),
                nodePort=exposedPort,
                pvName=name + "-pv"
                )
@@ -125,83 +128,71 @@ def configORGS(name, path):  # name means if of org, path describe where is the 
 
 #######
 
-def generateYaml(member, memberPath, flag):
+def generate_yaml(member, memberPath, flag):
     if flag == "/peers":
-        configPEERS(member, memberPath)
+        config_peers(member, memberPath)
     else:
-        configORDERERS(member, memberPath)
+        config_orderers(member, memberPath)
 
 
 # create peer/pod
-def configPEERS(name, path):  # name means peerid.
-    configTemplate = getTemplate("fabric_template_pod_peer.yaml")
+def config_peers(name, path):  # name means peerid.
+    config_template = get_template("fabric_template_pod_peer.yaml")
 
-    mspPathTemplate = 'peers/{}/msp'
-    tlsPathTemplate = 'peers/{}/tls'
-    # mspPathTemplate = './msp'
-    # tlsPathTemplate = './tls'
-    nameSplit = name.split(".", 1)
-    peerName = nameSplit[0]
-    orgName = nameSplit[1]
+    msp_path_template = 'peers/{}/msp'
+    tls_path_template = 'peers/{}/tls'
+    # msp_path_template = './msp'
+    # tls_path_template = './tls'
+    name_split = name.split(".", 1)
+    peer_name = name_split[0]
+    org_name = name_split[1]
 
-    addressSegment = (int(orgName.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
+    address_segment = (int(org_name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
     ##peer from like this peer 0##
-    peerOffset = int((peerName.split("peer")[-1])) * 2
-    exposedPort1 = PORTSTARTFROM + addressSegment + peerOffset + 1
-    exposedPort2 = PORTSTARTFROM + addressSegment + peerOffset + 2
+    peer_offset = int((peer_name.split("peer")[-1])) * 2
+    exposed_port1 = PORT_START_FROM + address_segment + peer_offset + 1
+    exposed_port2 = PORT_START_FROM + address_segment + peer_offset + 2
 
-    render(configTemplate, path + "/" + name + ".yaml",
-           namespace=dns_name(orgName),
-           podName=dns_name(peerName + "-" + orgName),
-           peerID=dns_name(peerName),
-           org=orgName,
+    render(config_template, path + "/" + name + ".yaml",
+           namespace=dns_name(org_name),
+           podName=dns_name(peer_name + "-" + org_name),
+           peerID=dns_name(peer_name),
+           org=org_name,
            corePeerID=name,
            peerAddress=name + ":7051",
            peerGossip=name + ":7051",
-           localMSPID=orgName.split('-')[0].capitalize() + "MSP",
-           mspPath=mspPathTemplate.format(name),
-           tlsPath=tlsPathTemplate.format(name),
-           nodePort1=exposedPort1,
-           nodePort2=exposedPort2,
-           pvName=orgName + "-pv"
+           localMSPID=org_name.split('-')[0].capitalize() + "MSP",
+           mspPath=msp_path_template.format(name),
+           tlsPath=tls_path_template.format(name),
+           nodePort1=exposed_port1,
+           nodePort2=exposed_port2,
+           pvName=org_name + "-pv"
            )
 
 
 # create orderer/pod
-def configORDERERS(name, path):  # name means ordererid
-    configTemplate = getTemplate("fabric_template_pod_orderer.yaml")
+def config_orderers(name, path):  # name means ordererid
+    config_template = get_template("fabric_template_pod_orderer.yaml")
 
-    mspPathTemplate = 'orderers/{}/msp'
-    tlsPathTemplate = 'orderers/{}/tls'
+    msp_path_template = 'orderers/{}/msp'
+    tls_path_template = 'orderers/{}/tls'
 
-    nameSplit = name.split(".", 1)
-    ordererName = nameSplit[0]
-    orgName = nameSplit[1]
+    name_split = name.split(".", 1)
+    orderer_name = name_split[0]
+    org_name = name_split[1]
 
-    exposedPort = 32000 + int(ordererName.split("orderer")[-1] if ordererName.split("orderer")[-1] != ''  else 0)
+    exposed_port = 32000 + int(orderer_name.split("orderer")[-1] if orderer_name.split("orderer")[-1] != '' else 0)
 
-    render(configTemplate, path + "/" + name + ".yaml",
-           namespace=dns_name(orgName),
-           ordererID=dns_name(ordererName),
-           podName=dns_name(ordererName + "-" + orgName),
-           localMSPID=orgName.capitalize() + "MSP",
-           mspPath=mspPathTemplate.format(name),
-           tlsPath=tlsPathTemplate.format(name),
-           nodePort=exposedPort,
-           pvName=orgName + "-pv"
+    render(config_template, path + "/" + name + ".yaml",
+           namespace=dns_name(org_name),
+           ordererID=dns_name(orderer_name),
+           podName=dns_name(orderer_name + "-" + org_name),
+           localMSPID=org_name.capitalize() + "MSP",
+           mspPath=msp_path_template.format(name),
+           tlsPath=tls_path_template.format(name),
+           nodePort=exposed_port,
+           pvName=org_name + "-pv"
            )
-
-
-# if __name__ == "__main__":
-#	#ORG_NUMBER = 3
-#	podFile = Path('./fabric_cluster.yaml')
-#	if podFile.is_file():
-#		os.remove('./fabric_cluster.yaml')
-
-# delete the previous exited file
-#	configPeerORGS(1, 2)
-#	configPeerORGS(2, 2)
-#	configOrdererORGS()
 
 
 ############################################
@@ -210,18 +201,18 @@ def configORDERERS(name, path):  # name means ordererid
 
 # generateNamespacePod generate the yaml file to create the namespace for k8s, and return a set of paths which
 # indicate the location of org files
-def generateNamespacePod(DIR):
+def generate_namespace_pod(DIR):
     orgs = []
     for org in os.listdir(DIR):
-        orgDIR = os.path.join(DIR, org)
+        org_dir = os.path.join(DIR, org)
         ## generate namespace first.
-        configORGS(org, orgDIR)
-        orgs.append(orgDIR)
+        config_orgs(org, org_dir)
+        orgs.append(org_dir)
 
     return orgs
 
 
-def generateDeploymentPod(orgs):
+def generate_deployment_pod(orgs):
     for org in orgs:
 
         if org.find("peer") != -1:  # whether it create orderer pod or peer pod
@@ -231,18 +222,18 @@ def generateDeploymentPod(orgs):
 
         members = os.listdir(org + suffix)
         for member in members:
-            memberDIR = os.path.join(org + suffix, member)
-            generateYaml(member, memberDIR, suffix)
+            member_dir = os.path.join(org + suffix, member)
+            generate_yaml(member, member_dir, suffix)
 
 
 # TODO kafa nodes and zookeeper nodes don't have dir to store their certificate, must use anotherway to create pod yaml.
 
-def allInOne():
-    peerOrgs = generateNamespacePod(PEER)
-    generateDeploymentPod(peerOrgs)
+def all_in_one():
+    peer_orgs = generate_namespace_pod(PEER)
+    generate_deployment_pod(peer_orgs)
 
-    ordererOrgs = generateNamespacePod(ORDERER)
-    generateDeploymentPod(ordererOrgs)
+    orderer_orgs = generate_namespace_pod(ORDERER)
+    generate_deployment_pod(orderer_orgs)
 
 
 if __name__ == "__main__":
@@ -250,4 +241,4 @@ if __name__ == "__main__":
 
     set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.templates_dir[0])
 
-    allInOne()
+    all_in_one()

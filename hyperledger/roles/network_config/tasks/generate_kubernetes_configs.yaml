@@ -1,10 +1,10 @@
 ---
-- name: Create templates Dir
+- name: Create kubernetes templates directory
   file:
     path: "{{ templates_dir }}"
     state: directory
 
-- name: Provide Kubernetes templates
+- name: Generate Kubernetes configuration templates
   template: src={{ item.src }} dest={{ templates_dir }}/{{ item.dest }} mode=0644
   with_items:
     - { src: "fabric_template_namespace.yaml.j2", dest: "fabric_template_namespace.yaml" }
@@ -13,7 +13,7 @@
     - { src: "fabric_template_pod_orderer.yaml.j2", dest: "fabric_template_pod_orderer.yaml" }
     - { src: "fabric_template_pod_peer.yaml.j2", dest: "fabric_template_pod_peer.yaml" }
 
-- name: generate kubernetes configs
+- name: Generate kubernetes configuration
   script: |
     generate_k8s_configs.py {{ crpto_config_dir }} {{ templates_dir }}
   args:

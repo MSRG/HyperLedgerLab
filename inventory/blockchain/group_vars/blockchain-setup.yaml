@@ -15,6 +15,11 @@ templates_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ templates_dir
 cryptogen_config: "{{ inventory_dir }}/{{ fabric_config_dirname }}/crypto-config.yaml"
 configtxgen_config_path: "{{ inventory_dir }}/{{ fabric_config_dirname }}"
 
+# Logging Level:
+fabric_cli_loglevel: "INFO"
+fabric_peer_loglevel: "INFO"
+fabric_orderer_loglevel: "INFO"
+
 # Dynamic Variables
 nfs_server_ip: "{{ groups['kube-nfs'][0] }}"
 nfs_server_mount_dir: "/opt/share"

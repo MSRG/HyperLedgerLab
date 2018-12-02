@@ -1,5 +1,5 @@
 ---
-- name: Generate Certs
+- name: (cryptogen) Generate crypto config
   script: |
     bin_{{ fabric_version }}/cryptogen generate --config={{ cryptogen_config }} --output={{ crpto_config_dir }}
 
@@ -8,7 +8,7 @@
     name: "{{ channel_artifacts_dir }}"
     state: directory
 
-- name: Generate channel artifacts
+- name: (configtxgen) Generate Orderer genesis block
   script: >
     bin_{{ fabric_version }}/configtxgen -configPath {{ configtxgen_config_path }}  -profile TwoOrgsOrdererGenesis
     -outputBlock {{ channel_artifacts_dir }}/genesis.block -channelID orderer-system-channel
