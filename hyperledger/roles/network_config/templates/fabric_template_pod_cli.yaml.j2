@@ -82,11 +82,11 @@ spec:
           - name: CORE_PEER_TLS_ENABLED
             value: "true"
           - name: CORE_PEER_TLS_CERT_FILE
-            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.crt
+            value: /etc/hyperledger/fabric/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.crt
           - name: CORE_PEER_TLS_KEY_FILE
-            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.key
+            value: /etc/hyperledger/fabric/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/server.key
           - name: CORE_PEER_TLS_ROOTCERT_FILE
-            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/ca.crt
+            value: /etc/hyperledger/fabric/crypto-config/peerOrganizations/$orgName/peers/peer0.$orgName/tls/ca.crt
           - name: CORE_VM_ENDPOINT
             value: "tcp://localhost:2375"
           - name: GOPATH
@@ -106,20 +106,20 @@ spec:
           args: [ "while true; do sleep 30; done;" ]
           volumeMounts:
            - mountPath: /etc/hyperledger/fabric/msp
-             name: certificate
+             name: org-crypto-pv
              subPath: $mspPath
            - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
-             name: artifacts
-           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config
-             name: crypto
+             name: channel-artifacts
+           - mountPath: /etc/hyperledger/fabric/crypto-config
+             name: crypto-config
       volumes:
-        - name: certificate
+        - name: org-crypto-pv
           persistentVolumeClaim:
               claimName: $pvName
-        - name: artifacts
+        - name: channel-artifacts
           persistentVolumeClaim:
               claimName: $artifactsName
-        - name: crypto
+        - name: crypto-config
           persistentVolumeClaim:
               claimName: $cryptoName
 

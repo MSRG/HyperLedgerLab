@@ -45,23 +45,23 @@ spec:
         - name: ORDERER_GENERAL_TLS_CERTIFICATE
           value: /var/hyperledger/orderer/tls/server.crt
         - name: ORDERER_GENERAL_TLS_ROOTCAS
-          value: '[/var/hyperledger/orderer/tls/ca.crt]'
-        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+          value: [/var/hyperledger/orderer/tls/ca.crt]
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/
         ports:
          - containerPort: 7050
         command: ["orderer"]
         volumeMounts:
          - mountPath: /var/hyperledger/orderer/msp 
-           name: certificate
+           name: orderer-crypto-pv
            subPath: $mspPath
          - mountPath: /var/hyperledger/orderer/tls
-           name: certificate
+           name: orderer-crypto-pv
            subPath: $tlsPath
          - mountPath: /var/hyperledger/orderer/orderer.genesis.block
-           name: certificate
+           name: orderer-crypto-pv
            subPath: genesis.block
       volumes:
-       - name: certificate
+       - name: orderer-crypto-pv
          persistentVolumeClaim:
              claimName: $pvName
 

@@ -72,7 +72,7 @@ spec:
         - name: CORE_PEER_GOSSIP_USELEADERELECTION
           value: "true"
         - name: CORE_PEER_GOSSIP_ORGLEADER
-          value: "false" 
+          value: "false"
         - name: CORE_PEER_PROFILE_ENABLED
           value: "true"
         - name: CORE_PEER_TLS_CERT_FILE
@@ -86,6 +86,8 @@ spec:
         - name: CORE_PEER_ADDRESS
           value: $peerAddress
         - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+          value: $peerGossip
+        - name: CORE_PEER_GOSSIP_BOOTSTRAP
           value: $peerGossip
         - name: CORE_PEER_LOCALMSPID
           value: $localMSPID
@@ -101,26 +103,16 @@ spec:
         command: ["peer"]
         args: ["node","start"]
         volumeMounts:
-         #- mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts 
-         #  name: certificate
-         #  subPath: channel-artifacts
          - mountPath: /etc/hyperledger/fabric/msp 
-           name: certificate
-           #subPath: crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+           name: org-crypto-pv
            subPath: $mspPath
          - mountPath: /etc/hyperledger/fabric/tls
-           name: certificate
-           #subPath: crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/
+           name: org-crypto-pv
            subPath: $tlsPath
-#         - mountPath: /host/var/run/
-#           name: run
       volumes:
-       - name: certificate
+       - name: org-crypto-pv
          persistentVolumeClaim:
              claimName: $pvName
-#       - name: run
-#         hostPath:
-#           path: /run
        - name: dind-graph-storage
          emptyDir: {}
        
