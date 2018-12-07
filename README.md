@@ -3,7 +3,7 @@ Hyperledger Testbed on Kubernetes Cluster: Automated Deployment of a Distributed
 
 Summary: This repository contains scripts we are developing to deploy a Hyperledger Testbed on a Kubernetes cluster, itself running on cloud resources. For the latter, we assume, resources provisioned via an OpenStack environment.
 
-**CONTRIBUTOR**: Sahil Kalra MTK  (sahilkalra1991@gmail.com)
+**CONTRIBUTOR**: Sahil Kalra (sahilkalra1991@gmail.com)
 
 **CONTRIBUTOR**: Pezhman Nasirifard 
 
