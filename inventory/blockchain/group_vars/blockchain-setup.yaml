@@ -4,6 +4,10 @@ fabric_version: 1.2.1
 fabric_ca_version: 1.2.1
 fabric_couchdb_version: 0.4.12
 
+# Fabric Configuration
+# state_db options couchdb / goleveldb
+fabric_state_db: couchdb
+
 # Config Directories
 fabric_config_dirname: fabric-config
 crypto_config_dirname: crypto-config
