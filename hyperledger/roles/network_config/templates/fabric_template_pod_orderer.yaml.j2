@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: $podName
-        image: hyperledger/fabric-orderer:{{ fabric_version }}
+        image: {{ fabric_images['orderer'] }}
         env:
         - name: ORDERER_GENERAL_LOGLEVEL
           value: {{ fabric_orderer_loglevel }}

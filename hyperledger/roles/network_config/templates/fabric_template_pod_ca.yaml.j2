@@ -22,7 +22,7 @@ spec:
     spec:
      containers:
        - name: ca
-         image: hyperledger/fabric-ca:{{ fabric_ca_version }}
+         image: {{ fabric_images['ca'] }}
          env: 
          - name:  FABRIC_CA_HOME
            value: /etc/hyperledger/fabric-ca-server

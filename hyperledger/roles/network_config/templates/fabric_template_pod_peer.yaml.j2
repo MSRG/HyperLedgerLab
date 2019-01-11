@@ -25,14 +25,14 @@ spec:
 {% if fabric_state_db == "couchdb"  %}
         # CouchDB to store chaincodes
       - name: couchdb
-        image: hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}
+        image: {{ fabric_images['couchdb'] }}
         ports:
          - containerPort: 5984
 {% endif %}
 
         # Docker in Docker Daemon
       - name: dind-daemon
-        image: docker:stable-dind
+        image: {{ fabric_images['dind'] }}
 #        resources:
 #          requests:
 #            cpu: 20m
@@ -59,7 +59,7 @@ spec:
 
         # Fabric Peer
       - name: $podName 
-        image: hyperledger/fabric-peer:{{ fabric_version }}
+        image: {{ fabric_images['peer'] }}
         env:
 {% if fabric_state_db == "couchdb" %}
         - name: CORE_LEDGER_STATE_STATEDATABASE
