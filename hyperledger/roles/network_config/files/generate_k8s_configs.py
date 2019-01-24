@@ -149,6 +149,7 @@ def config_peers(name, path):  # name means peerid.
     peer_offset = int((peer_name.split("peer")[-1])) * 2
     exposed_port1 = PORT_START_FROM + address_segment + peer_offset + 1
     exposed_port2 = PORT_START_FROM + address_segment + peer_offset + 2
+    exposed_port3 = PORT_START_FROM + address_segment + peer_offset + 3
 
     render(config_template, path + "/" + name + ".yaml",
            namespace=dns_name(org_name),
@@ -163,6 +164,7 @@ def config_peers(name, path):  # name means peerid.
            tlsPath=tls_path_template.format(name),
            nodePort1=exposed_port1,
            nodePort2=exposed_port2,
+           nodePort3=exposed_port3,
            pvName=org_name + "-pv"
            )
 
