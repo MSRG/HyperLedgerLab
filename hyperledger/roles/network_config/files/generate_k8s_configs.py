@@ -146,7 +146,7 @@ def config_peers(name, path):  # name means peerid.
 
     address_segment = (int(org_name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
     # peer from like this peer 0##
-    peer_offset = int((peer_name.split("peer")[-1])) * 2
+    peer_offset = int((peer_name.split("peer")[-1])) * 3
     exposed_port1 = PORT_START_FROM + address_segment + peer_offset + 1
     exposed_port2 = PORT_START_FROM + address_segment + peer_offset + 2
     exposed_port3 = PORT_START_FROM + address_segment + peer_offset + 3
