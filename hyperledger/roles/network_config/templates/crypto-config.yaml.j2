@@ -1,0 +1,30 @@
+---
+# --------------------------------------------------------------------------- #
+# "OrdererOrgs" - Definition of organizations managing orderer nodes
+# --------------------------------------------------------------------------- #
+OrdererOrgs:
+  # ---------------------------------------------------------------------------
+  # Orderer
+  # ---------------------------------------------------------------------------
+  - Name: Orderer1
+    Domain: orgorderer1
+    # ---------------------------------------------------------------------------
+    # "Specs" - See PeerOrgs below for complete description
+    # ---------------------------------------------------------------------------
+    Specs:
+      - Hostname: orderer0
+# ---------------------------------------------------------------------------
+# "PeerOrgs" - Definition of organizations managing peer nodes
+# ---------------------------------------------------------------------------
+PeerOrgs:
+{% for i in range(fabric_num_orgs) %}
+  # ---------------------------------------------------------------------------
+  # Org{{ loop.index }} See full specification in hyperledger fabric documentation
+  # ---------------------------------------------------------------------------
+  - Name: Org{{ loop.index }}
+    Domain: org{{ loop.index }}
+    Template:
+      Count: {{ fabric_peers_per_org }}
+    Users:
+      Count: 1
+{% endfor %}

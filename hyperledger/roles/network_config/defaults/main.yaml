@@ -1,8 +1,14 @@
+# Fabric versions
 # Provide fabric versions as defined here:
 # https://hyperledger-fabric.readthedocs.io/en/release-1.2/install.html
 fabric_version: 1.2.1
 fabric_ca_version: 1.2.1
 fabric_couchdb_version: 0.4.12
+
+# Fabric Network Config
+fabric_num_orgs: 2
+fabric_peers_per_org: 2
+#fabric_num_orderer: 1
 
 # Custom fabric container images
 fabric_images:
