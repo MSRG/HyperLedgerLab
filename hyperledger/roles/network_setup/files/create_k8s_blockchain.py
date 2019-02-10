@@ -33,51 +33,13 @@ def set_global_vars(crypto_config_dir, kubectl_cmd):
     PEER = os.path.join(crypto_config_dir, "./peerOrganizations")
     KUBECTL = kubectl_cmd
 
-### order of run ###
 
-#### orderer
-##### namespace(org)
-###### single orderer
-
-#### peer
-##### namespace(org)
-###### ca
-####### single peer
-
-def runOrderers(path):
-    orgs = os.listdir(path)
-    for org in orgs:
-        orgPath = os.path.join(path, org)
-        namespaceYaml = os.path.join(orgPath, org + "-namespace.yaml")  # orgYaml namespace.yaml
-        checkAndRun(namespaceYaml)
-
-        for orderer in os.listdir(orgPath + "/orderers"):
-            ordererPath = os.path.join(orgPath + "/orderers", orderer)
-            ordererYaml = os.path.join(ordererPath, orderer + ".yaml")
-            checkAndRun(ordererYaml)
-
-
-def runPeers(path):
-    orgs = os.listdir(path)
-    for org in orgs:
-        orgPath = os.path.join(path, org)
-
-        namespaceYaml = os.path.join(orgPath, org + "-namespace.yaml")  # namespace.yaml
-        checkAndRun(namespaceYaml)
-
-        caYaml = os.path.join(orgPath, org + "-ca.yaml")  # namespace.yaml
-        checkAndRun(caYaml)
-
-        cliYaml = os.path.join(orgPath, org + "-cli.yaml")  # namespace.yaml
-        checkAndRun(cliYaml)
-
-        for peer in os.listdir(orgPath + "/peers"):
-            peerPath = os.path.join(orgPath + "/peers", peer)
-            peerYaml = os.path.join(peerPath, peer + ".yaml")
-            checkAndRun(peerYaml)
-
-
-def checkAndRun(f):
+def kubernetes_create(f):
+    """
+    kubectl apply command
+    :param f: path to kubernetes config to apply
+    :return: None
+    """
     if os.path.isfile(f):
         os.system(KUBECTL + " apply -f " + f)
 
@@ -85,9 +47,56 @@ def checkAndRun(f):
         print("file %s no exited" % (f))
 
 
+def create_orderers(path):
+    """
+    Create Orderer org Namespaces
+    Create Orderer
+    :param path: path to crypto-config/ordererOrganizations path
+    :return: None
+    """
+    orgs = os.listdir(path)
+    for org in orgs:
+        orgPath = os.path.join(path, org)
+        namespaceYaml = os.path.join(orgPath, org + "-namespace.yaml")  # orgYaml namespace.yaml
+        kubernetes_create(namespaceYaml)
+
+        for orderer in os.listdir(orgPath + "/orderers"):
+            ordererPath = os.path.join(orgPath + "/orderers", orderer)
+            ordererYaml = os.path.join(ordererPath, orderer + ".yaml")
+            kubernetes_create(ordererYaml)
+
+
+def create_peers(path):
+    """
+    Create Peer org Namespaces
+    Create MSP/CA pods
+    Create CLI pods
+    Create Peer pods
+    :param path: path to crypto-config/peerOrganizations path
+    :return: None
+    """
+    orgs = os.listdir(path)
+    for org in orgs:
+        orgPath = os.path.join(path, org)
+
+        namespace_yaml = os.path.join(orgPath, org + "-namespace.yaml")  # namespace.yaml
+        kubernetes_create(namespace_yaml)
+
+        ca_yaml = os.path.join(orgPath, org + "-ca.yaml")  # namespace.yaml
+        kubernetes_create(ca_yaml)
+
+        cli_yaml = os.path.join(orgPath, org + "-cli.yaml")  # namespace.yaml
+        kubernetes_create(cli_yaml)
+
+        for peer in os.listdir(orgPath + "/peers"):
+            peerPath = os.path.join(orgPath + "/peers", peer)
+            peerYaml = os.path.join(peerPath, peer + ".yaml")
+            kubernetes_create(peerYaml)
+
+
 if __name__ == "__main__":
     kwargs_obj = parse_cmd_line_args()
     set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.kubectl_cmd[0])
 
-    runOrderers(ORDERER)
-    runPeers(PEER)
+    create_orderers(ORDERER)
+    create_peers(PEER)

@@ -10,7 +10,7 @@
 
 - name: (configtxgen) Generate Orderer genesis block
   script: >
-    bin_{{ fabric_version }}/configtxgen -configPath {{ configtxgen_config_path }}  -profile TwoOrgsOrdererGenesis
+    bin_{{ fabric_version }}/configtxgen -configPath {{ fabric_config_dir }}  -profile TwoOrgsOrdererGenesis
     -outputBlock {{ channel_artifacts_dir }}/genesis.block -channelID orderer-system-channel
 
 - name: Copy genesis block to orderer
@@ -38,7 +38,7 @@
 - name: Copy fabric binaries to inventory fabric-config
   copy:
     src: "files/bin_{{ fabric_version }}/"
-    dest: "{{ configtxgen_config_path }}/bin/"
+    dest: "{{ fabric_config_dir }}/bin/"
     owner: ubuntu
     group: ubuntu
     mode: 0774

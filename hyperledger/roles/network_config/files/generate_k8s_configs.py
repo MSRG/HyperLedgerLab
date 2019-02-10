@@ -102,7 +102,7 @@ def config_orgs(org_name, org_crypto_dir_path):
         # Need to expose pod's port to worker ! ####
         # org format like this org1-f-1##
         address_segment = (int(org_name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
-        exposedPort = PORT_START_FROM + address_segment
+        exposed_port = PORT_START_FROM + address_segment
 
         ca_template = get_template("fabric_template_pod_ca.yaml")
 
@@ -122,7 +122,7 @@ def config_orgs(org_name, org_crypto_dir_path):
                caPath=ca_path_template,
                tlsKey=tls_key_template.format(sk_file),
                tlsCert=tls_cert_template.format("ca." + org_name),
-               nodePort=exposedPort,
+               nodePort=exposed_port,
                pvName="{0}-pv".format(org_name)
                )
 
@@ -229,10 +229,7 @@ def generate_deployment_pod(orgs):
             generate_yaml(member, member_dir, suffix)
 
 
-# TODO kafka nodes and zookeeper nodes don't have dir to store their certificate,
-# TODO: must use anotherway to create pod yaml.
-
-def all_in_one():
+def generate_all_configs():
     peer_orgs = generate_namespace_pod(PEER)
     generate_deployment_pod(peer_orgs)
 
@@ -245,4 +242,4 @@ if __name__ == "__main__":
 
     set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.templates_dir[0])
 
-    all_in_one()
+    generate_all_configs()
