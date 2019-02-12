@@ -21,7 +21,7 @@ Organizations:
 
         AdminPrincipal: Role.MEMBER
 {% for i in range(fabric_num_orgs) %}
-    {% set org_index = loop.index %}
+{% set org_index = loop.index %}
     - &Org{{ org_index }}
         # OrgMSP defines the organization which has peers
         Name: Org{{ org_index }}MSP
@@ -37,12 +37,12 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            {% for j in range(fabric_peers_per_org) %}
+{% for j in range(fabric_peers_per_org) %}
             - Host: peer{{ loop.index0 }}.org{{ org_index }}
               Port: 7051
             - Host: peer{{ loop.index0 }}.org{{ org_index }}
               Port: 7051
-            {% endfor %}
+{% endfor %}
 {% endfor %}
 
 
@@ -125,14 +125,14 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                {% for i in range(fabric_num_orgs) %}
+{% for i in range(fabric_num_orgs) %}
                     - *Org{{ loop.index }}
-                {% endfor %}
+{% endfor %}
     OrgsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
-            {% for i in range(fabric_num_orgs) %}
+{% for i in range(fabric_num_orgs) %}
                 - *Org{{ loop.index }}
-            {% endfor %}
+{% endfor %}

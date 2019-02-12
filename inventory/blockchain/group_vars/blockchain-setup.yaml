@@ -9,6 +9,9 @@ fabric_num_orgs: 2
 fabric_peers_per_org: 2
 #fabric_num_orderer: 1
 
+# Create CLI Pod
+fabric_create_cli: false
+
 # Custom fabric container images
 fabric_images:
   ca: "hyperledger/fabric-ca:{{ fabric_ca_version }}"

@@ -8,3 +8,6 @@ templates_dir: "{{ fabric_config_dir }}/{{ templates_dirname }}"
 
 # kubernetes kubectl command
 k8s_kubectl_cmd: ""
+
+# Create CLI Pod
+fabric_create_cli: false
