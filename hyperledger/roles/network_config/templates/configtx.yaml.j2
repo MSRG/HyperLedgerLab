@@ -20,7 +20,7 @@ Organizations:
         MSPDir: crypto-config/ordererOrganizations/orgorderer1/msp
 
         AdminPrincipal: Role.MEMBER
-{% for i in range(fabric_num_orgs) %}
+{% for i in range(fabric_num_orgs|int) %}
 {% set org_index = loop.index %}
     - &Org{{ org_index }}
         # OrgMSP defines the organization which has peers
@@ -37,7 +37,7 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-{% for j in range(fabric_peers_per_org) %}
+{% for j in range(fabric_peers_per_org|int) %}
             - Host: peer{{ loop.index0 }}.org{{ org_index }}
               Port: 7051
             - Host: peer{{ loop.index0 }}.org{{ org_index }}
@@ -125,7 +125,7 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-{% for i in range(fabric_num_orgs) %}
+{% for i in range(fabric_num_orgs|int) %}
                     - *Org{{ loop.index }}
 {% endfor %}
     OrgsChannel:
@@ -133,6 +133,6 @@ Profiles:
         Application:
             <<: *ApplicationDefaults
             Organizations:
-{% for i in range(fabric_num_orgs) %}
+{% for i in range(fabric_num_orgs|int) %}
                 - *Org{{ loop.index }}
 {% endfor %}
