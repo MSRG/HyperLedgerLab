@@ -18,6 +18,9 @@
     generate_k8s_configs.py {{ crpto_config_dir }} {{ templates_dir }}
   args:
     executable: python3
+  register: node_port_service_mapping
+
+- debug: msg="Reult = {{ node_port_service_mapping }}"
 
 - name: Set owner and permission for kubernetes templates
   shell: |

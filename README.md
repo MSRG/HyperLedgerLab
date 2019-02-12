@@ -63,3 +63,7 @@ TODO: Add more configuration details
     * Unmount NFS on CLI node
     * Delete Fabric Configurations from CLI node
 
+TODO: Add details How to use different fabric version ?
+1. Provide binaries in hyperlegder/roles/network_config/files/bin_<version>
+2. Change version to use in inventory/blockchain/group_vars/blockchain-setup.yaml
+3. Provide core-<version>.yaml from https://github.com/hyperledger/fabric/blob/v1.2.1/sampleconfig/core.yaml

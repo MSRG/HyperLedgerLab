@@ -14,7 +14,7 @@
     - { src: "crypto-config.yaml.j2", dest: "crypto-config.yaml" }
 
 - name: (cryptogen) Generate crypto config
-  script: |
+  shell: |
     {{ fabric_config_dir }}/bin/cryptogen generate --config={{ cryptogen_config }} --output={{ crpto_config_dir }}
 
 - name: Create channel artifacts dir
@@ -23,8 +23,8 @@
     state: directory
 
 - name: (configtxgen) Generate Orderer genesis block
-  script: >
-    {{ fabric_config_dir }}/bin/configtxgen -configPath {{ fabric_config_dir }}  -profile TwoOrgsOrdererGenesis
+  shell: >
+    {{ fabric_config_dir }}/bin/configtxgen -configPath {{ fabric_config_dir }}  -profile OrgsOrdererGenesis
     -outputBlock {{ channel_artifacts_dir }}/genesis.block -channelID orderer-system-channel
 
 - name: Copy genesis block to orderer

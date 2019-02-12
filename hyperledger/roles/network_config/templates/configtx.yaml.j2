@@ -117,7 +117,7 @@ Application: &ApplicationDefaults
 ################################################################################
 Profiles:
 
-    TwoOrgsOrdererGenesis:
+    OrgsOrdererGenesis:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
@@ -128,7 +128,7 @@ Profiles:
                 {% for i in range(fabric_num_orgs) %}
                     - *Org{{ loop.index }}
                 {% endfor %}
-    TwoOrgsChannel:
+    OrgsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
