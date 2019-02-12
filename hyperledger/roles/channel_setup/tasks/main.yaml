@@ -1,0 +1,39 @@
+---
+- name: Generating channel configuration transaction "{{ channel_name }}.tx"
+  shell: |
+    export FABRIC_CFG_PATH={{ fabric_config_dir }}
+    {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputCreateChannelTx {{ channel_artifacts_dir }}/{{ channel_name }}.tx -channelID {{ channel_name }}
+
+- name: Generating anchor peer update for OrgMSPs
+  shell: |
+    {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputAnchorPeersUpdate {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx -channelID {{ channel_name }} -asOrg Org{{ item }}MSP
+  with_sequence: count="{{ fabric_num_orgs }}"
+
+- name: Copy channel artifacts to NFS
+  shell: |
+    cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
+
+- name: Create channel "{{ channel_name }}" on one peer
+  shell: |
+    export CORE_PEER_ADDRESS=peer0.org1:30001
+    export CORE_PEER_LOCALMSPID=Org1MSP
+    export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org1/users/Admin@org1/msp
+    export CORE_PEER_TLS_ROOTCERT_FILE={{ crpto_config_dir }}/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt
+    export CORE_LOGGING_LEVEL=info
+    {{ fabric_config_dir }}/bin/peer channel create -o orderer0.orgorderer1:32000 -c {{ channel_name }} -f {{ channel_artifacts_dir }}/{{ channel_name }}.tx --outputBlock {{ channel_artifacts_dir }}/{{ channel_name }}.block --tls --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+
+- include_tasks: tasks/join_channel.yaml
+  with_sequence: count="{{ fabric_num_orgs }}"
+  loop_control:
+    loop_var: org_num
+
+- name: Update AnchorPeer in channel (peer0 for all Orgs)
+  shell: |
+    export CORE_PEER_ADDRESS=peer0.org{{ item }}:30001
+    export CORE_PEER_LOCALMSPID=Org{{ item }}MSP
+    export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org{{ item }}/users/Admin@org{{ item }}/msp
+    export CORE_PEER_TLS_ROOTCERT_FILE={{ crpto_config_dir }}/peerOrganizations/org{{ item }}/peers/peer0.org{{ item }}/tls/ca.crt
+    export CORE_LOGGING_LEVEL=info
+    {{ fabric_config_dir }}/bin/peer channel update -o orderer0.orgorderer1:32000 -c {{ channel_name }} -f {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx --tls true --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+  with_sequence: count="{{ fabric_num_orgs }}"
+
