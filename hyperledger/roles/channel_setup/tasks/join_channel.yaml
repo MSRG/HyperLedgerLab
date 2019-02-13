@@ -5,6 +5,9 @@
     export CORE_PEER_ADDRESS=peer{{ item }}.org{{ org_num }}:{{ node_port_mapping['peer' + item + '.org' + org_num]['7051'] }}
     export CORE_PEER_LOCALMSPID=Org{{ org_num }}MSP
     export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/Admin@org{{ org_num }}/msp
+    export CORE_PEER_TLS_ENABLED=true
+    export CORE_PEER_TLS_CERT_FILE={{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/peers/peer{{ item }}.org{{ org_num }}/tls/server.crt
+    export CORE_PEER_TLS_KEY_FILE={{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/peers/peer{{ item }}.org{{ org_num }}/tls/server.key
     export CORE_PEER_TLS_ROOTCERT_FILE={{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/peers/peer{{ item }}.org{{ org_num }}/tls/ca.crt
     export CORE_LOGGING_LEVEL=info
     {{ fabric_config_dir }}/bin/peer channel join -b {{ channel_artifacts_dir }}/{{ channel_name }}.block
