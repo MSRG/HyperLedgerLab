@@ -12,7 +12,7 @@
 
 - name: Copy channel artifacts to NFS
   shell: |
-    cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
+    sudo cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
 
 - name: Add sudo DNS mapping of Orderer and peer serivce to NodePort in /etc/hosts
   blockinfile:
