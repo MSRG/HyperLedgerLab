@@ -11,10 +11,11 @@
   with_sequence: count="{{ fabric_num_orgs }}"
 
 - name: Copy channel artifacts to NFS
+  become: yes
   shell: |
-    sudo cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
+    cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
 
-- name: Add sudo DNS mapping of Orderer and peer serivce to NodePort in /etc/hosts
+- name: Add pseudo DNS mapping of Orderer and peer serivce to NodePort in /etc/hosts
   become: yes
   blockinfile:
     path: /etc/hosts
@@ -36,7 +37,7 @@
     --tls --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/{{ fabric_orderer_address }}/msp/tlscacerts/tlsca.orgorderer1-cert.pem
 
 - include_tasks: tasks/join_channel.yaml
-  with_sequence: count="{{ fabric_num_orgs }}"
+  with_sequence: count="{{ fabric_num_orgs|int }}"
   loop_control:
     loop_var: org_num
 

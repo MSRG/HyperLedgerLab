@@ -31,6 +31,10 @@
     chown -R ubuntu:ubuntu {{ templates_dir }}
     chmod -R 777 {{ templates_dir }}
 
+- name: Sleeing 10 seconds for Fabric network to come-up
+  pause:
+    seconds: 10
+
 # ########################################
 # Example value to node_port_mapping #####
 #"node_port_mapping = {'ca.org2': {'7054': 30100}, 'peer0.org2': {'7051': 30101, '7052': 30102, '7053': 30103},
