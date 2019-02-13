@@ -61,7 +61,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer0.orgorderer1:7050
+        - {{ fabric_orderer_address }}:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 250ms

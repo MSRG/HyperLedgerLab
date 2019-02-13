@@ -24,7 +24,7 @@
   set_fact: node_port_mapping={{ generate_k8s_result.stdout }}
 
 - name: Set orderer NodePort as fact
-  set_fact: orderer_node_port={{ node_port_mapping['orderer0.orgorderer1']['7050'] }}
+  set_fact: orderer_node_port={{ node_port_mapping[fabric_orderer_address]['7050'] }}
 
 - name: Set owner and permission for kubernetes templates
   shell: |

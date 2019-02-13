@@ -1,6 +1,7 @@
 ---
 - name: Join channel {{ channel_name }} by peer{{ item }}.org{{ org_num }}
   shell: |
+    export FABRIC_CFG_PATH={{ fabric_config_dir }}
     export CORE_PEER_ADDRESS=peer{{ item }}.org{{ org_num }}:{{ node_port_mapping['peer' + item + '.org' + org_num]['7051'] }}
     export CORE_PEER_LOCALMSPID=Org{{ org_num }}MSP
     export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/Admin@org1{{ org_num }}msp
