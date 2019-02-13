@@ -16,35 +16,44 @@
 - name: (cryptogen) Generate crypto config
   shell: |
     {{ fabric_config_dir }}/bin/cryptogen generate --config={{ cryptogen_config }} --output={{ crpto_config_dir }}
+  args:
+    creates: "{{ crpto_config_dir }}"
 
 - name: Create channel artifacts dir
   file:
     name: "{{ channel_artifacts_dir }}"
     state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0774
+
+- name: Set permissions crypto config
+  file:
+    name: "{{ crpto_config_dir }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0774
 
 - name: (configtxgen) Generate Orderer genesis block
   shell: >
     {{ fabric_config_dir }}/bin/configtxgen -configPath {{ fabric_config_dir }}  -profile OrgsOrdererGenesis
     -outputBlock {{ channel_artifacts_dir }}/genesis.block -channelID orderer-system-channel
+  args:
+    creates: "{{ channel_artifacts_dir }}/genesis.block"
 
 - name: Copy genesis block to orderer
   shell: |
     cp {{ channel_artifacts_dir }}/genesis.block {{ crpto_config_dir }}/ordererOrganizations/*
 
 - name: Copy channel artifacts to NFS
-  shell: |
-    cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
+  become: yes
+  copy:
+    src: "{{ channel_artifacts_dir }}"
+    dest: "{{ nfs_server_mount_dir }}"
 
 - name: Copy crypto configs to NFS
-  shell: |
-    cp -r {{ crpto_config_dir }} {{ nfs_server_mount_dir }}
-
-- name: Set owner and permission for channel artifacts
-  shell: |
-    chown -R ubuntu:ubuntu {{ channel_artifacts_dir }}
-    chmod -R 777 {{ channel_artifacts_dir }}
-
-- name: Set owner and permission for crypto configs
-  shell: |
-    chown -R ubuntu:ubuntu {{ crpto_config_dir }}
-    chmod -R 777 {{ crpto_config_dir }}
+  become: yes
+  copy:
+    src: "{{ crpto_config_dir }}"
+    dest: "{{ nfs_server_mount_dir }}"

@@ -3,17 +3,22 @@
   shell: |
     export FABRIC_CFG_PATH={{ fabric_config_dir }}
     {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputCreateChannelTx {{ channel_artifacts_dir }}/{{ channel_name }}.tx -channelID {{ channel_name }}
+  args:
+    creates: "{{ channel_artifacts_dir }}/{{ channel_name }}.tx"
 
 - name: Generating anchor peer update for OrgMSPs
   shell: |
     export FABRIC_CFG_PATH={{ fabric_config_dir }}
     {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputAnchorPeersUpdate {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx -channelID {{ channel_name }} -asOrg Org{{ item }}MSP
+  args:
+    creates: "{{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx"
   with_sequence: count="{{ fabric_num_orgs }}"
 
 - name: Copy channel artifacts to NFS
   become: yes
-  shell: |
-    cp -r {{ channel_artifacts_dir }} {{ nfs_server_mount_dir }}
+  copy:
+    src: "{{ channel_artifacts_dir }}"
+    dest: "{{ nfs_server_mount_dir }}"
 
 - name: Add pseudo DNS mapping of Orderer and peer serivce to NodePort in /etc/hosts
   become: yes
@@ -36,6 +41,8 @@
     {{ fabric_config_dir }}/bin/peer channel create -o {{ fabric_orderer_address }}:{{ orderer_node_port }} -c {{ channel_name }}
     -f {{ channel_artifacts_dir }}/{{ channel_name }}.tx --outputBlock {{ channel_artifacts_dir }}/{{ channel_name }}.block
     --tls --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/{{ fabric_orderer_address }}/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+  args:
+    creates: "{{ channel_artifacts_dir }}/{{ channel_name }}.block"
 
 - include_tasks: tasks/join_channel.yaml
   with_sequence: count="{{ fabric_num_orgs|int }}"

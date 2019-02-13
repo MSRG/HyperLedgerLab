@@ -27,9 +27,12 @@
   set_fact: orderer_node_port={{ node_port_mapping[fabric_orderer_address]['7050'] }}
 
 - name: Set owner and permission for kubernetes templates
-  shell: |
-    chown -R ubuntu:ubuntu {{ templates_dir }}
-    chmod -R 777 {{ templates_dir }}
+  file:
+    name: "{{ templates_dir }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0774
 
 # ########################################
 # Example value to node_port_mapping #####
