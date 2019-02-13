@@ -3,6 +3,7 @@
   shell: |
     ssh {{ item }} -i ~/.ssh/i13.openstack.image.key.pem "sudo mount -t nfs4 | grep {{ nfs_server_ip }} | awk '/:/ { print $3 } ' | xargs sudo umount - l";
   with_items: "{{ groups['kube-node'] }}"
+  ignore_errors: yes
 
 - name: Delete kubernetes blockchain
   script: |
