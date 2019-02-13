@@ -20,9 +20,9 @@
   blockinfile:
     path: /etc/hosts
     block: |
-      {{ groups_1 }} {{ fabric_orderer_address }} {% for i in range(fabric_num_orgs|int) %}ca.org{{ loop.index }} {% endfor %}
+      {{ groups['kube-node'][0] }} {{ fabric_orderer_address }} {% for i in range(fabric_num_orgs|int) %}ca.org{{ loop.index }} {% endfor %}
 
-      {{ groups_2 }} {% for i in range(fabric_num_orgs|int) %}{% set org_index = loop.index %}{% for j in range(fabric_peers_per_org|int) %}peer{{ loop.index0 }}.org{{ org_index }} {% endfor %}{% endfor %}
+      {{ groups['kube-node'][1] }} {% for i in range(fabric_num_orgs|int) %}{% set org_index = loop.index %}{% for j in range(fabric_peers_per_org|int) %}peer{{ loop.index0 }}.org{{ org_index }} {% endfor %}{% endfor %}
     marker: "# {mark} ANSIBLE MANAGED BLOCK: sudo DNS mapping for orderers, peers and ca"
 
 - name: Create channel "{{ channel_name }}" on one peer
