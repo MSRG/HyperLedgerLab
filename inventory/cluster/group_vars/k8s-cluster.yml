@@ -72,7 +72,7 @@ kube_cadvisor_port: 4194
 
 # Choose network plugin (cilium, calico, contiv, weave or flannel)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
-kube_network_plugin: weave
+kube_network_plugin: canal
 
 # Weave deployment
 # weave_password: ~
