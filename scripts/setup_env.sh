@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+set -e
+
 # cd to project root
 cd `dirname $0`/..
 
 # Set environment variables required for Openstack and k8s cluster setup
-if [ -f .env ]
+if [[ -f .env ]]
 then
     source .env
 else
@@ -13,7 +15,7 @@ else
 fi
 
 # Setup python environment
-if [ -d venv ]
+if [[ -d venv ]]
 then
     source venv/bin/activate
 else

@@ -2,6 +2,7 @@
 
 source `dirname $0`/setup_env.sh
 
+set -x
 # Setup Openstack instances for k8s nodes
 ansible-playbook -i inventory/infra/hosts.ini -v infra_setup.yaml
 
@@ -10,3 +11,4 @@ sleep 20
 
 # Setup k8s cluster
 ansible-playbook -i inventory/cluster/hosts.ini -v cluster_setup.yaml
+set +x
