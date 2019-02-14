@@ -10,6 +10,6 @@
     path: "{{ crpto_config_dir }}/k8s_created"
     state: touch
 
-- name: Sleeing 10 seconds for Fabric network to come-up
+- name: Sleeing 30 seconds for Fabric network to come-up
   pause:
-    seconds: 10
+    seconds: 30
