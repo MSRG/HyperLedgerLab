@@ -1,19 +1,29 @@
 # Ansible Playbook to delete Hyperledger Fabric on kubernetes
 # Note: Call with -i inventory/blockchain/hosts.ini
 ---
+- hosts: localhost
+  vars_prompt:
+    - name: "prompt_del_fab"
+      prompt: "Caution: This will delete the blockchain. Are you sure (yes/no)?"
+      default: "no"
+      private: no
+  tasks:
+    - set_fact:
+        prompt_delete_fabric: "{{ prompt_del_fab }}"
+
 # Delete Fabric Network
 - hosts: blockchain-setup
   roles:
-    - { "role": network_setup, delete: true }
+    - { "role": network_setup, delete: true, when: prompt_delete_fabric|bool }
 
 # Delete configurations
 - hosts: blockchain-setup
   become: true
   roles:
-    - { "role": network_config, delete: true }
+    - { "role": network_config, delete: true, when: prompt_delete_fabric|bool }
 
 # Prepare CLI node: Un-Mount NFS
 - hosts: blockchain-setup
   become: true
   roles:
-    - { "role": prepare_cli_node, "nfs_state": "absent" }
+    - { "role": prepare_cli_node, "nfs_state": "absent", when: prompt_delete_fabric|bool }
