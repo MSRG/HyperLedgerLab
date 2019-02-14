@@ -1,0 +1,13 @@
+---
+# Policy to resolve CVE-2019-5736: https://kubernetes.io/blog/2019/02/11/runc-and-cve-2019-5736/
+# None of the pods can execute as root (i.e. UID 0)
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: non-root
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  runAsUser:
+    # Require the container to run without root privileges.
+    rule: 'MustRunAsNonRoot'

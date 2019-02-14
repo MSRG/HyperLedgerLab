@@ -1,7 +1,7 @@
-# Ansible Playbook to install Hyperledger Fabric on kubernetes
+# Ansible Playbook to install Kubernetes Dashboard on kubernetes
 # Note: Call with -i inventory/cluster/hosts.ini
 ---
-# Add kubectl command and kube-dashboard admin_user
+# Add kubectl command, kube-dashboard and admin_user
 - hosts: cluster-setup
   tasks:
     - name: Add Alias for Kubctl command

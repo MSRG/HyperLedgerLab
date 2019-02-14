@@ -19,12 +19,12 @@ kube_users_dir: "{{ kube_config_dir }}/users"
 kube_api_anonymous_auth: true
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.13.3
-etcd_version: v3.3.12
-weave_version: "2.5.1"
-docker_version: "18.09.2"         # To change this, version information should to be provided in kubespray/roles/docker/vars/ubuntu.yml
+kube_version: v1.11.3
+etcd_version: v3.2.24
+weave_version: "2.4.1"
+docker_version: "18.03"     # To change this, version information should to be provided in kubespray/roles/docker/vars/ubuntu.yml
 kubeadm_version: "{{ kube_version }}"
-kubeadm_checksum: ab767ea53e45aceba628977ef6c8c62eace72d6d232efeaf35ac50cbea5f3739
+kubeadm_checksum: 422a7a32ed9a7b1eaa2a4f9d121674dfbe80eb41e206092c13017d097f75aaec
 
 # Where the binaries will be downloaded.
 # Note: ensure that you've enough disk space (about 1G)
