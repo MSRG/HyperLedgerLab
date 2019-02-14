@@ -1,0 +1,16 @@
+##################################
+######### Blockchain hosts #######
+##################################
+
+[blockchain-setup]
+localhost ansible_connection=local
+
+[kube-nfs]
+# NFS server Node: To be added dynamically
+172.24.48.228
+
+[kube-node]
+# Worker Nodes: To be added dynamically
+172.24.48.224
+172.24.48.225
+172.24.48.226
