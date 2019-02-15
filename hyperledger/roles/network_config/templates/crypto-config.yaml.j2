@@ -17,21 +17,14 @@ OrdererOrgs:
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------
 PeerOrgs:
+{% for i in range(fabric_num_orgs|int) %}
   # ---------------------------------------------------------------------------
-  # Org1
+  # Org{{ loop.index }} See full specification in hyperledger fabric documentation
   # ---------------------------------------------------------------------------
-  - Name: Org1
-    Domain: org1
+  - Name: Org{{ loop.index }}
+    Domain: org{{ loop.index }}
     Template:
-      Count: 2
+      Count: {{ fabric_peers_per_org|int }}
     Users:
       Count: 1
-  # ---------------------------------------------------------------------------
-  # Org2: See "Org1" for full specification
-  # ---------------------------------------------------------------------------
-  - Name: Org2
-    Domain: org2
-    Template:
-      Count: 2
-    Users:
-      Count: 1
+{% endfor %}

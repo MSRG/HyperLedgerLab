@@ -1,9 +1,17 @@
 # Config Directories
 fabric_config_dirname: fabric-configs
+fabric_config_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}"
 crypto_config_dirname: crypto-config
-crpto_config_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ crypto_config_dirname }}"
+crpto_config_dir: "{{ fabric_config_dir }}/{{ crypto_config_dirname }}"
 templates_dirname: templates
-templates_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}/{{ templates_dir }}"
+templates_dir: "{{ fabric_config_dir }}/{{ templates_dirname }}"
 
 # kubernetes kubectl command
 k8s_kubectl_cmd: ""
+
+# Create CLI Pod
+fabric_create_cli: false
+fabric_boot_wait: 30
+
+#dynamic var
+nfs_server_ip: ""

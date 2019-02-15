@@ -9,11 +9,8 @@
 ################################################################################
 Organizations:
 
-    # SampleOrg defines an MSP using the sampleconfig.  It should never be used
-    # in production but may be used as a template for other definitions
+    # OrdererOrg defines an MSP for orderer.
     - &OrdererOrg
-        # DefaultOrg defines the organization which is used in the sampleconfig
-        # of the fabric.git development environment
         Name: Orgorderer1MSP
 
         # ID to load the MSP definition as
@@ -23,16 +20,16 @@ Organizations:
         MSPDir: crypto-config/ordererOrganizations/orgorderer1/msp
 
         AdminPrincipal: Role.MEMBER
-
-    - &Org1
-        # DefaultOrg defines the organization which is used in the sampleconfig
-        # of the fabric.git development environment
-        Name: Org1MSP
+{% for i in range(fabric_num_orgs|int) %}
+{% set org_index = loop.index %}
+    - &Org{{ org_index }}
+        # OrgMSP defines the organization which has peers
+        Name: Org{{ org_index }}MSP
 
         # ID to load the MSP definition as
-        ID: Org1MSP
+        ID: Org{{ org_index }}MSP
 
-        MSPDir: crypto-config/peerOrganizations/org1/msp
+        MSPDir: crypto-config/peerOrganizations/org{{ org_index }}/msp
 
         AdminPrincipal: Role.ADMIN
 
@@ -40,31 +37,13 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org1
+{% for j in range(fabric_peers_per_org|int) %}
+            - Host: peer{{ loop.index0 }}.org{{ org_index }}
               Port: 7051
-            - Host: peer1.org1
+            - Host: peer{{ loop.index0 }}.org{{ org_index }}
               Port: 7051
-
-    - &Org2
-        # DefaultOrg defines the organization which is used in the sampleconfig
-        # of the fabric.git development environment
-        Name: Org2MSP
-
-        # ID to load the MSP definition as
-        ID: Org2MSP
-
-        MSPDir: crypto-config/peerOrganizations/org2/msp
-
-        AdminPrincipal: Role.ADMIN
-
-        AnchorPeers:
-            # AnchorPeers defines the location of peers which can be used
-            # for cross org gossip communication.  Note, this value is only
-            # encoded in the genesis block in the Application section context
-            - Host: peer0.org2
-              Port: 7051
-            - Host: peer1.org2
-              Port: 7051
+{% endfor %}
+{% endfor %}
 
 
 ################################################################################
@@ -82,7 +61,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer0.orgorderer1:7050
+        - {{ fabric_orderer_address }}:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 250ms
@@ -138,7 +117,7 @@ Application: &ApplicationDefaults
 ################################################################################
 Profiles:
 
-    TwoOrgsOrdererGenesis:
+    OrgsOrdererGenesis:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
@@ -146,12 +125,14 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *Org1
-                    - *Org2
-    TwoOrgsChannel:
+{% for i in range(fabric_num_orgs|int) %}
+                    - *Org{{ loop.index }}
+{% endfor %}
+    OrgsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
-                - *Org2
+{% for i in range(fabric_num_orgs|int) %}
+                - *Org{{ loop.index }}
+{% endfor %}

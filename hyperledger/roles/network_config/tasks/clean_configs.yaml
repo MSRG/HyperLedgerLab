@@ -22,5 +22,5 @@
 
 - name: Remove fabric binaries
   file:
-    path: "{{ configtxgen_config_path }}/bin/"
+    path: "{{ fabric_config_dir }}/bin/"
     state: absent

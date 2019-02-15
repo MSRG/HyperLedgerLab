@@ -2,7 +2,7 @@
 os_username: "'{{ lookup('env', 'OS_USERNAME') }}'"
 os_password: "'{{ lookup('env', 'OS_PASSWORD') }}'"
 os_base_url: "https://openstack.cluster.msrg.in.tum.de"
-os_project_name: "pn-hyperledger"
+os_project_name: "'{{ lookup('env', 'OS_PROJECT_NAME') }}'"
 os_user_domain_name: "default"
 os_project_domain_name: "default"
 

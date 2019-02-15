@@ -77,7 +77,7 @@ spec:
     spec:
       containers:
         - name: $name
-          image:  hyperledger/fabric-tools:{{ fabric_version }}
+          image:  {{ fabric_images['tools'] }}
           env:
           - name: CORE_PEER_TLS_ENABLED
             value: "true"

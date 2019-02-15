@@ -22,15 +22,17 @@ spec:
        org: $namespace
     spec:
       containers:
+{% if fabric_state_db == "couchdb"  %}
         # CouchDB to store chaincodes
       - name: couchdb
-        image: hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}
+        image: {{ fabric_images['couchdb'] }}
         ports:
          - containerPort: 5984
+{% endif %}
 
         # Docker in Docker Daemon
       - name: dind-daemon
-        image: docker:stable-dind
+        image: {{ fabric_images['dind'] }}
 #        resources:
 #          requests:
 #            cpu: 20m
@@ -57,12 +59,17 @@ spec:
 
         # Fabric Peer
       - name: $podName 
-        image: hyperledger/fabric-peer:{{ fabric_version }}
+        image: {{ fabric_images['peer'] }}
         env:
+{% if fabric_state_db == "couchdb" %}
         - name: CORE_LEDGER_STATE_STATEDATABASE
           value: "CouchDB"
         - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
           value: "localhost:5984"
+{% else %}
+        - name: CORE_LEDGER_STATE_STATEDATABASE
+          value: "goleveldb"
+{% endif %}
         - name: CORE_VM_ENDPOINT
           value: "tcp://localhost:2375"
         - name: CORE_LOGGING_LEVEL
@@ -143,9 +150,9 @@ spec:
      targetPort: 7052
      nodePort: $nodePort2
 
-# TODO: Very Insecure. Remove after development is completed
-   - name: couchdb
+   - name: event-hub
      protocol: TCP
-     port: 5984
-     targetPort: 5984
+     port: 7053
+     targetPort: 7053
+     nodePort: $nodePort3
 ---

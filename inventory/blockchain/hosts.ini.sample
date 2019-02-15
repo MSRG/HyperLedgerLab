@@ -7,12 +7,10 @@ localhost ansible_connection=local
 
 [kube-nfs]
 # NFS server Node: To be added dynamically
-{% for ip in groups['kube-nfs'] %}
-{{ ip }}
-{% endfor %}
+172.24.48.228
 
 [kube-node]
 # Worker Nodes: To be added dynamically
-{% for ip in groups['kube-node'] %}
-{{ ip }}
-{% endfor %}
+172.24.48.224
+172.24.48.225
+172.24.48.226

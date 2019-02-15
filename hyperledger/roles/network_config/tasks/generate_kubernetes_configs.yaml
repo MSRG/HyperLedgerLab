@@ -18,8 +18,26 @@
     generate_k8s_configs.py {{ crpto_config_dir }} {{ templates_dir }}
   args:
     executable: python3
+  register: generate_k8s_result
+
+- name: Set exposed NodePort service ports in facts
+  set_fact: node_port_mapping={{ generate_k8s_result.stdout }}
+
+- name: Set orderer NodePort as fact
+  set_fact: orderer_node_port={{ node_port_mapping[fabric_orderer_address]['7050'] }}
 
 - name: Set owner and permission for kubernetes templates
-  shell: |
-    chown -R ubuntu:ubuntu {{ templates_dir }}
-    chmod -R 777 {{ templates_dir }}
+  file:
+    name: "{{ templates_dir }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0774
+
+# ########################################
+# Example value to node_port_mapping #####
+#"node_port_mapping = {'ca.org2': {'7054': 30100}, 'peer0.org2': {'7051': 30101, '7052': 30102, '7053': 30103},
+#'peer0.org1': {'7051': 30001, '7052': 30002, '7053': 30003}, 'ca.org1': {'7054': 30000},
+#'orderer0.orgorderer1': {'7050': 32000}, 'peer1.org1': {'7051': 30004, '7052': 30005, '7053': 30006},
+#'peer1.org2': {'7051': 30104, '7052': 30105, '7053': 30106}}"
+# ########################################

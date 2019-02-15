@@ -12,6 +12,8 @@ PEER = None
 PORT_START_FROM = 30000
 GAP = 100  # interval for worker's port
 
+NODEPORT_SERVICE_PORTS = {}
+
 
 def dns_name(name):
     """
@@ -67,7 +69,7 @@ def get_template(template_name):
 
 def config_orgs(org_name, org_crypto_dir_path):
     """
-    create organisation namespace
+    Create organisation namespace, CLI and CA/MSP
     :param org_name: Name of organisation
     :param org_crypto_dir_path: path to the organisation directory, where namespace.yaml is created
     :return: None
@@ -100,9 +102,12 @@ def config_orgs(org_name, org_crypto_dir_path):
 
         # ###### pod config yaml for org ca
         # Need to expose pod's port to worker ! ####
-        # org format like this org1-f-1##
         address_segment = (int(org_name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
-        exposedPort = PORT_START_FROM + address_segment
+        exposed_port = PORT_START_FROM + address_segment
+        # Add the NodePort exposed ports mapping
+        NODEPORT_SERVICE_PORTS["ca.{}".format(org_name)] = {
+            "7054": exposed_port
+        }
 
         ca_template = get_template("fabric_template_pod_ca.yaml")
 
@@ -122,7 +127,7 @@ def config_orgs(org_name, org_crypto_dir_path):
                caPath=ca_path_template,
                tlsKey=tls_key_template.format(sk_file),
                tlsCert=tls_cert_template.format("ca." + org_name),
-               nodePort=exposedPort,
+               nodePort=exposed_port,
                pvName="{0}-pv".format(org_name)
                )
 
@@ -146,9 +151,16 @@ def config_peers(name, path):  # name means peerid.
 
     address_segment = (int(org_name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
     # peer from like this peer 0##
-    peer_offset = int((peer_name.split("peer")[-1])) * 2
+    peer_offset = int((peer_name.split("peer")[-1])) * 3
     exposed_port1 = PORT_START_FROM + address_segment + peer_offset + 1
     exposed_port2 = PORT_START_FROM + address_segment + peer_offset + 2
+    exposed_port3 = PORT_START_FROM + address_segment + peer_offset + 3
+    # Add the NodePort exposed ports mapping
+    NODEPORT_SERVICE_PORTS[name] = {
+        "7051": exposed_port1,
+        "7052": exposed_port2,
+        "7053": exposed_port3
+    }
 
     render(config_template, path + "/" + name + ".yaml",
            namespace=dns_name(org_name),
@@ -163,6 +175,7 @@ def config_peers(name, path):  # name means peerid.
            tlsPath=tls_path_template.format(name),
            nodePort1=exposed_port1,
            nodePort2=exposed_port2,
+           nodePort3=exposed_port3,
            pvName=org_name + "-pv"
            )
 
@@ -179,6 +192,10 @@ def config_orderers(name, path):  # name means ordererid
     org_name = name_split[1]
 
     exposed_port = 32000 + int(orderer_name.split("orderer")[-1] if orderer_name.split("orderer")[-1] != '' else 0)
+    # Add the NodePort exposed ports mapping
+    NODEPORT_SERVICE_PORTS[name] = {
+        "7050": exposed_port
+    }
 
     render(config_template, path + "/" + name + ".yaml",
            namespace=dns_name(org_name),
@@ -227,10 +244,7 @@ def generate_deployment_pod(orgs):
             generate_yaml(member, member_dir, suffix)
 
 
-# TODO kafka nodes and zookeeper nodes don't have dir to store their certificate,
-# TODO: must use anotherway to create pod yaml.
-
-def all_in_one():
+def generate_all_configs():
     peer_orgs = generate_namespace_pod(PEER)
     generate_deployment_pod(peer_orgs)
 
@@ -243,4 +257,6 @@ if __name__ == "__main__":
 
     set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.templates_dir[0])
 
-    all_in_one()
+    generate_all_configs()
+    # print to stdout so NodePort Service mapping can be stored can be stored
+    print(NODEPORT_SERVICE_PORTS)

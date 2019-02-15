@@ -1,19 +1,17 @@
-# This file will be over-ridden by infra_setup playbook
-
 ###############################################
 ######### KUBESPRAY HOSTS ######################
 ###############################################
 
 # ## configure a bastion host if your nodes are not directly reachable
 # bastion ansible_host=x.x.x.x ansible_user=some_user
-k8sctl1 ansible_host=172.24.43.19
-k8sctl2 ansible_host=172.24.43.20
-k8sctl3 ansible_host=172.24.43.21
-k8swrk1 ansible_host=172.24.43.22
-k8swrk2 ansible_host=172.24.43.23
-k8swrk3 ansible_host=172.24.43.24
-k8slb ansible_host=172.24.43.25
-k8snfs ansible_host=172.24.43.26
+k8sctl1 ansible_host=172.24.48.221
+k8sctl2 ansible_host=172.24.48.222
+k8sctl3 ansible_host=172.24.48.223
+k8swrk1 ansible_host=172.24.48.224
+k8swrk2 ansible_host=172.24.48.225
+k8swrk3 ansible_host=172.24.48.226
+k8slb ansible_host=172.24.48.227
+k8snfs ansible_host=172.24.48.228
 
 [kube-lb]
 # Loadbalancer Node: To be added dynamically
@@ -55,3 +53,7 @@ kube-node
 kube-nfs
 kube-lb
 kube-dns
+
+[cluster-setup]
+# node running ansible commands
+localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
