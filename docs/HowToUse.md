@@ -21,6 +21,7 @@
 5. Create Fabric Blockchain on kubernetes:
     * Command: `./scripts/fabric_setup.sh`
     * To create with a CLI pod in each organisation: `./scripts/fabric_setup.sh cli`
+    * To increase wait timeout between fabric network create and channel create: `./scripts/fabric_setup.sh cli 120`
     * What will happen ?
         * It will create Fabric Blockchain on kubernetes with command: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_setup.yaml`
         * This will create a fabric network and a sample channel with all peers joined
