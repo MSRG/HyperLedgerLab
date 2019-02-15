@@ -6,7 +6,12 @@ args=''
 
 if [[ $1 = "cli" ]]
 then
-    args='-e fabric_create_cli=true'
+    args="-e fabric_create_cli=true"
+fi
+
+if [[ ! -z $2 ]]
+then
+    args="$args -e fabric_boot_wait=$2"
 fi
 
 set -x

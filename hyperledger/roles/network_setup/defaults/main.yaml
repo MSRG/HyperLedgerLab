@@ -11,6 +11,7 @@ k8s_kubectl_cmd: ""
 
 # Create CLI Pod
 fabric_create_cli: false
+fabric_boot_wait: 30
 
 #dynamic var
 nfs_server_ip: ""
