@@ -1,0 +1,115 @@
+******************************************************************
+# With TLS
+
+# Example Chaincode: chaincode_example02  (With proper execution order)
+
+
+###1 Create configuration for channel "orgchannel"
+
+cd /home/ubuntu/master_thesis/inventory/blockchain/fabric-config
+
+export FABRIC_CFG_PATH=/home/ubuntu/master_thesis/inventory/blockchain/fabric-config
+
+./bin/configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID orgchannel
+
+./bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID orgchannel -asOrg Org1MSP
+
+./bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID orgchannel -asOrg Org2MSP
+
+sudo cp -r ./channel-artifacts /opt/share/
+
+
+###2 Download chaincode_example02 and place in shared storage /opt/share/channel-artifacts/chaincode_example02/:
+
+sudo mkdir /opt/share/channel-artifacts/chaincode_example02; sudo wget https://raw.githubusercontent.com/hyperledger/fabric-samples/v1.2.1/chaincode/chaincode_example02/go/chaincode_example02.go -O /opt/share/channel-artifacts/chaincode_example02/chaincode_example02.go
+
+
+###3 Create and join a Channel on all peers
+
+# SSH into CLI pod of Org1. Get the pod name by "kubectl --all-namespaces get pods" command
+
+kubectl exec -it  cli-5569ccc668-5tbdk -c cli bash --namespace=org1
+
+# Org1 CLI: Join peer0 and peer1 of Org1 in channel
+
+export CORE_PEER_ADDRESS=peer0.org1:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt
+peer channel create -o orderer0.orgorderer1:7050 -c orgchannel -f ./channel-artifacts/channel.tx --tls true --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+
+cp orgchannel.block ./channel-artifacts/
+
+peer channel join -b ./channel-artifacts/orgchannel.block
+
+export CORE_PEER_ADDRESS=peer1.org1:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/ca.crt
+peer channel join -b ./channel-artifacts/orgchannel.block
+
+export CORE_PEER_ADDRESS=peer0.org1:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt
+peer channel update -o orderer0.orgorderer1:7050 -c orgchannel -f ./channel-artifacts/Org1MSPanchors.tx --tls true --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+
+
+-------------------------------------------------------------------------------------------------------
+# SSH into CLI pod of Org2.  Get the pod name by "kubectl --all-namespaces get pods" command
+
+kubectl exec -it cli-754fd8bd58-d8nzn bash --namespace=org2
+
+# Org2 CLI: Join peer0 and peer1 of Org2 in channel
+
+export CORE_PEER_ADDRESS=peer0.org2:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt
+peer channel join -b ./channel-artifacts/orgchannel.block
+
+export CORE_PEER_ADDRESS=peer1.org2:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/ca.crt
+peer channel join -b ./channel-artifacts/orgchannel.block
+
+export CORE_PEER_ADDRESS=peer0.org2:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt
+peer channel update -o orderer0.orgorderer1:7050 -c orgchannel -f ./channel-artifacts/Org2MSPanchors.tx --tls true --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+
+
+###4 Install Chaincode
+
+# Org1 CLI: Install chain code on peer0 of Org1
+
+export CORE_PEER_ADDRESS=peer0.org1:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt
+peer chaincode install -n orgcc -v 1.0 -p github.com/hyperledger/fabric/peer/channel-artifacts/chaincode_example02/
+
+
+-------------------------------------------------------------------------------------------------------
+
+# Org2 CLI: Install chain code on peer0 of Org2
+
+export CORE_PEER_ADDRESS=peer0.org2:7051; export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt
+peer chaincode install -n orgcc -v 1.0 -p github.com/hyperledger/fabric/peer/channel-artifacts/chaincode_example02/
+
+
+###5 Execute Chaincode
+
+# Org1 CLI: Instantiate and execute chaincode on Peer0 of Org1
+
+## Instantiate chaincode on Peer0 of Org1. 'a' has $100 and 'b' has $200 in their accounts
+
+export CORE_PEER_ADDRESS=peer0.org1:7051
+peer chaincode instantiate -o orderer0.orgorderer1:7050 --tls true --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem -C "orgchannel" -n orgcc -v 1.0 -c '{"Args":["init","a", "100", "b","200"]}' -P "AND ('Org1MSP.member','Org2MSP.member')"
+
+## Invoke Transaction: Transfer $10 from 'a' to 'b'
+
+peer chaincode invoke -o orderer0.orgorderer1:7050 --logging-level DEBUG --tls true --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem -C "orgchannel" -n orgcc --peerAddresses peer0.org1:7051 --tlsRootCertFiles /etc/hyperledger/fabric/crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt --peerAddresses peer0.org2:7051 --tlsRootCertFiles /etc/hyperledger/fabric/crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt -c '{"Args":["invoke","a","b","10"]}'
+
+## Query value of 'a'
+
+peer chaincode query -C "orgchannel" -n orgcc -c '{"Args":["query","a"]}'
+
+## Query value of 'b'
+
+peer chaincode query -C "orgchannel" -n orgcc -c '{"Args":["query","b"]}'
+
+-------------------------------------------------------------------------------------------------------
+
+# Org2 CLI: Query chaincode on Peer0 of Org2
+
+export CORE_PEER_ADDRESS=peer0.org2:7051
+
+## Query value of 'a'
+
+peer chaincode query -C "orgchannel" -n orgcc -c '{"Args":["query","a"]}'
+
+## Query value of 'b'
+
+peer chaincode query -C "orgchannel" -n orgcc -c '{"Args":["query","b"]}'
