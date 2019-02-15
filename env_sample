@@ -2,6 +2,7 @@
 export OS_USERNAME="<username>"
 export OS_PASSWORD="<password>"
 export OS_IMAGE_SSH_KEY="/home/ubuntu/.ssh/i13.openstack.image.key.pem"
+export OS_PROJECT_NAME="pn-hyperledger"
 
 # Environment Variables for k8s Cluster setup
 export INVENTORY_DIR_PATH="$(pwd)/inventory"
