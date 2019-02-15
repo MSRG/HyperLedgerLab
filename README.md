@@ -11,8 +11,12 @@ Summary: This repository contains scripts we are developing to deploy a Hyperled
 
 **CONTRIBUTOR**: Arno Jacobsen
 
+
+**HOW to Use ?**: See **`docs/HowToUse.md`**
+
+
 **Setup**:
-1. clone the repo `git clone git@github.com:sahilkalra1991/master_thesis.git`
+1. clone the repo `git clone https://github.com/MSRG/HyperLedgerLab.git`
 2. `git submodule sync; git submodule update --init`
 2. `sudo apt install python-pip`
 2. `pip install virtualenv`

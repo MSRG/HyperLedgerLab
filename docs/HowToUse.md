@@ -5,7 +5,7 @@
     * SSH into it and All following commands should be executed from this node
 
 2. Clone the repository:
-    * `git clone git@github.com:sahilkalra1991/master_thesis.git`
+    * `git clone https://github.com/MSRG/HyperLedgerLab.git`
     * `git submodule sync; git submodule update --init`
 
 2. Create .env file with details about Openstack authentication
