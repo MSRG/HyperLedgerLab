@@ -1,10 +1,14 @@
 **WorkFlow**
 
-1. Clone the repository: 
+1. Create a CLI instance in your Openstack account
+    * This node will used as the access point to kubernetes and fabric network
+    * SSH into it and All following commands should be executed from this node
+
+2. Clone the repository:
     * `git clone git@github.com:sahilkalra1991/master_thesis.git`
     * `git submodule sync; git submodule update --init`
 
-2. Create .env file with details about Openstack auth
+2. Create .env file with details about Openstack authentication
     * Copy `env_sample` to `.env`
     * Provide appropriate details
 
@@ -48,3 +52,7 @@
     * Number of Peers per Org: `fabric_peers_per_org`
 * Delete current Fabric via`./scripts/fabric_delete.sh`
 * Install new Fabric with new images via `./scripts/fabric_setup.sh`
+
+**Kubernetes Dashboard Access**
+* URL: `https://<k8slb_ip_address>:8443`
+* Access Token: Get from terminal via command `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')`
