@@ -1,4 +1,11 @@
 ---
+- name: Wait for port of "org{{ org_num }}" peers to be available
+  wait_for:
+    host: "peer{{ item }}.org{{ org_num }}"
+    port: "{{ node_port_mapping['peer' + item + '.org' + org_num]['7051'] }}"
+    state: started
+  with_sequence: start=0 end={{ fabric_peers_per_org|int - 1 }}
+
 - name: Join channel "{{ channel_name }}" for "org{{ org_num }}"
   shell: |
     export FABRIC_CFG_PATH={{ fabric_config_dir }}
