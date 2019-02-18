@@ -4,7 +4,7 @@
   },
 {% set orderer_domain = fabric_orderer_address.split(".")[1] %}
   "fabric": {
-    "cryptodir": "network/fabric_i13/crypto-config",
+    "cryptodir": "{{ crpto_config_dir }}",
     "network": {
       "orderer": {
         "url": "grpcs://{{ fabric_orderer_address }}:{{ orderer_node_port }}",
