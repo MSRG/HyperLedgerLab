@@ -1,0 +1,80 @@
+{
+  "caliper": {
+    "blockchain": "fabric"
+  },
+  "fabric": {
+    "cryptodir": "network/fabric_i13/crypto-config",
+    "network": {
+      "orderer": {
+        "url": "grpcs://{{ fabric_orderer_address }}:{{ orderer_node_port }}",
+        "domain": "orgorderer1",
+        "mspid": "OrdererMSP",
+        "msp": "{{ crpto_config_dir }}/ordererOrganizations/orgorderer1/msp/",
+        "server-hostname": "{{ fabric_orderer_address }}",
+        "tls_cacerts": "{{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/ca.crt"
+      },
+{% for i in fabric_num_orgs %}
+{% set org_num = loop.index %}
+      "org1": {
+        "name": "org1{{ org_num }}",
+        "domain": "org{{ org_num }}",
+        "mspid": "Org{{ org_num }}MSP",
+        "msp": "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/msp/",
+        "ca": {
+          "url": "http://ca.org{{ org_num }}:{{ node_port_mapping['ca.org' + org_num]['7054'] }}",
+          "name": "ca"
+        },
+{% for j in fabric_peers_per_org %}
+{% set peer_num = loop.index0 %}
+        "peer{{ peer_num }}": {
+          "requests": "grpcs://peer{{ peer_num }}.org{{ org_num }}:{{ node_port_mapping['peer' + peer_num + '.org' + org_num]['7051'] }}",
+          "events": "grpcs://peer{{ peer_num }}.org{{ org_num }}:{{ node_port_mapping['peer' + peer_num + '.org' + org_num]['7053'] }}",
+          "server-hostname": "peer{{ peer_num }}.org{{ org_num }}",
+          "tls_cacerts": "{{ crpto_config_dir }}/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt"
+        }{% if not loop.last %},{% endif %}
+{% endfor %}
+      },
+{% endfor %}
+    "channel": [
+      {
+        "name": "{{ channel_name }}",
+        "deployed": true,
+        "config": "{{ channel_artifacts_dir }}/channel.tx",
+        "organizations": [
+{% for i in fabric_num_orgs %}
+          "org{{ loop.index }}"{% if not loop.last %},{% endif %}
+{% endfor %}
+        ]
+      }
+    ],
+    "chaincodes": [
+      {{ metrics_chaincode | to_json }}
+    ],
+    "endorsement-policy": {
+      "identities": [
+{% for i in fabric_num_orgs %}
+        {
+          "role": {
+            "name": "member",
+            "mspId": "Org{{ loop.index }}MSP"
+          }
+        }{% if not loop.last %},{% endif %}
+{% endfor %}
+      ],
+      "policy": { "{{ fabric_num_orgs }}-of": [{% for i in fabric_num_orgs %}{"signed-by": {{ loop.index0 }}{% if not loop.last %},{% endif %} {% endfor %}]}
+    },
+    "context": {
+      "smallOperations": "{{ channel_name }}",
+      "init": "{{ channel_name }}",
+      "open": "{{ channel_name }}",
+      "publish": "{{ channel_name }}",
+      "query": "{{ channel_name }}"
+    }
+  },
+  "info": {
+    "Version": "{{ fabric_version }}",
+    "Size": "{{ fabric_num_orgs }} Orgs with {{ fabric_peers_per_org }} Peers each",
+    "Orderer": "Solo",
+    "Distribution": "Single Host"
+  }
+}

@@ -26,6 +26,18 @@ fabric_images:
 # state_db options couchdb / goleveldb
 fabric_state_db: couchdb
 
+# Metrics framework setting
+# inventory_dir is an ansible variable which stores location of hosts.ini file
+metrics_benchmark: "{{ inventory_dir }}/benchmark/marbles/main.js"
+metrics_network_file: "{{ inventory_dir }}/fabric_network.json"
+metrics_config_file: "{{ inventory_dir }}/benchmark/marbles/config.yaml"
+metrics_chaincode:
+  id: marbles
+  path: "{{ inventory_dir }}/contract/marbels-norichquery/go/marbles.go"
+  language: golang
+  version: v1
+  channel: "{{ mychannel }}"
+
 # Config Directories
 fabric_config_dirname: fabric-config
 fabric_config_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}"

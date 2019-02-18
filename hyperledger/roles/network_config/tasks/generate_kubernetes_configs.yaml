@@ -20,6 +20,9 @@
     executable: python3
   register: generate_k8s_result
 
+# An in-memory variable containing all network ports of peers, ca and orderer NoePort services
+# This will be used to setup a test channel and create network config for Metrics framework
+# TODO: Stored this in a file so that it can used by other playbooks as well, if required
 - name: Set exposed NodePort service ports in facts
   set_fact: node_port_mapping={{ generate_k8s_result.stdout }}
 
