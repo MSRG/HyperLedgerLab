@@ -8,16 +8,16 @@
 #
 ################################################################################
 Organizations:
-
+{% set orderer_domain = fabric_orderer_address.split(".")[1] %}
     # OrdererOrg defines an MSP for orderer.
     - &OrdererOrg
-        Name: Orgorderer1MSP
+        Name: {{ orderer_domain|capitalize }}MSP
 
         # ID to load the MSP definition as
-        ID: Orgorderer1MSP
+        ID: {{ orderer_domain|capitalize }}MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/orgorderer1/msp
+        MSPDir: crypto-config/ordererOrganizations/{{ orderer_domain }}/msp
 
         AdminPrincipal: Role.MEMBER
 {% for i in range(fabric_num_orgs|int) %}

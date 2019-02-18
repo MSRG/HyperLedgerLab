@@ -25,4 +25,4 @@ metrics_chaincode:
   path: "{{ inventory_dir }}/contract/marbels-norichquery/go/marbles.go"
   language: golang
   version: v1
-  channel: "{{ mychannel }}"
+  channel: "{{ channel_name }}"

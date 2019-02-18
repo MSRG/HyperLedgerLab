@@ -48,12 +48,14 @@
 
 - name: Copy channel artifacts to NFS
   become: yes
-  copy:
+  synchronize:
     src: "{{ channel_artifacts_dir }}"
     dest: "{{ nfs_server_mount_dir }}"
+    checksum: yes
 
 - name: Copy crypto configs to NFS
   become: yes
-  copy:
+  synchronize:
     src: "{{ crpto_config_dir }}"
     dest: "{{ nfs_server_mount_dir }}"
+    checksum: yes

@@ -2,21 +2,22 @@
   "caliper": {
     "blockchain": "fabric"
   },
+{% set orderer_domain = fabric_orderer_address.split(".")[1] %}
   "fabric": {
     "cryptodir": "network/fabric_i13/crypto-config",
     "network": {
       "orderer": {
         "url": "grpcs://{{ fabric_orderer_address }}:{{ orderer_node_port }}",
-        "domain": "orgorderer1",
-        "mspid": "OrdererMSP",
-        "msp": "{{ crpto_config_dir }}/ordererOrganizations/orgorderer1/msp/",
+        "domain": "{{ orderer_domain }}",
+        "mspid": "{{ orderer_domain|capitalize }}MSP",
+        "msp": "{{ crpto_config_dir }}/ordererOrganizations/{{ orderer_domain }}/msp/",
         "server-hostname": "{{ fabric_orderer_address }}",
-        "tls_cacerts": "{{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/ca.crt"
+        "tls_cacerts": "{{ crpto_config_dir }}/ordererOrganizations/{{ orderer_domain }}/orderers/{{ fabric_orderer_address }}/tls/ca.crt"
       },
-{% for i in fabric_num_orgs %}
-{% set org_num = loop.index %}
-      "org1": {
-        "name": "org1{{ org_num }}",
+{% for i in range(fabric_num_orgs|int) %}
+{% set org_num = loop.index|string %}
+      "org{{ org_num }}": {
+        "name": "org{{ org_num }}",
         "domain": "org{{ org_num }}",
         "mspid": "Org{{ org_num }}MSP",
         "msp": "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/msp/",
@@ -24,13 +25,13 @@
           "url": "http://ca.org{{ org_num }}:{{ node_port_mapping['ca.org' + org_num]['7054'] }}",
           "name": "ca"
         },
-{% for j in fabric_peers_per_org %}
-{% set peer_num = loop.index0 %}
+{% for j in range(fabric_peers_per_org|int) %}
+{% set peer_num = loop.index0|string %}
         "peer{{ peer_num }}": {
           "requests": "grpcs://peer{{ peer_num }}.org{{ org_num }}:{{ node_port_mapping['peer' + peer_num + '.org' + org_num]['7051'] }}",
           "events": "grpcs://peer{{ peer_num }}.org{{ org_num }}:{{ node_port_mapping['peer' + peer_num + '.org' + org_num]['7053'] }}",
           "server-hostname": "peer{{ peer_num }}.org{{ org_num }}",
-          "tls_cacerts": "{{ crpto_config_dir }}/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt"
+          "tls_cacerts": "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/peers/peer0.org{{ org_num }}/tls/ca.crt"
         }{% if not loop.last %},{% endif %}
 {% endfor %}
       },
@@ -41,7 +42,7 @@
         "deployed": true,
         "config": "{{ channel_artifacts_dir }}/channel.tx",
         "organizations": [
-{% for i in fabric_num_orgs %}
+{% for i in range(fabric_num_orgs|int) %}
           "org{{ loop.index }}"{% if not loop.last %},{% endif %}
 {% endfor %}
         ]
@@ -52,7 +53,7 @@
     ],
     "endorsement-policy": {
       "identities": [
-{% for i in fabric_num_orgs %}
+{% for i in range(fabric_num_orgs|int) %}
         {
           "role": {
             "name": "member",
@@ -61,7 +62,7 @@
         }{% if not loop.last %},{% endif %}
 {% endfor %}
       ],
-      "policy": { "{{ fabric_num_orgs }}-of": [{% for i in fabric_num_orgs %}{"signed-by": {{ loop.index0 }}{% if not loop.last %},{% endif %} {% endfor %}]}
+      "policy": { "{{ fabric_num_orgs }}-of": [{% for i in range(fabric_num_orgs|int) %}{"signed-by": {{ loop.index0 }}{% if not loop.last %},{% endif %} {% endfor %}]}
     },
     "context": {
       "smallOperations": "{{ channel_name }}",

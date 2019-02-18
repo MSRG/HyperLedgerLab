@@ -6,13 +6,15 @@ OrdererOrgs:
   # ---------------------------------------------------------------------------
   # Orderer
   # ---------------------------------------------------------------------------
+{% set orderer_domain = fabric_orderer_address.split(".")[1] %}
+{% set orderer_host = fabric_orderer_address.split(".")[0] %}
   - Name: Orderer1
-    Domain: orgorderer1
+    Domain: {{ orderer_domain }}
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
     Specs:
-      - Hostname: orderer0
+      - Hostname: {{ orderer_host }}
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------
