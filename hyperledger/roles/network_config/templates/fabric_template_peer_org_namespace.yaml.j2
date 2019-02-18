@@ -16,7 +16,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: $mountPath
-    server: {{ nfs_server_ip }}  #change to your nfs server ip here
+    server: {{ nfs_server_ip }}
 
 ---
 apiVersion: v1
@@ -31,7 +31,6 @@ spec:
    requests:
      storage: 10Mi
 
-
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -44,7 +43,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: $contractMountPath
-    server: {{ nfs_server_ip }}  #change to your nfs server ip here
+    server: {{ nfs_server_ip }}
 
 ---
 apiVersion: v1
@@ -58,5 +57,3 @@ spec:
  resources:
    requests:
      storage: 10Mi
-
----

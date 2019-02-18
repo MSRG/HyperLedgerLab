@@ -129,6 +129,7 @@ inventory/blockchain/fabric-config/templates/
 inventory/blockchain/fabric-config/bin/
 inventory/blockchain/fabric-config/crypto-config.yaml
 inventory/blockchain/fabric-config/configtx.yaml
+inventory/blockchain/fabric_network.json
 
 # Host file with are dynamically created
 inventory/blockchain/hosts.ini

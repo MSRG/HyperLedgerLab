@@ -74,17 +74,22 @@ def config_orgs(org_name, org_crypto_dir_path):
     :param org_crypto_dir_path: path to the organisation directory, where namespace.yaml is created
     :return: None
     """
-    namespace_template = get_template("fabric_template_namespace.yaml")
+    is_peer = org_crypto_dir_path.find("peer") != -1
+    if is_peer:
+        namespace_template = get_template("fabric_template_peer_org_namespace.yaml")
+    else:
+        namespace_template = get_template("fabric_template_orderer_org_namespace.yaml")
+
 
     render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
            org=dns_name(org_name),
            pvName="{0}-pv".format(org_name),
            mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1]),
-           contractMountPath="/opt/share/contract",
-           contractPVName="{0}-contract-pv".format(org_name)
+           contractMountPath="/opt/share/contract" if is_peer else None,
+           contractPVName="{0}-contract-pv".format(org_name) if is_peer else None
            )
 
-    if org_crypto_dir_path.find("peer") != -1:
+    if is_peer:
         # ###### pod config yaml for org cli
         cli_template = get_template("fabric_template_pod_cli.yaml")
 

@@ -7,7 +7,8 @@
 - name: Generate Kubernetes configuration templates
   template: src={{ item.src }} dest={{ templates_dir }}/{{ item.dest }} mode=0644
   with_items:
-    - { src: "fabric_template_namespace.yaml.j2", dest: "fabric_template_namespace.yaml" }
+    - { src: "fabric_template_peer_org_namespace.yaml.j2", dest: "fabric_template_peer_org_namespace.yaml" }
+    - { src: "fabric_template_orderer_org_namespace.yaml.j2", dest: "fabric_template_orderer_org_namespace.yaml" }
     - { src: "fabric_template_pod_ca.yaml.j2", dest: "fabric_template_pod_ca.yaml" }
     - { src: "fabric_template_pod_cli.yaml.j2", dest: "fabric_template_pod_cli.yaml" }
     - { src: "fabric_template_pod_orderer.yaml.j2", dest: "fabric_template_pod_orderer.yaml" }
