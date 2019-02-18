@@ -115,6 +115,10 @@ local_data
 # Ansible
 *.retry
 
+# Node
+package-lock.json
+node_modules
+
 # Kubespray
 inventory/cluster/artifacts/
 
