@@ -79,7 +79,9 @@ def config_orgs(org_name, org_crypto_dir_path):
     render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
            org=dns_name(org_name),
            pvName="{0}-pv".format(org_name),
-           mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1])
+           mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1]),
+           contractMountPath="/opt/share/contract",
+           contractPVName="{0}-contract-pv".format(org_name)
            )
 
     if org_crypto_dir_path.find("peer") != -1:
@@ -176,7 +178,8 @@ def config_peers(name, path):  # name means peerid.
            nodePort1=exposed_port1,
            nodePort2=exposed_port2,
            nodePort3=exposed_port3,
-           pvName=org_name + "-pv"
+           pvName="{0}-pv".format(org_name),
+           contractPVName="{0}-contract-pv".format(org_name)
            )
 
 

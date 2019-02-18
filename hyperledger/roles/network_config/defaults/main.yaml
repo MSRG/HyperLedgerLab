@@ -31,6 +31,8 @@ crypto_config_dirname: crypto-config
 crpto_config_dir: "{{ fabric_config_dir }}/{{ crypto_config_dirname }}"
 channel_artifacts_dirname: channel-artifacts
 channel_artifacts_dir: "{{ fabric_config_dir }}/{{ channel_artifacts_dirname }}"
+contract_dirname: "contract"
+contract_dir: "{{ inventory_dir }}/src/contract"
 templates_dirname: templates
 templates_dir: "{{ fabric_config_dir }}/{{ templates_dirname }}"
 cryptogen_config: "{{ fabric_config_dir }}/crypto-config.yaml"
