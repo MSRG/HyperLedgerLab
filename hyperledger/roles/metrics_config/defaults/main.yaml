@@ -22,7 +22,7 @@ metrics_network_file: "{{ inventory_dir }}/fabric_network.json"
 metrics_config_file: "{{ inventory_dir }}/benchmark/marbles/config.yaml"
 metrics_chaincode:
   id: marbles
-  path: "contract/marbles-norichquery/go/marbles.go"
+  path: "contract/marbles-norichquery/go/"      # NOTE: Path to Directory where chaincode file is located
   language: golang
   version: v1
   channel: "{{ channel_name }}"

@@ -105,6 +105,7 @@ def config_orgs(org_name, org_crypto_dir_path):
                cryptoName="{0}-crypto-pv".format(org_name),
                peerAddress="peer0.{0}:7051".format(dns_name(org_name)),
                mspid="{0}MSP".format(org_name.split('-')[0].capitalize()),
+               contractPVName="{0}-contract-pv".format(org_name)
                )
 
         # ###### pod config yaml for org ca
