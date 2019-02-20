@@ -59,10 +59,3 @@
     src: "{{ crpto_config_dir }}"
     dest: "{{ nfs_server_mount_dir }}"
     checksum: yes
-
-- name: Copy blockchain contract to NFS
-  become: yes
-  synchronize:
-    src: "{{ contract_dir }}"
-    dest: "{{ nfs_server_mount_dir }}"
-    checksum: yes

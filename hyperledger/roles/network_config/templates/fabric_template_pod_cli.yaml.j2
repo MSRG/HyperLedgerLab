@@ -112,8 +112,6 @@ spec:
              name: channel-artifacts
            - mountPath: /etc/hyperledger/fabric/crypto-config
              name: crypto-config
-           - mountPath: /opt/gopath/src/{{ contract_dirname }}
-             name: org-contract-pv
       volumes:
         - name: org-crypto-pv
           persistentVolumeClaim:
@@ -124,8 +122,5 @@ spec:
         - name: crypto-config
           persistentVolumeClaim:
               claimName: $cryptoName
-        - name: org-contract-pv
-          persistentVolumeClaim:
-              claimName: $contractPVName
 
 ---

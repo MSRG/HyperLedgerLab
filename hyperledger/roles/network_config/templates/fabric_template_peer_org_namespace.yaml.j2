@@ -30,30 +30,3 @@ spec:
  resources:
    requests:
      storage: 10Mi
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: $contractPVName
-spec:
-  capacity:
-    storage: 500Mi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    path: $contractMountPath
-    server: {{ nfs_server_ip }}
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
- namespace: $org
- name: $contractPVName
-spec:
- accessModes:
-   - ReadWriteMany
- resources:
-   requests:
-     storage: 10Mi

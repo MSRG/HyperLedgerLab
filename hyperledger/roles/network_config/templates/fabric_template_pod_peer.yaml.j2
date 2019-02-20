@@ -118,16 +118,11 @@ spec:
          - mountPath: /etc/hyperledger/fabric/tls
            name: org-crypto-pv
            subPath: $tlsPath
-         - mountPath: /opt/gopath/src/{{ contract_dirname }}
-           name: org-contract-pv
 
       volumes:
        - name: org-crypto-pv
          persistentVolumeClaim:
              claimName: $pvName
-       - name: org-contract-pv
-         persistentVolumeClaim:
-             claimName: $contractPVName
        - name: dind-graph-storage
          emptyDir: {}
        

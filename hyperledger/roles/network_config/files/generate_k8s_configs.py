@@ -84,9 +84,7 @@ def config_orgs(org_name, org_crypto_dir_path):
     render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
            org=dns_name(org_name),
            pvName="{0}-pv".format(org_name),
-           mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1]),
-           contractMountPath="/opt/share/contract" if is_peer else None,
-           contractPVName="{0}-contract-pv".format(org_name) if is_peer else None
+           mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1])
            )
 
     if is_peer:
@@ -104,8 +102,7 @@ def config_orgs(org_name, org_crypto_dir_path):
                artifactsName="{0}-artifacts-pv".format(org_name),
                cryptoName="{0}-crypto-pv".format(org_name),
                peerAddress="peer0.{0}:7051".format(dns_name(org_name)),
-               mspid="{0}MSP".format(org_name.split('-')[0].capitalize()),
-               contractPVName="{0}-contract-pv".format(org_name)
+               mspid="{0}MSP".format(org_name.split('-')[0].capitalize())
                )
 
         # ###### pod config yaml for org ca
@@ -184,8 +181,7 @@ def config_peers(name, path):  # name means peerid.
            nodePort1=exposed_port1,
            nodePort2=exposed_port2,
            nodePort3=exposed_port3,
-           pvName="{0}-pv".format(org_name),
-           contractPVName="{0}-contract-pv".format(org_name)
+           pvName="{0}-pv".format(org_name)
            )
 
 
