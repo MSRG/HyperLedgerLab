@@ -341,6 +341,54 @@ let Chaincode = class {
     }
 
     /**
+     * Queries for marbles based on a passed in owner.
+     * This is an example of a parameterized query where the query logic is baked into the chaincode,
+     * and accepting a single query parameter (owner).
+     * Only available on state databases that support rich query (e.g. CouchDB)
+     * @async
+     * @param {ChaincodeStub} stub The chaincode stub.
+     * @param {String[]} args The arguments of the function. Index 0: marble owner.
+     * @param {Chaincode} thisObject The chaincode object context.
+     * @return {Promise<Buffer>} The marbles of the specified owner.
+     */
+    async queryMarblesByOwner(stub, args, thisObject) {
+        if (args.length !== 1) {
+            throw new Error('Incorrect number of arguments. Expecting owner name.');
+        }
+
+        let owner = args[0].toLowerCase();
+        let queryString = {};
+        queryString.selector = {};
+        queryString.selector.docType = 'marble';
+        queryString.selector.owner = owner;
+        return await thisObject.getQueryResultForQueryString(stub, JSON.stringify(queryString), thisObject); //shim.success(queryResults);
+    }
+
+    /**
+     * Uses a query string to perform a query for marbles.
+     * Query string matching state database syntax is passed in and executed as is.
+     * Supports ad hoc queries that can be defined at runtime by the client.
+     * If this is not desired, follow the queryMarblesForOwner example for parameterized queries.
+     * Only available on state databases that support rich query (e.g. CouchDB)
+     * @async
+     * @param {ChaincodeStub} stub The chaincode stub.
+     * @param {String[]} args The arguments of the function. Index 0: query string.
+     * @param {Chaincode} thisObject The chaincode object context.
+     * @return {Promise<Buffer>} The results of the specified query.
+     */
+    async queryMarbles(stub, args, thisObject) {
+        if (args.length !== 1) {
+            throw new Error('Incorrect number of arguments. Expecting queryString');
+        }
+        let queryString = args[0];
+        if (!queryString) {
+            throw new Error('queryString must not be empty');
+        }
+
+        return await thisObject.getQueryResultForQueryString(stub, queryString, thisObject);
+    }
+
+    /**
      * Gets the results of a specified iterator.
      * @async
      * @param {Object} iterator The iterator to use.
@@ -391,6 +439,25 @@ let Chaincode = class {
                 return allResults;
             }
         }
+    }
+
+    /**
+     * Executes the provided query string.
+     * Result set is built and returned as a byte array containing the JSON results.
+     * @async
+     * @param {ChaincodeStub} stub The chaincode stub.
+     * @param {String} queryString The query string to execute.
+     * @param {Chaincode} thisObject The chaincode object context.
+     * @return {Promise<Buffer>} The results of the specified query.
+     */
+    async getQueryResultForQueryString(stub, queryString, thisObject) {
+
+        console.info('- getQueryResultForQueryString queryString:\n' + queryString);
+        let resultsIterator = await stub.getQueryResult(queryString);
+
+        let results = await thisObject.getAllResults(resultsIterator, false);
+
+        return Buffer.from(JSON.stringify(results));
     }
 
     /**

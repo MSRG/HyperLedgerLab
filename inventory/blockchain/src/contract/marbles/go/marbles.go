@@ -18,7 +18,7 @@ under the License.
 */
 
 /*
-* NOTE: This implementation is a replica of the following without rich query support:
+* NOTE: This implementation is a replica of the following:
 * https://github.com/hyperledger/fabric-samples/blob/release-1.1/chaincode/marbles02/node/marbles_chaincode.js
 */
 
@@ -37,6 +37,70 @@ under the License.
 // peer chaincode query -C myc1 -n marbles -c '{"Args":["getMarblesByRange","marble1","marble3"]}'
 // peer chaincode query -C myc1 -n marbles -c '{"Args":["getHistoryForMarble","marble1"]}'
 
+// Rich Query (Only supported if CouchDB is used as state database):
+//   peer chaincode query -C myc1 -n marbles -c '{"Args":["queryMarblesByOwner","tom"]}'
+//   peer chaincode query -C myc1 -n marbles -c '{"Args":["queryMarbles","{\"selector\":{\"owner\":\"tom\"}}"]}'
+
+// INDEXES TO SUPPORT COUCHDB RICH QUERIES
+//
+// Indexes in CouchDB are required in order to make JSON queries efficient and are required for
+// any JSON query with a sort. As of Hyperledger Fabric 1.1, indexes may be packaged alongside
+// chaincode in a META-INF/statedb/couchdb/indexes directory. Each index must be defined in its own
+// text file with extension *.json with the index definition formatted in JSON following the
+// CouchDB index JSON syntax as documented at:
+// http://docs.couchdb.org/en/2.1.1/api/database/find.html#db-index
+//
+// This marbles02 example chaincode demonstrates a packaged
+// index which you can find in META-INF/statedb/couchdb/indexes/indexOwner.json.
+// For deployment of chaincode to production environments, it is recommended
+// to define any indexes alongside chaincode so that the chaincode and supporting indexes
+// are deployed automatically as a unit, once the chaincode has been installed on a peer and
+// instantiated on a channel. See Hyperledger Fabric documentation for more details.
+//
+// If you have access to the your peer's CouchDB state database in a development environment,
+// you may want to iteratively test various indexes in support of your chaincode queries.  You
+// can use the CouchDB Fauxton interface or a command line curl utility to create and update
+// indexes. Then once you finalize an index, include the index definition alongside your
+// chaincode in the META-INF/statedb/couchdb/indexes directory, for packaging and deployment
+// to managed environments.
+//
+// In the examples below you can find index definitions that support marbles02
+// chaincode queries, along with the syntax that you can use in development environments
+// to create the indexes in the CouchDB Fauxton interface or a curl command line utility.
+//
+
+//Example hostname:port configurations to access CouchDB.
+//
+//To access CouchDB docker container from within another docker container or from vagrant environments:
+// http://couchdb:5984/
+//
+//Inside couchdb docker container
+// http://127.0.0.1:5984/
+
+// Index for docType, owner.
+// Note that docType and owner fields must be prefixed with the "data" wrapper
+//
+// Index definition for use with Fauxton interface
+// {"index":{"fields":["data.docType","data.owner"]},"ddoc":"indexOwnerDoc", "name":"indexOwner","type":"json"}
+//
+// Example curl command line to define index in the CouchDB channel_chaincode database
+// curl -i -X POST -H "Content-Type: application/json" -d "{\"index\":{\"fields\":[\"data.docType\",\"data.owner\"]},\"name\":\"indexOwner\",\"ddoc\":\"indexOwnerDoc\",\"type\":\"json\"}" http://hostname:port/myc1_marbles/_index
+//
+
+// Index for docType, owner, size (descending order).
+// Note that docType, owner and size fields must be prefixed with the "data" wrapper
+//
+// Index definition for use with Fauxton interface
+// {"index":{"fields":[{"data.size":"desc"},{"data.docType":"desc"},{"data.owner":"desc"}]},"ddoc":"indexSizeSortDoc", "name":"indexSizeSortDesc","type":"json"}
+//
+// Example curl command line to define index in the CouchDB channel_chaincode database
+// curl -i -X POST -H "Content-Type: application/json" -d "{\"index\":{\"fields\":[{\"data.size\":\"desc\"},{\"data.docType\":\"desc\"},{\"data.owner\":\"desc\"}]},\"ddoc\":\"indexSizeSortDoc\", \"name\":\"indexSizeSortDesc\",\"type\":\"json\"}" http://hostname:port/myc1_marbles/_index
+
+// Rich Query with index design doc and index name specified (Only supported if CouchDB is used as state database):
+//   peer chaincode query -C myc1 -n marbles -c '{"Args":["queryMarbles","{\"selector\":{\"docType\":\"marble\",\"owner\":\"tom\"}, \"use_index\":[\"_design/indexOwnerDoc\", \"indexOwner\"]}"]}'
+
+// Rich Query with index design doc specified only (Only supported if CouchDB is used as state database):
+//   peer chaincode query -C myc1 -n marbles -c '{"Args":["queryMarbles","{\"selector\":{\"docType\":{\"$eq\":\"marble\"},\"owner\":{\"$eq\":\"tom\"},\"size\":{\"$gt\":0}},\"fields\":[\"docType\",\"owner\",\"size\"],\"sort\":[{\"size\":\"desc\"}],\"use_index\":\"_design/indexSizeSortDoc\"}"]}'
 
 package main
 
@@ -97,6 +161,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return t.delete(stub, args)
 	} else if function == "readMarble" { //read a marble
 		return t.readMarble(stub, args)
+	} else if function == "queryMarblesByOwner" { //find marbles for owner X using rich query
+		return t.queryMarblesByOwner(stub, args)
+	} else if function == "queryMarbles" { //find marbles based on an ad hoc rich query
+		return t.queryMarbles(stub, args)
 	} else if function == "getHistoryForMarble" { //get history of values for a marble
 		return t.getHistoryForMarble(stub, args)
 	} else if function == "getMarblesByRange" { //get marbles based on range query
@@ -413,6 +481,114 @@ func (t *SimpleChaincode) transferMarblesBasedOnColor(stub shim.ChaincodeStubInt
 	responsePayload := fmt.Sprintf("Transferred %d %s marbles to %s", i, color, newOwner)
 	fmt.Println("- end transferMarblesBasedOnColor: " + responsePayload)
 	return shim.Success([]byte(responsePayload))
+}
+
+// =======Rich queries =========================================================================
+// Two examples of rich queries are provided below (parameterized query and ad hoc query).
+// Rich queries pass a query string to the state database.
+// Rich queries are only supported by state database implementations
+//  that support rich query (e.g. CouchDB).
+// The query string is in the syntax of the underlying state database.
+// With rich queries there is no guarantee that the result set hasn't changed between
+//  endorsement time and commit time, aka 'phantom reads'.
+// Therefore, rich queries should not be used in update transactions, unless the
+// application handles the possibility of result set changes between endorsement and commit time.
+// Rich queries can be used for point-in-time queries against a peer.
+// ============================================================================================
+
+// ===== Example: Parameterized rich query =================================================
+// queryMarblesByOwner queries for marbles based on a passed in owner.
+// This is an example of a parameterized query where the query logic is baked into the chaincode,
+// and accepting a single query parameter (owner).
+// Only available on state databases that support rich query (e.g. CouchDB)
+// =========================================================================================
+func (t *SimpleChaincode) queryMarblesByOwner(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+	//   0
+	// "bob"
+	if len(args) < 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	owner := strings.ToLower(args[0])
+
+	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"marble\",\"owner\":\"%s\"}}", owner)
+
+	queryResults, err := getQueryResultForQueryString(stub, queryString)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	return shim.Success(queryResults)
+}
+
+// ===== Example: Ad hoc rich query ========================================================
+// queryMarbles uses a query string to perform a query for marbles.
+// Query string matching state database syntax is passed in and executed as is.
+// Supports ad hoc queries that can be defined at runtime by the client.
+// If this is not desired, follow the queryMarblesForOwner example for parameterized queries.
+// Only available on state databases that support rich query (e.g. CouchDB)
+// =========================================================================================
+func (t *SimpleChaincode) queryMarbles(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+	//   0
+	// "queryString"
+	if len(args) < 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	queryString := args[0]
+
+	queryResults, err := getQueryResultForQueryString(stub, queryString)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	return shim.Success(queryResults)
+}
+
+// =========================================================================================
+// getQueryResultForQueryString executes the passed in query string.
+// Result set is built and returned as a byte array containing the JSON results.
+// =========================================================================================
+func getQueryResultForQueryString(stub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
+
+	fmt.Printf("- getQueryResultForQueryString queryString:\n%s\n", queryString)
+
+	resultsIterator, err := stub.GetQueryResult(queryString)
+	if err != nil {
+		return nil, err
+	}
+	defer resultsIterator.Close()
+
+	// buffer is a JSON array containing QueryRecords
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+
+	bArrayMemberAlreadyWritten := false
+	for resultsIterator.HasNext() {
+		queryResponse, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"Key\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(queryResponse.Key)
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"Record\":")
+		// Record is a JSON object, so we write as-is
+		buffer.WriteString(string(queryResponse.Value))
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+
+	fmt.Printf("- getQueryResultForQueryString queryResult:\n%s\n", buffer.String())
+
+	return buffer.Bytes(), nil
 }
 
 func (t *SimpleChaincode) getHistoryForMarble(stub shim.ChaincodeStubInterface, args []string) pb.Response {
