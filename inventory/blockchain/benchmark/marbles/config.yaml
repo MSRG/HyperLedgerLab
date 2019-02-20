@@ -19,7 +19,7 @@ test:
     - type: fixed-rate
       opts:
         tps: 75
-    callback: inventory/blockchain/benchmark/marbles/init.js
+    callback: ../inventory/blockchain/benchmark/marbles/init.js
   - label: query
     txNumber:
     - 15
@@ -31,7 +31,7 @@ test:
     - type: fixed-rate
       opts:
         tps: 5
-    callback: inventory/blockchain/benchmark/marbles/query.js
+    callback: ../inventory/blockchain/benchmark/marbles/query.js
 monitor:
   type:
   - process
