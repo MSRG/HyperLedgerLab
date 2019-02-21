@@ -49,9 +49,7 @@
         ]
       }
     ],
-    "chaincodes": [
-      {{ metrics_chaincodes | to_json }}
-    ],
+    "chaincodes": {{ metrics_chaincodes | to_json }},
     "endorsement-policy": {
       "identities": [
 {% for i in range(fabric_num_orgs|int) %}
