@@ -17,10 +17,12 @@ fi
 
 if [[ $1 = "node" ]]
 then
-    # Setup node environment
-    npm install
-    npm run fabric-deps
-    npm audit fix
+    if [[ ! -d node_modules ]]
+    then
+        # Setup node environment
+        npm install
+        npm run fabric-deps
+    fi
 else
     # Setup python environment
     if [[ -d venv ]]

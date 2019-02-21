@@ -17,13 +17,13 @@ fabric_orderer_address: orderer0.orgorderer1
 
 # Metrics framework setting
 # inventory_dir is an ansible variable which stores location of hosts.ini file
-metrics_benchmark: "{{ inventory_dir }}/benchmark/marbles/main.js"
+#metrics_benchmark: "{{ inventory_dir }}/benchmark/marbles/main.js"
+#metrics_config_file: "{{ inventory_dir }}/benchmark/marbles/config.yaml"
 metrics_network_file: "{{ inventory_dir }}/fabric_network.json"
-metrics_config_file: "{{ inventory_dir }}/benchmark/marbles/config.yaml"
-metrics_chaincode:
-  id: marbles
-  path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
-  metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
-  language: golang
-  version: v1
-  channel: "{{ channel_name }}"
+metrics_chaincodes:
+  - id: marbles
+    path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
+    metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
+    language: golang
+    version: v1
+    channel: "{{ channel_name }}"
