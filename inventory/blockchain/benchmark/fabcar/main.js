@@ -1,13 +1,3 @@
-/**
- * Copyright 2019 Sahil Kalra. This file has been modified to provide actual path to caliper dir in this project
- *
-* Copyright 2017 HUAWEI. All Rights Reserved.
-*
-* SPDX-License-Identifier: Apache-2.0
-*
-*/
-
-
 'use strict';
 
 const Util = require('../../../../caliper/src/comm/util');
@@ -43,7 +33,7 @@ function main() {
 
     const path = require('path');
     const fs = require('fs-extra');
-    let logger = Util.getLogger('benchmark/marbles/main.js');
+    let logger = Util.getLogger('benchmark/fabcar/main.js');
     let absConfigFile;
     if(typeof configFile === 'undefined') {
         absConfigFile = path.join(__dirname, 'config.yaml');
@@ -87,22 +77,3 @@ function main() {
 }
 
 main();
-
-
-
-
-
-
-/*
-var config_path;
-if(process.argv.length < 3) {
-    config_path = path.join(__dirname, 'config.json');
-}
-else {
-    config_path = path.join(__dirname, process.argv[2]);
-}
-
-// use default framework to run the tests
-var framework = require('../../src/comm/bench-flow.js');
-framework.run(config_path);
-*/
