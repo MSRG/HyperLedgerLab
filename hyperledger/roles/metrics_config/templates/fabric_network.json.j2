@@ -63,13 +63,9 @@
       ],
       "policy": { "{{ fabric_num_orgs }}-of": [{% for i in range(fabric_num_orgs|int) %}{"signed-by": {{ loop.index0 }}}{% if not loop.last %},{% endif %} {% endfor %}]}
     },
-    "context": {
-      "smallOperations": "{{ channel_name }}",
-      "init": "{{ channel_name }}",
-      "open": "{{ channel_name }}",
-      "publish": "{{ channel_name }}",
-      "query": "{{ channel_name }}"
-    }
+{% if metrics_tx_context %}
+    "context": {{ metrics_tx_context | to_json }}
+{% endif %}
   },
   "info": {
     "Version": "{{ fabric_version }}",

@@ -16,7 +16,7 @@ module.exports.run = function () {
     txIndex++;
     return bc.invokeSmartContract(
         contx,
-        'marbles',
+        'fabcar',
         'v1',
         [{
             transaction_type: "changeCarOwner",

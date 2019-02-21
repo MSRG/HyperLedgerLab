@@ -27,3 +27,4 @@ metrics_chaincodes:
     language: golang
     version: v1
     channel: "{{ channel_name }}"
+metrics_tx_context: null

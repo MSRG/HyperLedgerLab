@@ -8,6 +8,10 @@ test:
   - label: initLedger
     txNumber:
     - 1             # Run just once and this will create 10 cars with id CAR1, CAR2 .... etc. These will be used for query and change owner operation (See fabcar.go)
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 1
     callback: ../inventory/blockchain/benchmark/fabcar/initLedger.js
 
   - label: createCar
