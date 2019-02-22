@@ -2,7 +2,7 @@
 test:
   clients:
     type: local
-    number: 50
+    number: 10
     
   rounds:
   - label: initLedger
