@@ -3,6 +3,7 @@
 #######################################################
 {% for i in range(fabric_num_zookeeper|int) %}
 {% set zookeeper_id=loop.index0 %}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,7 +35,7 @@ spec:
         - name: ZOOKEEPER_TICK_TIME
           value: 2000
         - name: ZOO_SERVERS
-          name: "{% for j in range(fabric_num_zookeeper|int) %}server.{{ loop.index }}={% if loop.index0 == zookeeper_id %}0.0.0.0{% else %}zookeeper{{ loop.index0 }}.$namespace{% endif %}:2888:3888 {% endfor %}"
+          value: "{% for j in range(fabric_num_zookeeper|int) %}server.{{ loop.index }}={% if loop.index0 == zookeeper_id %}0.0.0.0{% else %}zookeeper{{ loop.index0 }}.$namespace{% endif %}:2888:3888 {% endfor %}"
         - name: ZOO_MY_ID
           value: {{ loop.index }}       # Must be between 1 and 255
         ports:
@@ -75,6 +76,7 @@ spec:
 #######################################################
 {% for i in range(fabric_num_kafka|int) %}
 {% set kafka_id=loop.index0 %}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

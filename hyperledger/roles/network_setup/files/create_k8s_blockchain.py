@@ -67,16 +67,16 @@ def create_orderers(path):
     orgs = os.listdir(path)
     for org in orgs:
         org_path = os.path.join(path, org)
-        namespace_yaml = os.path.join(org_path, org + "-namespace.yaml")
+        namespace_yaml = os.path.join(org_path, "{0}-namespace.yaml".format(org))
         kubernetes_create(namespace_yaml)
+        if CREATE_KAFKA:
+            # Create kafka setup
+            kubernetes_create(os.path.join(org_path, "{0}-kafka.yaml".format(org)))
 
         for orderer in os.listdir(org_path + "/orderers"):
             orderer_path = os.path.join(org_path + "/orderers", orderer)
             orderer_yaml = os.path.join(orderer_path, "{0}.yaml".format(orderer))
             kubernetes_create(orderer_yaml)
-            if CREATE_KAFKA:
-                # Create kafka setup
-                kubernetes_create(os.path.join(orderer_path, "{0}-kafka.yaml".format(orderer)))
 
 
 def create_peers(path):

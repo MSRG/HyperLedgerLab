@@ -84,12 +84,19 @@ def config_orgs(org_name, org_crypto_dir_path):
     else:
         namespace_template = get_template("fabric_template_orderer_org_namespace.yaml")
 
-
     render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
            org=dns_name(org_name),
            pvName="{0}-pv".format(org_name),
            mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1])
            )
+
+    # Render Kafka Setup if specified for Orderer
+    if not is_peer and CREATE_KAFKA:
+        render(
+            get_template("fabric_template_pod_orderer_kafka.yaml"),
+            "{0}/{1}-kafka.yaml".format(org_crypto_dir_path, org_name),
+            namespace=dns_name(org_name)
+        )
 
     if is_peer:
         # ###### pod config yaml for org cli
@@ -217,14 +224,6 @@ def config_orderers(name, path):  # name means ordererid
            nodePort=exposed_port,
            pvName=org_name + "-pv"
            )
-
-    # Render Kafka Setup if specified
-    if CREATE_KAFKA:
-        render(
-            get_template("fabric_template_pod_orderer_kafka.yaml"),
-            "{0}/{1}-kafka.yaml".format(path, name),
-            namespace=dns_name(org_name)
-        )
 
 
 # ###########################################

@@ -21,6 +21,8 @@ fabric_images:
   tools: "hyperledger/fabric-tools:{{ fabric_version }}"
   orderer: "hyperledger/fabric-orderer:{{ fabric_version }}"
   couchdb: "hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}"
+  kafka: "hyperledger/fabric-kafka:{{ fabric_couchdb_version }}"
+  zookeeper: "hyperledger/fabric-zookeeper:{{ fabric_couchdb_version }}"
   dind: "docker:stable-dind"
 
 # Fabric Configuration
