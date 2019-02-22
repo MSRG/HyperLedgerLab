@@ -39,7 +39,7 @@ spec:
         - name: ZOO_SERVERS
           value: "{% for j in range(fabric_num_zookeeper|int) %}server.{{ loop.index }}={% if loop.index0 == zookeeper_id %}0.0.0.0{% else %}zookeeper{{ loop.index0 }}.$namespace{% endif %}:2888:3888 {% endfor %}"
         - name: ZOO_MY_ID
-          value: "{{ loop.index }}"      {# Must be between 1 and 255 #}
+          value: "{{ loop.index }}"             # Must be between 1 and 255
         ports:
           - containerPort: 2181
           - containerPort: 2888
@@ -120,9 +120,9 @@ spec:
         - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
           value: "1"
         - name: KAFKA_MESSAGE_MAX_BYTES
-          value: "1048576"               {# # 1 * 1024 * 1024 B #}
+          value: "1048576"               # 1 * 1024 * 1024 B
         - name: KAFKA_REPLICA_FETCH_MAX_BYTES
-          value: "1048576"                {# # 1 * 1024 * 1024 B #}
+          value: "1048576"               # 1 * 1024 * 1024 B
         - name: KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE
           value: "false"
         - name: KAFKA_LOG_RETENTION_MS
