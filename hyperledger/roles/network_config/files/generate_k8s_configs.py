@@ -8,6 +8,7 @@ CRYPTO_CONFIG_DIR = None
 TEMPLATES_DIR = None
 ORDERER = None
 PEER = None
+CREATE_KAFKA = False
 
 PORT_START_FROM = 30000
 GAP = 100  # interval for worker's port
@@ -33,19 +34,22 @@ def parse_cmd_line_args():
                             help='Path to crypto config directory')
         parser.add_argument('templates_dir', metavar='TemplatesDir', type=str, nargs=1,
                             help='Path to kubernetes pod templates directory')
+        parser.add_argument('--kafka', action='store_true', dest='create_kafka',
+                            help='Create Kafka Setup for Orderer Consensus')
 
     parser_obj = argparse.ArgumentParser(description='Generate Kubernetes configs for peers and orderers')
     add_args(parser_obj)
     return parser_obj.parse_args()
 
 
-def set_global_vars(crypto_config_dir, templates_dir):
+def set_global_vars(crypto_config_dir, templates_dir, create_kafka):
     """
     Set global variables from values from command line
     """
-    global CRYPTO_CONFIG_DIR, TEMPLATES_DIR, ORDERER, PEER
+    global CRYPTO_CONFIG_DIR, TEMPLATES_DIR, ORDERER, PEER, CREATE_KAFKA
     CRYPTO_CONFIG_DIR = crypto_config_dir
     TEMPLATES_DIR = templates_dir
+    CREATE_KAFKA = create_kafka
     ORDERER = os.path.join(CRYPTO_CONFIG_DIR, "ordererOrganizations")
     PEER = os.path.join(CRYPTO_CONFIG_DIR, "peerOrganizations")
 
@@ -202,7 +206,8 @@ def config_orderers(name, path):  # name means ordererid
         "7050": exposed_port
     }
 
-    render(config_template, path + "/" + name + ".yaml",
+    # Render Orderer Deployment
+    render(config_template, "{0}/{1}.yaml".format(path, name),
            namespace=dns_name(org_name),
            ordererID=dns_name(orderer_name),
            podName=dns_name(orderer_name + "-" + org_name),
@@ -212,6 +217,14 @@ def config_orderers(name, path):  # name means ordererid
            nodePort=exposed_port,
            pvName=org_name + "-pv"
            )
+
+    # Render Kafka Setup if specified
+    if CREATE_KAFKA:
+        render(
+            get_template("fabric_template_pod_orderer_kafka.yaml"),
+            "{0}/{1}-kafka.yaml".format(path, name),
+            namespace=dns_name(org_name)
+        )
 
 
 # ###########################################
@@ -260,7 +273,7 @@ def generate_all_configs():
 if __name__ == "__main__":
     kwargs_obj = parse_cmd_line_args()
 
-    set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.templates_dir[0])
+    set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.templates_dir[0], kwargs_obj.create_kafka)
 
     generate_all_configs()
     # print to stdout so NodePort Service mapping can be stored can be stored

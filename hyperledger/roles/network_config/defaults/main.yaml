@@ -10,6 +10,9 @@ fabric_num_orgs: 2
 fabric_peers_per_org: 2
 #fabric_num_orderer: 1
 fabric_orderer_address: orderer0.orgorderer1
+fabric_orderer_type: solo       # Options: solo/kafka
+fabric_num_kafka: 3
+fabric_num_zookeeper: 3
 
 # Custom fabric container images
 fabric_images:
@@ -18,6 +21,8 @@ fabric_images:
   tools: "hyperledger/fabric-tools:{{ fabric_version }}"
   orderer: "hyperledger/fabric-orderer:{{ fabric_version }}"
   couchdb: "hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}"
+  kafka: "hyperledger/fabric-kafka:{{ fabric_couchdb_version }}"
+  zookeeper: "hyperledger/fabric-zookeeper:{{ fabric_couchdb_version }}"
   dind: "docker:stable-dind"
 
 # Fabric Configuration
