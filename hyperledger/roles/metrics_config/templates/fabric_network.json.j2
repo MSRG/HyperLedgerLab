@@ -69,9 +69,15 @@
   },
   "info": {
     "Version": "{{ fabric_version }}",
-    "Size": "{{ fabric_num_orgs }} Orgs with {{ fabric_peers_per_org }} Peers each",
-    "Orderer": "Solo",
-    "Distribution": "Single Host",
-    "details": "Fabric Version: {{ fabric_version }}"
+    "Distribution": "Kubernetes",
+    "Peer": "Orgs: {{ fabric_num_orgs }}, Peers per org:{{ fabric_peers_per_org }}"
+    "StateDB: "{{ fabric_state_db }}"
+    "Orderer": "Orgs: 1, Orderers: {{ fabric_num_orderer }}"
+    "Orderer Consensus": "{{ fabric_num_orderer }}",
+    "Orderer Address": "{{ fabric_orderer_address }}",
+{% if fabric_orderer_type == "kafka" %}
+    "Kafka Cluster": "{{ fabric_num_kafka }} kafka with {{ fabric_num_zookeeper }} zookeeper pods",
+{% endif %}
+    "details": "Fabric version {{ fabric_version }} on Kubernetes. Each Organisation is mapped to a Kubernetes namespace."
   }
 }
