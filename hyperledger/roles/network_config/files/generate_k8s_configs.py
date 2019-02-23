@@ -12,6 +12,9 @@ CREATE_KAFKA = False
 
 PORT_START_FROM = 30000
 GAP = 100  # interval for worker's port
+ORDERER_SERVICE_PORT = 32000
+ORDERER_SERVICE_HOST = "orderer"
+ORDERER_PORT_START_FROM = ORDERER_SERVICE_PORT + 1
 
 NODEPORT_SERVICE_PORTS = {}
 
@@ -80,26 +83,15 @@ def config_orgs(org_name, org_crypto_dir_path):
     """
     is_peer = org_crypto_dir_path.find("peer") != -1
     if is_peer:
+        # Create Peer Namespace, CLI and CA
         namespace_template = get_template("fabric_template_peer_org_namespace.yaml")
-    else:
-        namespace_template = get_template("fabric_template_orderer_org_namespace.yaml")
+        render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
+               org=dns_name(org_name),
+               pvName="{0}-pv".format(org_name),
+               mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1])
+               )
 
-    render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
-           org=dns_name(org_name),
-           pvName="{0}-pv".format(org_name),
-           mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1])
-           )
-
-    # Render Kafka Setup if specified for Orderer
-    if not is_peer and CREATE_KAFKA:
-        render(
-            get_template("fabric_template_pod_orderer_kafka.yaml"),
-            "{0}/{1}-kafka.yaml".format(org_crypto_dir_path, org_name),
-            namespace=dns_name(org_name)
-        )
-
-    if is_peer:
-        # ###### pod config yaml for org cli
+        # Peer Org CLI
         cli_template = get_template("fabric_template_pod_cli.yaml")
 
         msp_path_template = 'users/Admin@{0}/msp'
@@ -116,7 +108,7 @@ def config_orgs(org_name, org_crypto_dir_path):
                mspid="{0}MSP".format(org_name.split('-')[0].capitalize())
                )
 
-        # ###### pod config yaml for org ca
+        # Peer Org CA
         # Need to expose pod's port to worker ! ####
         address_segment = (int(org_name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
         exposed_port = PORT_START_FROM + address_segment
@@ -146,7 +138,29 @@ def config_orgs(org_name, org_crypto_dir_path):
                nodePort=exposed_port,
                pvName="{0}-pv".format(org_name)
                )
+    else:
+        # Create Orderer Namespace and service
+        namespace_template = get_template("fabric_template_orderer_org_namespace.yaml")
 
+        render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
+               org=dns_name(org_name),
+               pvName="{0}-pv".format(org_name),
+               mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1]),
+               nodePort=ORDERER_SERVICE_PORT,
+               serviceName=ORDERER_SERVICE_HOST
+               )
+
+        NODEPORT_SERVICE_PORTS["{0}.{1}".format(ORDERER_SERVICE_HOST, dns_name(org_name))] = {
+            "7050": ORDERER_SERVICE_PORT
+        }
+
+        # Render Kafka Setup if specified for Orderer
+        if CREATE_KAFKA:
+            render(
+                get_template("fabric_template_pod_orderer_kafka.yaml"),
+                "{0}/{1}-kafka.yaml".format(org_crypto_dir_path, org_name),
+                namespace=dns_name(org_name)
+            )
 
 def generate_yaml(member, memberPath, flag):
     if flag == "/peers":
@@ -207,7 +221,7 @@ def config_orderers(name, path):  # name means ordererid
     orderer_name = name_split[0]
     org_name = name_split[1]
 
-    exposed_port = 32000 + int(orderer_name.split("orderer")[-1] if orderer_name.split("orderer")[-1] != '' else 0)
+    exposed_port = ORDERER_PORT_START_FROM + int(orderer_name.split("orderer")[-1] if orderer_name.split("orderer")[-1] != '' else 0)
     # Add the NodePort exposed ports mapping
     NODEPORT_SERVICE_PORTS[name] = {
         "7050": exposed_port

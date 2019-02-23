@@ -61,7 +61,9 @@ Orderer: &OrdererDefaults
     OrdererType: {{ fabric_orderer_type }}
 
     Addresses:
-        - {{ fabric_orderer_address }}:7050
+{% for i in range(fabric_num_orderer|int) %}
+        - orderer{{ loop.index0 }}.{{ orderer_domain }}:7050
+{% endfor %}
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 250ms

@@ -30,3 +30,22 @@ spec:
  resources:
    requests:
      storage: 10Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $serviceName
+  namespace: $org
+spec:
+ selector:
+   app: hyperledger
+   role: orderer
+   org: $org
+ type: NodePort
+ ports:
+   - name: listen-endpoint
+     protocol: TCP
+     port: 7050
+     targetPort: 7050
+     nodePort: $nodePort

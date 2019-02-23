@@ -10,11 +10,16 @@ OrdererOrgs:
 {% set orderer_host = fabric_orderer_address.split(".")[0] %}
   - Name: Orderer1
     Domain: {{ orderer_domain }}
+    Template:
+      Count: {{ fabric_num_orderer|int }}
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
     Specs:
       - Hostname: {{ orderer_host }}
+{% for i in range(fabric_num_orderer|int) %}
+      - Hostname: orderer{{ loop.index0 }}
+{% endfor %}
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------
