@@ -9,7 +9,18 @@ fabric_num_orgs: 2
 fabric_peers_per_org: 2
 fabric_num_orderer: 2
 fabric_orderer_address: orderer0.orgorderer1
-fabric_orderer_type: solo       # Options: solo/kafka
+# Options for Orderer Consensus type: solo/kafka
+fabric_orderer_type: solo
+# Batch Timeout: The amount of time to wait before creating a batch
+fabric_batch_timeout: "250ms"
+# Batch Size: Controls the number of messages batched into a block
+# Index0: Max Message Count: The maximum number of messages to permit in a batch
+# Index1: Absolute Max Bytes: The absolute maximum number of bytes allowed for the
+#         serialized messages in a batch.
+# Index2: Preferred Max Bytes: The preferred maximum number of bytes allowed for
+#         the serialized messages in a batch. A message larger than the preferred
+#         max bytes will result in a batch larger than preferred max bytes.
+fabric_batchsize: ["10", "128 MB", "128 MB"]
 
 # Create CLI Pod
 fabric_create_cli: false

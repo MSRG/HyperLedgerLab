@@ -66,22 +66,22 @@ Orderer: &OrdererDefaults
 {% endfor %}
 
     # Batch Timeout: The amount of time to wait before creating a batch
-    BatchTimeout: 250ms
+    BatchTimeout: {{ fabric_batch_timeout }}
+# Batch Size: Controls the number of messages batched into a block
 
-    # Batch Size: Controls the number of messages batched into a block
     BatchSize:
 
         # Max Message Count: The maximum number of messages to permit in a batch
-        MaxMessageCount: 10
+        MaxMessageCount: {{ fabric_batchsize[0] }}
 
         # Absolute Max Bytes: The absolute maximum number of bytes allowed for
         # the serialized messages in a batch.
-        AbsoluteMaxBytes: 128 MB
+        AbsoluteMaxBytes: {{ fabric_batchsize[1] }}
 
         # Preferred Max Bytes: The preferred maximum number of bytes allowed for
         # the serialized messages in a batch. A message larger than the preferred
         # max bytes will result in a batch larger than preferred max bytes.
-        PreferredMaxBytes: 128 MB
+        PreferredMaxBytes: {{ fabric_batchsize[2] }}
 
     MaxChannels: 0
 
