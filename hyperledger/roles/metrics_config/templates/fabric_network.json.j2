@@ -75,9 +75,6 @@
     "Orderer": "Orgs: 1, Orderers: {{ fabric_num_orderer }}",
     "Orderer Consensus": "{{ fabric_num_orderer }}",
     "Orderer Address": "{{ fabric_orderer_address }}",
-{% if fabric_orderer_type == "kafka" %}
-    "Kafka Cluster": "{{ fabric_num_kafka }} kafka with {{ fabric_num_zookeeper }} zookeeper pods",
-{% endif %}
     "Ledger BatchTimeout": "{{ fabric_batch_timeout }}",
     "Ledger BatchSize": "MaxMessageCount:{{ fabric_batchsize[0] }} | AbsoluteMaxBytes:{{ fabric_batchsize[1] }} | PreferredMaxBytes:{{ fabric_batchsize[2] }}",
     "details": "Fabric version {{ fabric_version }} on Kubernetes. Each Organisation is mapped to a Kubernetes namespace."
