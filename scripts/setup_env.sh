@@ -42,3 +42,9 @@ else
         set +x
     fi
 fi
+
+# Create ansible.log file if not present
+if [[ ! -f ansible.log ]]
+then
+    touch ansible.log
+fi

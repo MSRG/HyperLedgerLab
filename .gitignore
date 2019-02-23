@@ -114,6 +114,7 @@ local_data
 
 # Ansible
 *.retry
+ansible.log.*
 
 # Node
 package-lock.json
@@ -134,3 +135,6 @@ inventory/blockchain/fabric_network.json
 # Host file with are dynamically created
 inventory/blockchain/hosts.ini
 inventory/cluster/hosts.ini
+
+# Metrics
+report-*.html
