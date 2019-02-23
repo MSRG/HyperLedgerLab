@@ -12,9 +12,7 @@ CREATE_KAFKA = False
 
 PORT_START_FROM = 30000
 GAP = 100  # interval for worker's port
-ORDERER_SERVICE_PORT = 32000
-ORDERER_SERVICE_HOST = "orderer"
-ORDERER_PORT_START_FROM = ORDERER_SERVICE_PORT + 1
+ORDERER_PORT_START_FROM = 32000
 
 NODEPORT_SERVICE_PORTS = {}
 
@@ -146,13 +144,7 @@ def config_orgs(org_name, org_crypto_dir_path):
                org=dns_name(org_name),
                pvName="{0}-pv".format(org_name),
                mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1]),
-               nodePort=ORDERER_SERVICE_PORT,
-               serviceName=ORDERER_SERVICE_HOST
                )
-
-        NODEPORT_SERVICE_PORTS["{0}.{1}".format(ORDERER_SERVICE_HOST, dns_name(org_name))] = {
-            "7050": ORDERER_SERVICE_PORT
-        }
 
         # Render Kafka Setup if specified for Orderer
         if CREATE_KAFKA:
