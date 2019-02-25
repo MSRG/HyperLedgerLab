@@ -7,7 +7,7 @@ source `dirname $0`/setup_env.sh node
 
 base_dir=$INVENTORY_DIR_PATH/blockchain/benchmark/
 
-chaincode=marbles
+chaincode=fabcar
 if [[ ! -z $1 ]]
 then
     chaincode=$1

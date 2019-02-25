@@ -44,12 +44,13 @@ fabric_state_db: couchdb
 # inventory_dir is an ansible variable which stores location of hosts.ini file
 metrics_network_file: "{{ inventory_dir }}/fabric_network.json"
 metrics_chaincodes:
-  - id: marbles
-    path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
-    metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
-    language: golang
-    version: v1
-    channel: "{{ channel_name }}"
+# Uncomment the following line to install and instantiate marbles chaincode on the network
+#  - id: marbles
+#    path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
+#    metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
+#    language: golang
+#    version: v1
+#    channel: "{{ channel_name }}"
   - id: fabcar
     path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
     metadataPath: ""
