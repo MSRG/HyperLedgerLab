@@ -1,7 +1,7 @@
 # Provide fabric versions as defined here:
 # https://hyperledger-fabric.readthedocs.io/en/release-1.2/install.html
 fabric_version: 1.4.0
-fabric_ca_version: 1.4.0
+fabric_ca_version: "{{ fabric_version }}"
 fabric_couchdb_version: 0.4.14
 
 # Fabric Network Config
