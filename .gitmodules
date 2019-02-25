@@ -1,3 +1,6 @@
 [submodule "kubespray"]
 	path = kubespray
 	url = https://github.com/sahilkalra1991/kubespray.git
+[submodule "caliper"]
+	path = caliper
+	url = https://github.com/sahilkalra1991/caliper.git

@@ -6,13 +6,21 @@ OrdererOrgs:
   # ---------------------------------------------------------------------------
   # Orderer
   # ---------------------------------------------------------------------------
+{% set orderer_domain = fabric_orderer_address.split(".")[1] %}
   - Name: Orderer1
-    Domain: orgorderer1
+    Domain: {{ orderer_domain }}
+    Template:
+      Count: {{ fabric_num_orderer|int }}
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
+{# This spec will create all orderers in crypto-config #}
+
     Specs:
-      - Hostname: orderer0
+{% for i in range(fabric_num_orderer|int) %}
+      - Hostname: orderer{{ loop.index0 }}
+{% endfor %}
+
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------

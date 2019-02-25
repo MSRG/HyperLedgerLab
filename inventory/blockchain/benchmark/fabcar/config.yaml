@@ -1,0 +1,64 @@
+---
+test:
+  clients:
+    type: local
+    number: 10
+    
+  rounds:
+  - label: initLedger
+    txNumber:
+    - 1             # Run just once and this will create 10 cars with id CAR1, CAR2 .... etc. These will be used for query and change owner operation (See fabcar.go)
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 1
+    callback: ../inventory/blockchain/benchmark/fabcar/initLedger.js
+
+  - label: createCar
+    txNumber:
+    - 500
+    - 500
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 50
+    - type: fixed-rate
+      opts:
+        tps: 75
+    callback: ../inventory/blockchain/benchmark/fabcar/createCar.js
+
+  - label: queryAllCars
+    txNumber:
+    - 100
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 20
+    callback: ../inventory/blockchain/benchmark/fabcar/queryAllCars.js
+
+#  - label: changeCarOwner
+#    txNumber:
+#    - 100
+#    rateControl:
+#    - type: fixed-rate
+#      opts:
+#        tps: 20
+#    callback: ../inventory/blockchain/benchmark/fabcar/changeCarOwner.js
+
+  - label: queryCar
+    txNumber:
+    - 100
+    rateControl:
+    - type: fixed-rate
+      opts:
+        tps: 20
+    callback: ../inventory/blockchain/benchmark/fabcar/queryCar.js
+
+monitor:
+  type:
+  - process
+  process:
+  - command: node
+    arguments: local-client.js
+    multiOutput: avg
+  interval: 1

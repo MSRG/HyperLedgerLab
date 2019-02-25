@@ -1,0 +1,5 @@
+---
+- name: Generate blockchain network config for Metrics tool
+  template: src={{ item.src }} dest={{ metrics_network_file }} mode=0644
+  with_items:
+    - { src: "fabric_network.json.j2", dest: "fabric_network.json" }

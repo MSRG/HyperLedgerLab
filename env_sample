@@ -4,5 +4,9 @@ export OS_PASSWORD="<password>"
 export OS_IMAGE_SSH_KEY="/home/ubuntu/.ssh/i13.openstack.image.key.pem"
 export OS_PROJECT_NAME="pn-hyperledger"
 
+# GO lang path for chaincode location. Tell caliper to not overwrite it
+export GOPATH="$(pwd)/inventory/blockchain"
+export OVERWRITE_GOPATH=false
+
 # Environment Variables for k8s Cluster setup
 export INVENTORY_DIR_PATH="$(pwd)/inventory"

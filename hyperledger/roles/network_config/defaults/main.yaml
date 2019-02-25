@@ -8,8 +8,21 @@ fabric_couchdb_version: 0.4.12
 # Fabric Network Config
 fabric_num_orgs: 2
 fabric_peers_per_org: 2
-#fabric_num_orderer: 1
+fabric_num_orderer: 1
 fabric_orderer_address: orderer0.orgorderer1
+fabric_orderer_type: solo       # Options: solo/kafka
+fabric_num_kafka: 3
+fabric_num_zookeeper: 3
+# Batch Timeout: The amount of time to wait before creating a batch
+fabric_batch_timeout: "250ms"
+# Batch Size: Controls the number of messages batched into a block
+# Index0: Max Message Count: The maximum number of messages to permit in a batch
+# Index1: Absolute Max Bytes: The absolute maximum number of bytes allowed for the
+#         serialized messages in a batch.
+# Index2: Preferred Max Bytes: The preferred maximum number of bytes allowed for
+#         the serialized messages in a batch. A message larger than the preferred
+#         max bytes will result in a batch larger than preferred max bytes.
+fabric_batchsize: ["10", "128 MB", "128 MB"]
 
 # Custom fabric container images
 fabric_images:
@@ -18,6 +31,8 @@ fabric_images:
   tools: "hyperledger/fabric-tools:{{ fabric_version }}"
   orderer: "hyperledger/fabric-orderer:{{ fabric_version }}"
   couchdb: "hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}"
+  kafka: "hyperledger/fabric-kafka:{{ fabric_couchdb_version }}"
+  zookeeper: "hyperledger/fabric-zookeeper:{{ fabric_couchdb_version }}"
   dind: "docker:stable-dind"
 
 # Fabric Configuration
@@ -31,6 +46,8 @@ crypto_config_dirname: crypto-config
 crpto_config_dir: "{{ fabric_config_dir }}/{{ crypto_config_dirname }}"
 channel_artifacts_dirname: channel-artifacts
 channel_artifacts_dir: "{{ fabric_config_dir }}/{{ channel_artifacts_dirname }}"
+contract_dirname: "contract"
+contract_dir: "{{ inventory_dir }}/src/contract"
 templates_dirname: templates
 templates_dir: "{{ fabric_config_dir }}/{{ templates_dirname }}"
 cryptogen_config: "{{ fabric_config_dir }}/crypto-config.yaml"

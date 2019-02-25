@@ -15,20 +15,36 @@ else
     exit 1
 fi
 
-# Setup python environment
-if [[ -d venv ]]
+if [[ $1 = "node" ]]
 then
-    echo "source venv/bin/activate"
-    source venv/bin/activate
+    if [[ ! -d node_modules ]]
+    then
+        # Setup node environment
+        npm install
+        npm run fabric-deps
+    fi
 else
-    set -x
-    mkdir venv
-    sudo apt update
-    sudo apt install python-pip
-    pip install virtualenv
-    virtualenv --python=python3 venv
-    source ./venv/bin/activate
-    pip install -r requirements.txt
-    pip install -r kubespray/requirements.txt
-    set +x
+    # Setup python environment
+    if [[ -d venv ]]
+    then
+        echo "source venv/bin/activate"
+        source venv/bin/activate
+    else
+        set -x
+        mkdir venv
+        sudo apt update
+        sudo apt install python-pip
+        pip install virtualenv
+        virtualenv --python=python3 venv
+        source ./venv/bin/activate
+        pip install -r requirements.txt
+        pip install -r kubespray/requirements.txt
+        set +x
+    fi
+fi
+
+# Create ansible.log file if not present
+if [[ ! -f ansible.log ]]
+then
+    touch ansible.log
 fi

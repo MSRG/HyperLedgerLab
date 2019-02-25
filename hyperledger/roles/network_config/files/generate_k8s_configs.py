@@ -8,9 +8,11 @@ CRYPTO_CONFIG_DIR = None
 TEMPLATES_DIR = None
 ORDERER = None
 PEER = None
+CREATE_KAFKA = False
 
 PORT_START_FROM = 30000
 GAP = 100  # interval for worker's port
+ORDERER_PORT_START_FROM = 32000
 
 NODEPORT_SERVICE_PORTS = {}
 
@@ -33,19 +35,22 @@ def parse_cmd_line_args():
                             help='Path to crypto config directory')
         parser.add_argument('templates_dir', metavar='TemplatesDir', type=str, nargs=1,
                             help='Path to kubernetes pod templates directory')
+        parser.add_argument('--kafka', action='store_true', dest='create_kafka',
+                            help='Create Kafka Setup for Orderer Consensus')
 
     parser_obj = argparse.ArgumentParser(description='Generate Kubernetes configs for peers and orderers')
     add_args(parser_obj)
     return parser_obj.parse_args()
 
 
-def set_global_vars(crypto_config_dir, templates_dir):
+def set_global_vars(crypto_config_dir, templates_dir, create_kafka):
     """
     Set global variables from values from command line
     """
-    global CRYPTO_CONFIG_DIR, TEMPLATES_DIR, ORDERER, PEER
+    global CRYPTO_CONFIG_DIR, TEMPLATES_DIR, ORDERER, PEER, CREATE_KAFKA
     CRYPTO_CONFIG_DIR = crypto_config_dir
     TEMPLATES_DIR = templates_dir
+    CREATE_KAFKA = create_kafka
     ORDERER = os.path.join(CRYPTO_CONFIG_DIR, "ordererOrganizations")
     PEER = os.path.join(CRYPTO_CONFIG_DIR, "peerOrganizations")
 
@@ -74,16 +79,17 @@ def config_orgs(org_name, org_crypto_dir_path):
     :param org_crypto_dir_path: path to the organisation directory, where namespace.yaml is created
     :return: None
     """
-    namespace_template = get_template("fabric_template_namespace.yaml")
+    is_peer = org_crypto_dir_path.find("peer") != -1
+    if is_peer:
+        # Create Peer Namespace, CLI and CA
+        namespace_template = get_template("fabric_template_peer_org_namespace.yaml")
+        render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
+               org=dns_name(org_name),
+               pvName="{0}-pv".format(org_name),
+               mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1])
+               )
 
-    render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
-           org=dns_name(org_name),
-           pvName="{0}-pv".format(org_name),
-           mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1])
-           )
-
-    if org_crypto_dir_path.find("peer") != -1:
-        # ###### pod config yaml for org cli
+        # Peer Org CLI
         cli_template = get_template("fabric_template_pod_cli.yaml")
 
         msp_path_template = 'users/Admin@{0}/msp'
@@ -97,10 +103,10 @@ def config_orgs(org_name, org_crypto_dir_path):
                artifactsName="{0}-artifacts-pv".format(org_name),
                cryptoName="{0}-crypto-pv".format(org_name),
                peerAddress="peer0.{0}:7051".format(dns_name(org_name)),
-               mspid="{0}MSP".format(org_name.split('-')[0].capitalize()),
+               mspid="{0}MSP".format(org_name.split('-')[0].capitalize())
                )
 
-        # ###### pod config yaml for org ca
+        # Peer Org CA
         # Need to expose pod's port to worker ! ####
         address_segment = (int(org_name.split("-")[0].split("org")[-1].split(".")[0]) - 1) * GAP
         exposed_port = PORT_START_FROM + address_segment
@@ -130,7 +136,23 @@ def config_orgs(org_name, org_crypto_dir_path):
                nodePort=exposed_port,
                pvName="{0}-pv".format(org_name)
                )
+    else:
+        # Create Orderer Namespace and service
+        namespace_template = get_template("fabric_template_orderer_org_namespace.yaml")
 
+        render(namespace_template, "{0}/{1}-namespace.yaml".format(org_crypto_dir_path, org_name),
+               org=dns_name(org_name),
+               pvName="{0}-pv".format(org_name),
+               mountPath="/opt/share/crypto-config{0}".format(org_crypto_dir_path.split("crypto-config")[-1]),
+               )
+
+        # Render Kafka Setup if specified for Orderer
+        if CREATE_KAFKA:
+            render(
+                get_template("fabric_template_pod_orderer_kafka.yaml"),
+                "{0}/{1}-kafka.yaml".format(org_crypto_dir_path, org_name),
+                namespace=dns_name(org_name)
+            )
 
 def generate_yaml(member, memberPath, flag):
     if flag == "/peers":
@@ -176,7 +198,7 @@ def config_peers(name, path):  # name means peerid.
            nodePort1=exposed_port1,
            nodePort2=exposed_port2,
            nodePort3=exposed_port3,
-           pvName=org_name + "-pv"
+           pvName="{0}-pv".format(org_name)
            )
 
 
@@ -191,13 +213,14 @@ def config_orderers(name, path):  # name means ordererid
     orderer_name = name_split[0]
     org_name = name_split[1]
 
-    exposed_port = 32000 + int(orderer_name.split("orderer")[-1] if orderer_name.split("orderer")[-1] != '' else 0)
+    exposed_port = ORDERER_PORT_START_FROM + int(orderer_name.split("orderer")[-1] if orderer_name.split("orderer")[-1] != '' else 0)
     # Add the NodePort exposed ports mapping
     NODEPORT_SERVICE_PORTS[name] = {
         "7050": exposed_port
     }
 
-    render(config_template, path + "/" + name + ".yaml",
+    # Render Orderer Deployment
+    render(config_template, "{0}/{1}.yaml".format(path, name),
            namespace=dns_name(org_name),
            ordererID=dns_name(orderer_name),
            podName=dns_name(orderer_name + "-" + org_name),
@@ -255,7 +278,7 @@ def generate_all_configs():
 if __name__ == "__main__":
     kwargs_obj = parse_cmd_line_args()
 
-    set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.templates_dir[0])
+    set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.templates_dir[0], kwargs_obj.create_kafka)
 
     generate_all_configs()
     # print to stdout so NodePort Service mapping can be stored can be stored

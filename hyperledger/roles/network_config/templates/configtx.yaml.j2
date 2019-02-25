@@ -8,16 +8,16 @@
 #
 ################################################################################
 Organizations:
-
+{% set orderer_domain = fabric_orderer_address.split(".")[1] %}
     # OrdererOrg defines an MSP for orderer.
     - &OrdererOrg
-        Name: Orgorderer1MSP
+        Name: {{ orderer_domain|capitalize }}MSP
 
         # ID to load the MSP definition as
-        ID: Orgorderer1MSP
+        ID: {{ orderer_domain|capitalize }}MSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/orgorderer1/msp
+        MSPDir: crypto-config/ordererOrganizations/{{ orderer_domain }}/msp
 
         AdminPrincipal: Role.MEMBER
 {% for i in range(fabric_num_orgs|int) %}
@@ -58,28 +58,30 @@ Orderer: &OrdererDefaults
 
     # Orderer Type: The orderer implementation to start
     # Available types are "solo" and "kafka"
-    OrdererType: solo
+    OrdererType: {{ fabric_orderer_type }}
 
     Addresses:
-        - {{ fabric_orderer_address }}:7050
+{% for i in range(fabric_num_orderer|int) %}
+        - orderer{{ loop.index0 }}.{{ orderer_domain }}:7050
+{% endfor %}
 
     # Batch Timeout: The amount of time to wait before creating a batch
-    BatchTimeout: 250ms
+    BatchTimeout: {{ fabric_batch_timeout }}
+# Batch Size: Controls the number of messages batched into a block
 
-    # Batch Size: Controls the number of messages batched into a block
     BatchSize:
 
         # Max Message Count: The maximum number of messages to permit in a batch
-        MaxMessageCount: 10
+        MaxMessageCount: {{ fabric_batchsize[0] }}
 
         # Absolute Max Bytes: The absolute maximum number of bytes allowed for
         # the serialized messages in a batch.
-        AbsoluteMaxBytes: 128 MB
+        AbsoluteMaxBytes: {{ fabric_batchsize[1] }}
 
         # Preferred Max Bytes: The preferred maximum number of bytes allowed for
         # the serialized messages in a batch. A message larger than the preferred
         # max bytes will result in a batch larger than preferred max bytes.
-        PreferredMaxBytes: 128 MB
+        PreferredMaxBytes: {{ fabric_batchsize[2] }}
 
     MaxChannels: 0
 
@@ -87,7 +89,9 @@ Orderer: &OrdererDefaults
         # Brokers: A list of Kafka brokers to which the orderer connects
         # NOTE: Use IP:port notation
         Brokers:
-            - 127.0.0.1:9092
+{% for i in range(fabric_num_kafka|int) %}
+            - kafka{{ loop.index0 }}.{{ orderer_domain }}:9092
+{% endfor %}
 
     # Organizations is the list of orgs which are defined as participants on
     # the orderer side of the network

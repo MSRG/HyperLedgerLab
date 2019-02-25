@@ -7,19 +7,25 @@
 - name: Generate Kubernetes configuration templates
   template: src={{ item.src }} dest={{ templates_dir }}/{{ item.dest }} mode=0644
   with_items:
-    - { src: "fabric_template_namespace.yaml.j2", dest: "fabric_template_namespace.yaml" }
+    - { src: "fabric_template_peer_org_namespace.yaml.j2", dest: "fabric_template_peer_org_namespace.yaml" }
+    - { src: "fabric_template_orderer_org_namespace.yaml.j2", dest: "fabric_template_orderer_org_namespace.yaml" }
     - { src: "fabric_template_pod_ca.yaml.j2", dest: "fabric_template_pod_ca.yaml" }
     - { src: "fabric_template_pod_cli.yaml.j2", dest: "fabric_template_pod_cli.yaml" }
     - { src: "fabric_template_pod_orderer.yaml.j2", dest: "fabric_template_pod_orderer.yaml" }
+    - { src: "fabric_template_pod_orderer_kafka.yaml.j2", dest: "fabric_template_pod_orderer_kafka.yaml" }
     - { src: "fabric_template_pod_peer.yaml.j2", dest: "fabric_template_pod_peer.yaml" }
 
 - name: Generate kubernetes configuration
-  script: |
+  script: >
     generate_k8s_configs.py {{ crpto_config_dir }} {{ templates_dir }}
+    {% if fabric_orderer_type == "kafka" %}--kafka{% endif %}
   args:
     executable: python3
   register: generate_k8s_result
 
+# An in-memory variable containing all network ports of peers, ca and orderer NoePort services
+# This will be used to setup a test channel and create network config for Metrics framework
+# TODO: Stored this in a file so that it can used by other playbooks as well, if required
 - name: Set exposed NodePort service ports in facts
   set_fact: node_port_mapping={{ generate_k8s_result.stdout }}
 

@@ -102,6 +102,8 @@ spec:
 # Error: panic: Failed to create chaincode server: listen tcp ip:7052: bind: cannot assign requested address
         - name: CORE_PEER_CHAINCODELISTENADDRESS
           value: localhost:7052
+        - name: GOPATH
+          value: /opt/gopath
         workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         ports:
          - containerPort: 7051
@@ -116,6 +118,7 @@ spec:
          - mountPath: /etc/hyperledger/fabric/tls
            name: org-crypto-pv
            subPath: $tlsPath
+
       volumes:
        - name: org-crypto-pv
          persistentVolumeClaim:
