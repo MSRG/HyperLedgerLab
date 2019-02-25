@@ -1,8 +1,9 @@
 # Authentication Variables for Openstack
 export OS_USERNAME="<username>"
 export OS_PASSWORD="<password>"
-export OS_IMAGE_SSH_KEY="/home/ubuntu/.ssh/i13.openstack.image.key.pem"
 export OS_PROJECT_NAME="pn-hyperledger"
+
+export OS_IMAGE_SSH_KEY="/home/ubuntu/.ssh/default-image-key.pem"         # Path to ssh key on CLI host
 
 # GO lang path for chaincode location. Tell caliper to not overwrite it
 export GOPATH="$(pwd)/inventory/blockchain"
