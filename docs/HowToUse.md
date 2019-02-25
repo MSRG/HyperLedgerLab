@@ -13,6 +13,7 @@
     * Provide appropriate details
 
 3. Setup kubernetes cluster
+    * Check that all details are correct and match Openstack account here: `inventory/infra/group_vars/os-infra.yml`. Make modifications if required
     * Command: `./scripts/k8s_setup.sh`
     * What will happen ?
         * It will setup the python environment
