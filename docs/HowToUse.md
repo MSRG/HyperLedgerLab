@@ -27,8 +27,10 @@
 
 5. Create Fabric Blockchain on kubernetes:
     * Command: `./scripts/fabric_setup.sh`
+    * Be default fabric version 1.4.0 is installed.
     * To create with a CLI pod in each organisation: `./scripts/fabric_setup.sh -e fabric_create_cli=true`
     * To use kafka as Orderer consensus: `./scripts/fabric_setup.sh -e fabric_orderer_type=kafka`
+    * To use fabric version 1.2.1: `./scripts/fabric_setup.sh -e fabric_version=1.2.1`
     * Other variables used in `inventory/blockchain/group_vars/blockchain_setup.yaml` can be over-ridden in same way as above
     * What will happen ?
         * It will create Fabric Blockchain on kubernetes with command: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_setup.yaml`

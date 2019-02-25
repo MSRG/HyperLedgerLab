@@ -1,7 +1,7 @@
 Supported Versions:
-* Fabric Binaries version: 1.2.1
-* Fabric CA version: 1.2.1
-* Fabric CouchDB: 0.4.12
+* Fabric Binaries version: 1.2.1, 1.4.0
+* Fabric CA version: 1.2.1, 1.4.0
+* Fabric CouchDB: 0.4.12, 0.4.14
 
 To support other binaries versions
 1. Add fabric bin binaries in hyperledger/roles/network_config/files/bin_{version}

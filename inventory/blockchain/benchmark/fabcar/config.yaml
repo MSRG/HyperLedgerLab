@@ -16,24 +16,24 @@ test:
 
   - label: createCar
     txNumber:
-    - 500
-    - 500
+    - 1000
+    - 1000
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 50
+        tps: 100
     - type: fixed-rate
       opts:
-        tps: 75
+        tps: 200
     callback: ../inventory/blockchain/benchmark/fabcar/createCar.js
 
   - label: queryAllCars
     txNumber:
-    - 100
+    - 1000
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 20
+        tps: 100
     callback: ../inventory/blockchain/benchmark/fabcar/queryAllCars.js
 
 #  - label: changeCarOwner
@@ -47,11 +47,11 @@ test:
 
   - label: queryCar
     txNumber:
-    - 100
+    - 1000
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 20
+        tps: 200
     callback: ../inventory/blockchain/benchmark/fabcar/queryCar.js
 
 monitor:

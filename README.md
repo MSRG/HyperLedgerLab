@@ -42,7 +42,8 @@ Summary: This repository contains scripts we are developing to deploy a Hyperled
     * Network Configuration: `inventory/blockchain/fabric-config/configtx.yaml`
 
 
-TODO: Add more configuration details
+Supported versions: Fabric 1.2.1 and 1.4.0 are supported. `-e fabric_version=1.2.1` argument can be passed to 
+blockchain_setup playbook to change the version
 
 
 **Ansible Commands**:
