@@ -1,5 +1,5 @@
 ---
-- name: Copy fabric binaries to inventory fabric-config
+- name: Copy fabric binaries with version "{{ fabric_version }}" to inventory fabric-config
   copy:
     src: "files/bin_{{ fabric_version }}/"
     dest: "{{ fabric_config_dir }}/bin/"
