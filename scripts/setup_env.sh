@@ -20,6 +20,9 @@ then
     if [[ ! -d node_modules ]]
     then
         # Setup node environment
+        curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        sudo npm install -g npm
         npm install
         npm run fabric-deps
     fi
