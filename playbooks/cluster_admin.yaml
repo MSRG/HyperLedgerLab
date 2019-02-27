@@ -13,6 +13,10 @@
           alias ks="k -n kube-system"
           alias kget="k get -o wide --all-namespaces"
 
+    - name: Set execute permission for kubectl binary
+      shell: |
+        chmod +x {{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl
+
     - name: Add Admin user for Kubernetes Dashboard
       shell: |
         {{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl --kubeconfig={{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/admin.conf apply -f {{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/admin_user.yaml
