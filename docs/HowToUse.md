@@ -11,6 +11,8 @@
 2. Create .env file with details about Openstack authentication
     * Copy `env_sample` to `.env`
     * Provide appropriate details
+    
+3. Add appropriate security groups as mentioned in `docs/FirewallPolicies.txt`
 
 3. Setup kubernetes cluster
     * Check that all details are correct and match Openstack account here: `inventory/infra/group_vars/os-infra.yml`. Make modifications if required

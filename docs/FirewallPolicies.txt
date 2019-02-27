@@ -1,0 +1,45 @@
+# This file defines the Security groups which should be defined in Openstack with respective firewall rules
+# These security groups will then be used when creating instances for kubernetes cluster
+# The variables defining the security groups can be found here: inventory/infra/group_vars/os-infra.yml
+
+
+####################################################
+####### SecurityGroupName: dns #############
+####################################################
+Direction	    Ether Type      IP Protocol	    Port Range	    Remote IP Prefix	Remote Security Group
+Egress	        IPv4	        Any	            Any	            0.0.0.0/0	        -
+Egress	        IPv6	        Any	            Any	            ::/0	            -
+Ingress	        IPv4	        TCP	            53 (DNS)	    0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            8081	        0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            9191	        0.0.0.0/0	        -
+Ingress	        IPv4	        UDP	            53	            0.0.0.0/0           -
+
+
+####################################################
+####### SecurityGroupName: kube-cluster #############
+####################################################
+Direction	    Ether Type      IP Protocol	    Port Range	    Remote IP Prefix	Remote Security Group
+Egress	        IPv4	        Any	            Any	            0.0.0.0/0	        -
+Egress	        IPv6	        Any	            Any	            ::/0	            -
+Ingress	        IPv4	        ICMP	        Any	            0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            22 (SSH)	    0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            2379 - 2380	    -	                kube-cluster
+Ingress	        IPv4	        TCP	            6443	        0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            6781 - 6782	    0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            6783 - 6784	    0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            8080	        0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            10010	        -	                kube-cluster
+Ingress	        IPv4	        TCP	            10250 - 10252	-	                kube-cluster
+Ingress	        IPv4	        TCP	            30000 - 32767	0.0.0.0/0	        -
+Ingress	        IPv4	        UDP	            6783 - 6784	    0.0.0.0/0	        -
+
+
+####################################################
+####### SecurityGroupName: load-balancer #############
+####################################################
+Direction	    Ether Type      IP Protocol	    Port Range	    Remote IP Prefix	Remote Security Group
+Egress	        IPv4	        Any	            Any	            0.0.0.0/0	        -
+Egress	        IPv6	        Any	            Any	            ::/0	            -
+Ingress	        IPv4	        TCP	            80 (HTTP)	    0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            443 (HTTPS)	    0.0.0.0/0	        -
+Ingress	        IPv4	        TCP	            8443	        0.0.0.0/0	        -
