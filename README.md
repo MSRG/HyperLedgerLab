@@ -12,7 +12,7 @@ Summary: This repository contains scripts we are developing to deploy a Hyperled
 **CONTRIBUTOR**: Arno Jacobsen
 
 
-**HOW to Use ?**: See **`docs/HowToUse.md`**
+**HOW to Use ?**: See **`[docs/HowToUse.md](docs/HowToUse.md)`**
 
 
 **Setup**:
