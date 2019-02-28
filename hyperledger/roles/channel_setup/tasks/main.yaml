@@ -36,6 +36,12 @@
     port: "{{ orderer_node_port }}"
     state: started
 
+- include_tasks: tasks/check_zookeeper.yaml
+  with_sequence: start=0 end={{ fabric_num_zookeeper|int - 1 }}
+  loop_control:
+    loop_var: zk_num
+  when: fabric_orderer_type == "kafka"
+
 - include_tasks: tasks/check_kafka.yaml
   with_sequence: start=0 end={{ fabric_num_kafka|int - 1 }}
   loop_control:
