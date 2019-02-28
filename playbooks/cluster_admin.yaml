@@ -25,6 +25,7 @@
       debug:
         msg:
           - "######################################################## INFROMATION ########################################################"
+          - "#### Activate kubectl command as bash alias, Run:      source {{ ansible_env.HOME }}/.bash_aliases                       ####"
           - "#### Access Kubernetes Dashboard at :-   https://{{ hostvars[groups['kube-lb'][0]]['ansible_host'] }}:8443                                                       ####"
           - "#### Get Access Token for Authentication with following command :-                                                       ####"
           - "####   kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')  ####"
