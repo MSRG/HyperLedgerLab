@@ -8,15 +8,23 @@
     * `git clone git@github.com:sahilkalra1991/master_thesis.git`
     * `git submodule sync; git submodule update --init`
 
+3. Openstack Prepare:
+    * Add appropriate security groups as mentioned in `docs/FirewallPolicies.txt`
+    * Copy SSH private key to CLI node which should be used to ssh into the created instances. Provide this key path in `OS_IMAGE_SSH_KEY` in .env file below.
+
 2. Create .env file with details about Openstack authentication
     * Copy `env_sample` to `.env`
     * Provide appropriate details
-    
-3. Add appropriate security groups as mentioned in `docs/FirewallPolicies.txt`
 
 3. Setup kubernetes cluster
     * Check that all details are correct and match Openstack account here: `inventory/infra/group_vars/os-infra.yml`. Make modifications if required
+    * OS Instance Size: Ideally all instances should be size m1.medium or above
+    * OS Security Groups: If you don't create security groups as mentioned above then change all to default.
     * Command: `./scripts/k8s_setup.sh`
+    * After execution run: `source ~/.bash_aliases`
+    * Access details:
+        * Kubernetes dashboard: https://<k8slb_ip>:8443
+        * Get Access Token: `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}'`
     * What will happen ?
         * It will setup the python environment
         * It will create Openstack infra with command: `ansible-playbook -i inventory/infra/hosts.ini -v infra_setup.yaml`
