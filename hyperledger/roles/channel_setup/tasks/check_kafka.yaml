@@ -1,0 +1,9 @@
+---
+# Check the status of kafka deployment until unavailableReplicas exists in the result. Give 30 tries with 1 second difference
+- name: Get kafka{{ kafka_num }}'s status and wait till available
+  shell: |
+    {{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl --kubeconfig={{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/admin.conf -n orgorderer1 get deployment kafka{{ kafka_num }}-{{ fabric_orderer_address.split(".")[1] }} -o=custom-columns=NAME:status
+  register: kubectl_result
+  until: kubectl_result.stdout.find("unavailableReplicas") == -1
+  retries: 180
+  delay: 1

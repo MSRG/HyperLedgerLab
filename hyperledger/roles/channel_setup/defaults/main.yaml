@@ -12,5 +12,8 @@ channel_name: mychannel
 # Fabric Network Config
 fabric_num_orgs: 2
 fabric_peers_per_org: 2
-#fabric_num_orderer: 1
+fabric_num_orderer: 1
 fabric_orderer_address: orderer0.orgorderer1
+fabric_orderer_type: solo       # Options: solo/kafka
+fabric_num_kafka: 3
+fabric_num_zookeeper: 3

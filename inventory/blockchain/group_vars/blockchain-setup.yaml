@@ -11,6 +11,8 @@ fabric_num_orderer: 2
 fabric_orderer_address: orderer0.orgorderer1
 # Options for Orderer Consensus type: solo/kafka
 fabric_orderer_type: solo
+fabric_num_kafka: 3
+fabric_num_zookeeper: 3
 # Batch Timeout: The amount of time to wait before creating a batch
 fabric_batch_timeout: "250ms"
 # Batch Size: Controls the number of messages batched into a block
