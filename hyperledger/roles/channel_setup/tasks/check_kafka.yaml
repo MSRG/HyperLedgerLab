@@ -5,5 +5,5 @@
     {{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl --kubeconfig={{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/admin.conf -n orgorderer1 get deployment kafka{{ kafka_num }}-{{ fabric_orderer_address.split(".")[1] }} -o=custom-columns=NAME:status
   register: kubectl_result
   until: kubectl_result.stdout.find("unavailableReplicas") == -1
-  retries: 30
+  retries: 180
   delay: 1

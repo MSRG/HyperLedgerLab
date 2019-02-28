@@ -128,7 +128,7 @@ spec:
         - name: KAFKA_LOG_RETENTION_MS
           value: "-1"
         - name: KAFKA_MIN_INSYNC_REPLICAS
-          value: "2"
+          value: {% if fabric_num_kafka|int >= 2 %}"2"{% else %}"1"
         - name: KAFKA_DEFAULT_REPLICATION_FACTOR
           value: "{{ fabric_num_kafka|int }}"
         ports:
