@@ -1,3 +1,4 @@
 # To be called with -i inventory/blockchain/hosts.ini
 ---
-- import_playbook: playbooks/delete_fabric.yaml
+- import_playbook: playbooks/delete_fabric_network.yaml
+- import_playbook: playbooks/delete_fabric_config.yaml

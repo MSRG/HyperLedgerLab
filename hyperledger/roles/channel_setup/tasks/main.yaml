@@ -36,6 +36,12 @@
     port: "{{ orderer_node_port }}"
     state: started
 
+- include_tasks: tasks/check_kafka.yaml
+  with_sequence: start=0 end={{ fabric_num_kafka|int - 1 }}
+  loop_control:
+    loop_var: kafka_num
+  when: fabric_orderer_type == "kafka"
+
 - name: Create channel "{{ channel_name }}" on one peer
   shell: >
     export FABRIC_CFG_PATH={{ fabric_config_dir }}

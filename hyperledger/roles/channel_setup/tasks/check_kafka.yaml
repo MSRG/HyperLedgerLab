@@ -1,0 +1,10 @@
+---
+# Check the status of kafka deployment until availableReplicas exists in the result. Give 30 tries with 1 second difference
+- name: Get kafka{{ kafka_num }}'s status and wait till available
+  shell: |
+    kubectl -n orgorderer1 -o json get deployment kafka{{ kafka_num }}-{{ fabric_orderer_address.split(".")[1] }}
+  register: kubectl_result
+  until: kubectl_result.stdout.find("availableReplicas") != -1
+  retries: 30
+  delay: 1
+
