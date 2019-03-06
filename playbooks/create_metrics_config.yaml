@@ -1,0 +1,7 @@
+# Ansible Playbook to create configuration for metrics framework
+# Note: Call with -i inventory/blockchain/hosts.ini
+---
+# Create network config file for Metrics framework
+- hosts: blockchain-setup
+  roles:
+    - { "role": metrics_config }

@@ -24,6 +24,7 @@ Egress	        IPv6	        Any	            Any	            ::/0	            -
 Ingress	        IPv4	        ICMP	        Any	            0.0.0.0/0	        -
 Ingress	        IPv4	        TCP	            22 (SSH)	    0.0.0.0/0	        -
 Ingress	        IPv4	        TCP	            2379 - 2380	    -	                kube-cluster
+Ingress	        IPv4	        TCP	            4194	        0.0.0.0/0	        -
 Ingress	        IPv4	        TCP	            6443	        0.0.0.0/0	        -
 Ingress	        IPv4	        TCP	            6781 - 6782	    0.0.0.0/0	        -
 Ingress	        IPv4	        TCP	            6783 - 6784	    0.0.0.0/0	        -
