@@ -1,0 +1,7 @@
+# Ansible Playbook to install a test channel on fabric network and joins all peers to it
+# Note: Call with -i inventory/blockchain/hosts.ini
+---
+# Install Fabric test Channel
+- hosts: blockchain-setup
+  roles:
+    - { "role": channel_setup }

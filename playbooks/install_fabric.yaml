@@ -1,10 +1,7 @@
 # Ansible Playbook to install Hyperledger Fabric on kubernetes
-# This playbook also install a test channel and joins all peers to it
 # Note: Call with -i inventory/blockchain/hosts.ini
 ---
-# Install Fabric Network and a test Channel. Also create network config file for Metrics framework
+# Install Fabric Network.
 - hosts: blockchain-setup
   roles:
     - { "role": network_setup, install: true }
-    - { "role": channel_setup }
-    - { "role": metrics_config }
