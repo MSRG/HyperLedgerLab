@@ -3,23 +3,23 @@
 1. Openstack Prepare:
     * Security Groups: 
         * Option1: Add appropriate openstack security groups
-            * Goto Compute > Access & Security > Security Groups > "+ CREATE SECURITY GROUP"
+            * Goto: Compute > Access & Security > Security Groups > "+ CREATE SECURITY GROUP"
             * Create 3 Security Groups: `dns`, `kube-cluster`, `load-balancer`
             * For each security group, add rules one by one as defined in [FirewallPolicies.txt](FirewallPolicies.txt)
                 * e.g for `kube-cluster` security group and rule: `Ingress	        IPv4	        TCP	            2379 - 2380	    -	                kube-cluster`
                     * click "MANAGE RULES": security group rules page opens.
                     * click "+ ADD RULE" and enter following values in the "Add Rule" popoup
                     ```
-                    * Rule: Custom TCP Rule
-                    * Direction: Ingress
-                    * Open: PortRange 
-                    * From Port: 2379
-                    * To Port: 2380
-                    * Remote: Security Group
-                    * Security Group: kube-cluster
-                    * Ether Type: IPv4
+                    Rule: Custom TCP Rule
+                    Direction: Ingress
+                    Open: PortRange 
+                    From Port: 2379
+                    To Port: 2380
+                    Remote: Security Group
+                    Security Group: kube-cluster
+                    Ether Type: IPv4
                     ```
-        * Option 2: (**INSECURE**) Use `default` security (allow all access), you can change every configuration to default later in this setup.
+        * Option 2: (**INSECURE**) Use `default` security group (allow all access), you can change every configuration to default later in this setup.
     * Add SSH keypair in Openstack:
         * Create a keypair in Openstack with name "default-image-key" (or you can choose another name): Compute > Access & Security > Key Pairs > "+ CREATE KEY PAIR"
         * Download the private key, we will use this later in the setup.
@@ -40,7 +40,7 @@
 3. "keypair" setting:
     * Set permission for "private key" file: `chmod 600 /home/ubuntu/.ssh/default-image-key.pem`
     * Provide the "private key" file path on CLI (if not "/home/ubuntu/.ssh/default-image-key.pem") in `OS_IMAGE_SSH_KEY` variable in `.env` file.
-    * Provide the "keypair" name, as created in "Openstack Prepare" step (if not "default-image-key") in `k8s_instance_image_key` varibale in [os-infra.yml](../inventory/infra/group_vars/os-infra.yml) file,.
+    * Provide the "keypair" name, as created in "Openstack Prepare" step (if not "default-image-key") in `k8s_instance_image_key` varibale in [os-infra.yml](../inventory/infra/group_vars/os-infra.yml) file.
 
 3. Setup kubernetes cluster
     * Check that all details are correct and match Openstack account here: [os-infra.yml](../inventory/infra/group_vars/os-infra.yml). Make modifications if required

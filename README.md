@@ -18,7 +18,7 @@ Hyperledger Testbed on Kubernetes Cluster: Automated Deployment of a Distributed
 Quick Setup
 ------------
 
-For a quick setup of this software, please see: [HowToUse.md](docs/HowToUse.md)
+For a quick setup of this software, please see: [HowToUse](docs/HowToUse.md)
 
 Supported Versions
 -------------------
@@ -33,7 +33,7 @@ Supported Versions
 Installation Process
 -------------
 
-There is a 4 steps process as follows:
+This is a 4 steps process as follows:
 
 1. [Create Infrastructure](docs/InfrastructureSetup.md)
 2. [Create Kubernetes Cluster](docs/ClusterSetup.md)

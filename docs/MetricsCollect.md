@@ -7,7 +7,7 @@ This is the final step in this project. It is required to test a chaincode on th
 * _"Caliper is a blockchain performance benchmark framework, which allows users to test different blockchain solutions with predefined use cases, and get a set of performance test results."_
 * It uses `nodejs` to perform operations
 
-**Code location**
+**Code location:**
 - [caliper/](../caliper): It contains code for external module "caliper".
 - [inventory/blockchain/benchmark/](../inventory/blockchain/benchmark): Directory which contains benchmarks defined for Caliper. See [fabcar/](../inventory/blockchain/benchmark/fabcar) and [marbles/](../inventory/blockchain/benchmark/marbles) as example
 - [inventory/blockchain/src/contract/](../inventory/blockchain/src/contract): Directory which contains chaincodes used by Caliper. See [fabcar/](../inventory/blockchain/src/contract/fabcar) and [marbles/](../inventory/blockchain/src/contract/marbles) as example 
@@ -46,7 +46,7 @@ Example Result from Caliper:
 - **queryAllCars (read)**: 1000 transaction, 100 tps fixed-rate
 - **queryCar (read)**: 1000 transaction, 200 tps fixed-rate
         
-
+```
     +------+--------------+------+------+-----------+-------------+-------------+-------------+------------+
     | Test | Name         | Succ | Fail | Send Rate | Max Latency | Min Latency | Avg Latency | Throughput |
     |------|--------------|------|------|-----------|-------------|-------------|-------------|------------|
@@ -60,7 +60,7 @@ Example Result from Caliper:
     |------|--------------|------|------|-----------|-------------|-------------|-------------|------------|
     | 5    | queryCar     | 1000 | 0    | 193.5 tps | 1.59 s      | 0.11 s      | 0.45 s      | 188.1 tps  |
     +------+--------------+------+------+-----------+-------------+-------------+-------------+------------+
-
+```
 
 Benchmark: fabcar
 -----------------
