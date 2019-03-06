@@ -1,9 +1,0 @@
-# Ansible Playbook to install kubernetes global policies
-# Note: Call with -i inventory/cluster/hosts.ini
----
-# Add kubectl command and kube-dashboard admin_user
-- hosts: cluster-setup
-  tasks:
-    - name: Add Global Pod Policy for Kubernetes
-      shell: |
-        {{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl --kubeconfig={{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/admin.conf apply -f {{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/pod_global_policy.yaml
