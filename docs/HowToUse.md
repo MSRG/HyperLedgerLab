@@ -1,4 +1,5 @@
-**WorkFlow**
+**Quick Setup**
+------------
 
 1. Openstack Prepare:
     * Security Groups: 
@@ -82,7 +83,7 @@
         * It will create Fabric Blockchain on kubernetes with command: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_delete.yaml`
         * `crypto_config` and `channel_artifacts` will be deleted as well
 
-7. Get chaincode metrics:
+7. Benchmarking: Get chaincode metrics:
     * Run Command: `./script/get_metrics.sh <chaincode>`
     * e.g `./script/get_metrics.sh fabcar`
     * Estimated time to complete: **180 seconds** 
@@ -91,21 +92,32 @@
     * What will happen ?
         * It will install, instantiate chaincode on the network using Caliper
         * Then it will run some rounds of testing
-        * An HTML report will be created with the metrics gathered. URL will be displayed at the end of testing
+        * A HTML report will be created with the metrics gathered. Location of report will be displayed at the end of testing
         
-**Examples Fabric Metrics Workflow:**
+Fabric-Metrics Workflow:
+-----
 * Create Network: `./scripts/fabric_setup.sh [args]`
 * Get Metrics:  `./script/get_metrics.sh <chaincode>`
 * Delete Network: `./scripts/fabric_delete.sh`
         
-**Use custom Fabric images**
+Kubernetes Dashboard Access
+-----
+* URL: `https://<k8slb_ip_address>:8443`
+* Access Token: Get from terminal via command `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')`
+
+Fabric Network Options
+-----
+
+#### Use custom Fabric images
+
 * Create your image (fabric, ca, tools, orderer etc) and upload to dockerhub
 * Image definition can be found in file [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
 * Update the respective image in `fabric_images` variable object
 * Delete current Fabric via`./scripts/fabric_delete.sh`
 * Install new Fabric with new images via `./scripts/fabric_setup.sh`
 
-**Change Fabric network size**
+#### Change Fabric network size
+
 * By Default, Fabric network consists of 2 Organisations with 2 Peers each and 1 Solo orderer
 * Change the network size in file [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml) as follows:
     * Number of Orgs: `fabric_num_orgs`
@@ -113,30 +125,32 @@
 * Delete current Fabric via`./scripts/fabric_delete.sh`
 * Install new Fabric with new images via `./scripts/fabric_setup.sh`
 
-**Change other Fabric network parameters e.g. Batch size, Orderer consensus**
+#### Change other Fabric network parameters e.g. Batch size, Orderer consensus
+
 * The variables are defined in [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
 * There are 2 options to change them
 * Option1: Modify the values in [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
 * Option2: Provide new value as CLI arguments to `./scripts/fabric_setup.sh` command
     * e.g To change block batch size run: `./scripts/fabric_setup.sh -e '{"fabric_batchsize":["20","256 MB","128 MB"]}'`
 
-**Add new chaincodes for testing**
+Benchmarking Options
+-----
+
+#### Add new chaincode for benchmarking
+
 * Add the contract code in [contract](../inventory/blockchain/src/contract) directory. see [fabcar](../inventory/blockchain/src/contract/fabcar) and [marbles](../inventory/blockchain/src/contract/marbles) as example
 * Add a benchmark for the chaincode in [benchmark](../inventory/blockchain/benchmark) directory. see [fabcar](../inventory/blockchain/benchmark/fabcar) and [marbles](../inventory/blockchain/benchmark/marbles) benchmark examples
 * Define new chaincode in `metrics_chaincodes` dictionary variable defined in [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
 * Define context for each transaction in new chaincode in `metrics_tx_context` dictionary variable defined in [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
 
-**Change Testing settings: rounds, rate controlling etc**
-* Each chaincode benchmark contains a file `config.yaml` which defines the testing rounds and transaction type
-* e.g. [fabcar/config.yaml](../inventory/blockchain/benchmark/fabcar/config.yaml)
+#### Change benchmark settings: rounds, rate controlling etc
+
+* Each chaincode benchmark contains a file `config.yaml` which defines the testing rounds and transaction type. 
+* For example: [fabcar/config.yaml](../inventory/blockchain/benchmark/fabcar/config.yaml)
 * See Caliper [documentation for configuration options](https://hyperledger.github.io/caliper/docs/2_Architecture.html#configuration-file)
 
-**Kubernetes Dashboard Access**
-* URL: `https://<k8slb_ip_address>:8443`
-* Access Token: Get from terminal via command `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')`
-
-**Common Errors**
-
+Common Errors
+-----
 1. `Error: got unexpected status: SERVICE_UNAVAILABLE -- backing Kafka cluster has not completed booting; try again later`
     * Script: `./scripts/fabric_setup.sh`
     * **Reason**: this occurs only the first time we deploy fabric network with kafka orderer on a newly created k8s cluster because all docker images need to be downloaded, which takes some time. We don't want to expose kafka on nodePort as only orderer needs access to it so we can't wait for kafka's port to open. So, we check for kafka deployment to become available but kafka takes more time to start even after deployment is available.
