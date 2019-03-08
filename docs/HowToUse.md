@@ -53,7 +53,7 @@
     * After execution run: `source ~/.bash_aliases`
     * Access details:
         * Kubernetes dashboard: **https://<k8slb_ip>:8443**
-        * Get Access Token: `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}'`
+        * Get Access Token: `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')`
     * What will happen ?
         * It will setup the python environment
         * It will create Openstack infra with command: `ansible-playbook -i inventory/infra/hosts.ini -v infra_setup.yaml`
