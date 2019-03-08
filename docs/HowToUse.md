@@ -158,5 +158,5 @@ Common Errors
     * **Solution**: Rerun `./scripts/fabric_setup.sh`. It will work
 2. `Python locale error: unsupported locale setting`
     * Follow this link: https://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting
-    * Then remove the environment first by `rm rf venv` and then run the `k8s_setup.sh
+    * Then remove the environment first by `rm rf venv` and then run the `k8s_setup.sh`
 
