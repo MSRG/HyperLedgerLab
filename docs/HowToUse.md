@@ -1,6 +1,6 @@
 **WorkFlow**
 
-1. Openstack Prepare:
+1. Preparing new OpenStack Project for the first time:
     * Security Groups: 
         * Option1: Add appropriate openstack security groups
             * Goto: Compute > Access & Security > Security Groups > "+ CREATE SECURITY GROUP"
@@ -31,6 +31,7 @@
 
 3. Clone the repository:
     * `git clone https://github.com/MSRG/HyperLedgerLab.git`
+    * `cd HyperLedgerLab`
     * `git submodule sync; git submodule update --init`
 
 3. Create .env file with details about Openstack authentication
@@ -46,12 +47,12 @@
     * Check that all details are correct and match Openstack account here: [os-infra.yml](../inventory/infra/group_vars/os-infra.yml). Make modifications if required
         * OS Instance Sizes: Ideally all instances should be size m1.medium or above
         * OS Security Groups: If you don't create security groups as mentioned above then change all to `default`.
-    * Run Command: `./scripts/k8s_setup.sh`
+    * Run Command: `./scripts/k8s_setup.sh` (Error 2 from Common Errors - bottom of this page - might occur)
     * Estimated time to complete: **25 minutes**
     * After execution run: `source ~/.bash_aliases`
     * Access details:
         * Kubernetes dashboard: **https://<k8slb_ip>:8443**
-        * Get Access Token: `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}'`
+        * Get Access Token: `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')`
     * What will happen ?
         * It will setup the python environment
         * It will create Openstack infra with command: `ansible-playbook -i inventory/infra/hosts.ini -v infra_setup.yaml`
@@ -83,8 +84,8 @@
         * `crypto_config` and `channel_artifacts` will be deleted as well
 
 7. Get chaincode metrics:
-    * Run Command: `./script/get_metrics.sh <chaincode>`
-    * e.g `./script/get_metrics.sh fabcar`
+    * Run Command: `./scripts/get_metrics.sh <chaincode>`
+    * e.g `./scripts/get_metrics.sh fabcar`
     * Estimated time to complete: **180 seconds** 
         * This time is for default test settings defined in [fabcar/config.yaml](../inventory/blockchain/benchmark/fabcar/config.yaml)
         * Execution time depends on various factors e.g number of rounds, transactions etc)
@@ -95,7 +96,7 @@
         
 **Examples Fabric Metrics Workflow:**
 * Create Network: `./scripts/fabric_setup.sh [args]`
-* Get Metrics:  `./script/get_metrics.sh <chaincode>`
+* Get Metrics:  `./scripts/get_metrics.sh <chaincode>`
 * Delete Network: `./scripts/fabric_delete.sh`
         
 **Use custom Fabric images**
@@ -143,4 +144,5 @@
     * **Solution**: Rerun `./scripts/fabric_setup.sh`. It will work
 2. `Python locale error: unsupported locale setting`
     * Follow this link: https://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting
+    * Then delete the virtual environment `rm -rf venv` and rerun the k8s_sethup.sh
 
