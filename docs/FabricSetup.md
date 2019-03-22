@@ -56,7 +56,6 @@ This command will call [blockchain_setup.yaml](../blockchain_setup.yaml) playboo
     3. Create crypto configuration and orderer artifcats using fabric binaries "cryptogen" and "configtxgen"
     4. Copy above configuration to NFS mount
     5. Generate kubernetes templates for various resources, using [generate_k8s_configs.py](../hyperledger/roles/network_config/files/generate_k8s_configs.py) script and [k8s templates](../hyperledger/roles/network_config/templates)
-    
 2. Install Fabric:
     * Playbook: [playbooks/install_fabric.yaml](../playbooks/install_fabric.yaml)
     * Role: [hyperledger/roles/network_setup](../hyperledger/roles/network_setup)
@@ -74,11 +73,14 @@ This command will call [blockchain_setup.yaml](../blockchain_setup.yaml) playboo
         * All chaincodes to install are defined in `metrics_chaincodes` dictionary 
         * Context for all chaincode transactions is defined in `metrics_tx_context` 
         * Caliper needs this file to communicate with Fabric network. See [documentation](https://hyperledger.github.io/caliper/docs/Fabric_Configuration.html#fabric)
+        * An example of network config file created can be found here: [fabric_network.json](samples/fabric_network.json)
+    2. Make entries in etc/hosts for CLI with pseudo dns of peer and orderer domain to k8s worker nodes
+        * Example of entries made in /etc/hosts can be found here: [etc_hosts](samples/etc_hosts)
     
     
 #### Generated configuration files
 
-- All configuration generated for Fabric network are located in [inventory/blockchain/fabric-config](../inventory/blockchain/fabric-config) directory
+- All configurations generated for Fabric network are located in [inventory/blockchain/fabric-config](../inventory/blockchain/fabric-config) directory
 - Metrics network configuration is located at `inventory/blockchain/fabric_network.json`
 
 

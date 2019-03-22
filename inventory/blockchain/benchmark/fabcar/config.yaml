@@ -36,15 +36,6 @@ test:
         tps: 100
     callback: ../inventory/blockchain/benchmark/fabcar/queryAllCars.js
 
-#  - label: changeCarOwner
-#    txNumber:
-#    - 100
-#    rateControl:
-#    - type: fixed-rate
-#      opts:
-#        tps: 20
-#    callback: ../inventory/blockchain/benchmark/fabcar/changeCarOwner.js
-
   - label: queryCar
     txNumber:
     - 1000

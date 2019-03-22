@@ -36,7 +36,7 @@ else
         set -x
         mkdir venv
         sudo apt update
-        sudo apt install python-pip
+        sudo apt-get install --yes python-pip
         pip install virtualenv
         virtualenv --python=python3 venv
         source ./venv/bin/activate
