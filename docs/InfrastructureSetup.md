@@ -38,10 +38,14 @@ Ansible **Playbook**: [infra_setup.yaml](../infra_setup.yaml)
     * Other details for instances:
         * Image name defined in `k8s_instance_image`
         * SSH key defined in `k8s_instance_image_key`
-3. A [cluster.hosts.ini](../openstack_infra/roles/os_instance/templates/cluster.hosts.ini.j2) will be created with IP addresses of created instances. 
+3. An ansible hosts config will be created for cluster setup with IP addresses of created instances at `inventory/cluster/hosts.ini`
     * **IMPORTANT**: This file will later be used by [ClusterSetup](ClusterSetup.md) step.
-4. A [blockchain.hosts.ini](../openstack_infra/roles/os_instance/templates/blockchain.hosts.ini.j2) will be created with IP addresses of created instances. 
+    * Template used to create this file: [cluster.hosts.ini](../openstack_infra/roles/os_instance/templates/cluster.hosts.ini.j2)
+    * An example of created file can be found here: [cluster_hosts.ini](samples/cluster_hosts.ini)
+4. An ansible hosts config will be created for fabric setup with IP addresses of created instances at `inventory/blockchain/hosts.ini`
     * **IMPORTANT**: This file will later be used by [FabricSetup](FabricSetup.md) step.
+    * Template used to create this file: [blockchain.hosts.ini](../openstack_infra/roles/os_instance/templates/blockchain.hosts.ini.j2)
+    * An example of created file can be found here: [cluster_hosts.ini](samples/blockchain_hosts.ini)
     
 
 
