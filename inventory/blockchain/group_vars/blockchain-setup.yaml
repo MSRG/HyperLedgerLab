@@ -14,7 +14,7 @@ fabric_orderer_type: solo
 fabric_num_kafka: 3
 fabric_num_zookeeper: 3
 # Batch Timeout: The amount of time to wait before creating a batch
-fabric_batch_timeout: "250ms"
+fabric_batch_timeout: "2s"
 # Batch Size: Controls the number of messages batched into a block
 # Index0: Max Message Count: The maximum number of messages to permit in a batch
 # Index1: Absolute Max Bytes: The absolute maximum number of bytes allowed for the
