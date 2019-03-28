@@ -27,9 +27,9 @@ spec:
          - name:  FABRIC_CA_HOME
            value: /etc/hyperledger/fabric-ca-server
          - name:  FABRIC_CA_SERVER_CA_NAME
-           value: ca
+           value: ca.$namespace
          - name:  FABRIC_CA_SERVER_TLS_ENABLED
-           value: "false"
+           value: "true"
          - name:  FABRIC_CA_SERVER_TLS_CERTFILE
            value: $tlsCert
          - name:  FABRIC_CA_SERVER_TLS_KEYFILE

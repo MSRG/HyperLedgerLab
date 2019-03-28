@@ -22,8 +22,8 @@
         "mspid": "Org{{ org_num }}MSP",
         "msp": "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/msp/",
         "ca": {
-          "url": "http://ca.org{{ org_num }}:{{ node_port_mapping['ca.org' + org_num]['7054'] }}",
-          "name": "ca"
+          "url": "https://ca.org{{ org_num }}:{{ node_port_mapping['ca.org' + org_num]['7054'] }}",
+          "name": "ca.org{{ org_num }}"
         },
 {% for j in range(fabric_peers_per_org|int) %}
 {% set peer_num = loop.index0|string %}
