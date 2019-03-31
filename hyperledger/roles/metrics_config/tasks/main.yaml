@@ -1,11 +1,9 @@
 ---
-- hosts: localhost
-  tasks:
-  - name: Find user1 and admin private keys for all peer orgs
-    include_tasks: tasks/private_keys.yaml
-    with_sequence: count="{{ fabric_num_orgs|int }}"
-    loop_control:
-      loop_var: org_num
+- name: Find user1 and admin private keys for all peer orgs
+  include_tasks: tasks/private_keys.yaml
+  with_sequence: count="{{ fabric_num_orgs|int }}"
+  loop_control:
+    loop_var: org_num
 
 #  - debug:
 #      msg: "{{ user1_org1_key }} ||||| {{ user1_org2_key }} ||| {{ admin_org1_key }} ||||| {{ admin_org2_key }}"
@@ -13,4 +11,4 @@
 - name: Generate blockchain network config for Metrics tool
   template: src={{ item.src }} dest={{ metrics_network_file }} mode=0644
   with_items:
-    - { src: "fabric_ccp_network.json.j2", dest: "fabric_ccp_network.json" }
+    - { src: "fabric_ccp_network.yaml.j2", dest: "fabric_ccp_network.yaml" }

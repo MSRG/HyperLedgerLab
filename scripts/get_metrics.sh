@@ -16,5 +16,5 @@ fi
 benchmark_dir=$base_dir/$chaincode
 
 set -x
-node ./caliper/scripts/main.js -- -c $benchmark_dir/config.yaml -n $INVENTORY_DIR_PATH/blockchain/fabric_ccp_network.json
+node ./caliper/scripts/main.js -- -c $benchmark_dir/config.yaml -n $INVENTORY_DIR_PATH/blockchain/fabric_ccp_network.yaml
 set +x

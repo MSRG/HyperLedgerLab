@@ -36,7 +36,7 @@ clients:
 {% endfor %}
 
 channels:
-{% for channel in channelss %}
+{% for channel in channels %}
   {{ channel["name"] }}:
     configBinary: {{ channel_artifacts_dir }}/{{ channel["name"] }}.tx
     created: {{ channel["created"] }}
@@ -77,6 +77,7 @@ channels:
 {% set org_num = loop.index|string %}
           {{ fabric_num_orgs }}-of:
             - signed-by: {{ org_num }}
+{% endfor %}
 {% endfor %}
 {% endfor %}
 
