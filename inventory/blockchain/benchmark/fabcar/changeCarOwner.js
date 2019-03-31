@@ -13,16 +13,28 @@ module.exports.init = function (blockchain, context, args) {
 };
 
 module.exports.run = function () {
+    let args;
+    if (bc.bcType === 'fabric-ccp') {
+        args = {
+            chaincodeFunction: 'changeCarOwner',
+            chaincodeArguments: [
+                'CAR' + (txIndex % 10).toString(),
+                carOwners[Math.floor(Math.random() * carOwners.length)] + process.pid.toString()
+            ]
+        };
+    } else {
+        args = {
+            transaction_type: "changeCarOwner",
+            CarID: 'CAR' + (txIndex % 10).toString(),
+            Owner: carOwners[Math.floor(Math.random() * carOwners.length)] + process.pid.toString()
+        };
+    }
     txIndex++;
     return bc.invokeSmartContract(
         contx,
         'fabcar',
         'v1',
-        [{
-            transaction_type: "changeCarOwner",
-            CarID: 'CAR' + (txIndex % 10).toString() ,
-            Owner: carOwners[Math.floor(Math.random() * carOwners.length)] + process.pid.toString()
-        }],
+        [args],
         30
     );
 };

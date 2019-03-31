@@ -1,3 +1,4 @@
+# TODO: Remove this file when Caliper Fabric CCP is completely tested. Fabric CCP adapter now creates channels and join peers to them
 ---
 - name: Wait for port of "org{{ org_num }}" peers to be available
   wait_for:

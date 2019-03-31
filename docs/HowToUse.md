@@ -32,7 +32,6 @@
 
 3. Clone the repository:
     * `git clone git@github.com:sahilkalra1991/master_thesis.git`
-    * `git submodule sync; git submodule update --init`
 
 3. Create .env file with details about Openstack authentication
     * Copy `env_sample` to `.env`

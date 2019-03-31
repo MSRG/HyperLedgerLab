@@ -31,27 +31,33 @@ module.exports.run = function () {
 
     let myCarMake = Object.keys(carModels)[txIndex % Object.keys(carModels).length];
     let myCarModels = carModels[myCarMake];
-
-    // let carObject = new Map();
-    // carObject.set('transaction_type', "createCar");
-    // carObject.set('CarID', 'car_' + txIndex.toString() + '_' + process.pid.toString());
-    // carObject.set('Make', myCarMake);
-    // carObject.set('Model', myCarModels[Math.floor(Math.random() * myCarModels.length)]);
-    // carObject.set('Colour', carColors[Math.floor(Math.random() * carColors.length)]);
-    // carObject.set('Owner', carOwners[Math.floor(Math.random() * carOwners.length)]);
-    // Fabric adapter expects an Object, so can't use Map
-    return bc.invokeSmartContract(
-        contx,
-        'fabcar',
-        'v1',
-        [{
+    let args;
+    if (bc.bcType === 'fabric-ccp') {
+        args = {
+            chaincodeFunction: 'createCar',
+            chaincodeArguments: [
+                'car_' + txIndex.toString() + '_' + process.pid.toString(),
+                myCarMake,
+                myCarModels[Math.floor(Math.random() * myCarModels.length)],
+                carColors[Math.floor(Math.random() * carColors.length)],
+                carOwners[Math.floor(Math.random() * carOwners.length)]
+            ]
+        };
+    } else {
+        args = {
             transaction_type: "createCar",
             CarID: 'car_' + txIndex.toString() + '_' + process.pid.toString(),
             Make: myCarMake,
             Model: myCarModels[Math.floor(Math.random() * myCarModels.length)],
             Colour: carColors[Math.floor(Math.random() * carColors.length)],
             Owner: carOwners[Math.floor(Math.random() * carOwners.length)]
-        }],
+        };
+    }
+    return bc.invokeSmartContract(
+        contx,
+        'fabcar',
+        'v1',
+        [args],
         30
     );
 };

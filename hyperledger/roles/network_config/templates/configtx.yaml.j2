@@ -8,7 +8,7 @@
 #
 ################################################################################
 Organizations:
-{% set orderer_domain = fabric_orderer_address.split(".")[1] %}
+{% set orderer_domain = fabric_orderer_domain %}
     # OrdererOrg defines an MSP for orderer.
     - &OrdererOrg
         Name: {{ orderer_domain|capitalize }}MSP

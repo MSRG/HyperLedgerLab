@@ -25,12 +25,13 @@
 
 # An in-memory variable containing all network ports of peers, ca and orderer NoePort services
 # This will be used to setup a test channel and create network config for Metrics framework
-# TODO: Stored this in a file so that it can used by other playbooks as well, if required
+# TODO: If required, Store this in a file so that it can used by other playbooks as well
 - name: Set exposed NodePort service ports in facts
   set_fact: node_port_mapping={{ generate_k8s_result.stdout }}
 
-- name: Set orderer NodePort as fact
-  set_fact: orderer_node_port={{ node_port_mapping[fabric_orderer_address]['7050'] }}
+# TODO: Remove this code when Caliper Fabric CCP is completely tested. Fabric CCP adapter now creates channels and join peers to them
+#- name: Set orderer NodePort as fact
+#  set_fact: orderer_node_port={{ node_port_mapping[fabric_orderer_address]['7050'] }}
 
 - name: Set owner and permission for kubernetes templates
   file:

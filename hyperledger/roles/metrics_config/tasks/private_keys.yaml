@@ -1,0 +1,17 @@
+- name: "Find private key for User1@org{{ org_num }}"
+  find:
+    paths: "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/User1@org{{ org_num }}/msp/keystore/"
+    patterns: "*_sk"
+    recurse: yes
+  register: user1_key
+
+- set_fact: 'user1_org{{ org_num }}_key={{ user1_key.files[0].path }}'
+
+- name: "Find private key for Admin@org{{ org_num }}"
+  find:
+    paths: "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/Admin@org{{ org_num }}/msp/keystore/"
+    patterns: "*_sk"
+    recurse: yes
+  register: admin_key
+
+- set_fact: 'admin_org{{ org_num }}_key={{ admin_key.files[0].path }}'

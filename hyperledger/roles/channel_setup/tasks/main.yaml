@@ -1,18 +1,23 @@
 ---
-- name: Generating channel configuration transaction "{{ channel_name }}.tx"
-  shell: |
-    export FABRIC_CFG_PATH={{ fabric_config_dir }}
-    {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputCreateChannelTx {{ channel_artifacts_dir }}/{{ channel_name }}.tx -channelID {{ channel_name }}
-  args:
-    creates: "{{ channel_artifacts_dir }}/{{ channel_name }}.tx"
+- name: Generate configuration for all Channels
+  block:
+    - name: Generating channel configuration transaction "{{ channel['name'] }}.tx"
+      shell: |
+        export FABRIC_CFG_PATH={{ fabric_config_dir }}
+        {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputCreateChannelTx {{ channel_artifacts_dir }}/{{ channel["name"] }}.tx -channelID {{ channel["name"] }}
+      args:
+        creates: "{{ channel_artifacts_dir }}/{{ channel["name"] }}.tx"
 
-- name: Generating anchor peer update for OrgMSPs
-  shell: |
-    export FABRIC_CFG_PATH={{ fabric_config_dir }}
-    {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputAnchorPeersUpdate {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx -channelID {{ channel_name }} -asOrg Org{{ item }}MSP
-  args:
-    creates: "{{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx"
-  with_sequence: count="{{ fabric_num_orgs }}"
+    - name: Generating anchor peer update for OrgMSPs for channel "{{ channel["name"] }}"
+      shell: |
+        export FABRIC_CFG_PATH={{ fabric_config_dir }}
+        {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputAnchorPeersUpdate {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx -channelID {{ channel["name"] }} -asOrg Org{{ item }}MSP
+      args:
+        creates: "{{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx"
+      with_sequence: count="{{ fabric_num_orgs }}"
+  with_item: "{{ channels }}"
+  loop_control:
+    loop_var: channel
 
 - name: Copy channel artifacts to NFS
   become: yes
@@ -25,16 +30,22 @@
   blockinfile:
     path: /etc/hosts
     block: |
-      {{ groups['kube-node'][0] }} {{ fabric_orderer_address }} {% for i in range(fabric_num_orgs|int) %}ca.org{{ loop.index }} {% endfor %}
+      {{ groups['kube-node'][0] }} {% for i in range(fabric_num_orderer|int) %}orderer{{ loop.index0 }}.{{ fabric_orderer_domain }}{% endfor %} {% for i in range(fabric_num_orgs|int) %}ca.org{{ loop.index }} {% endfor %}
 
       {{ groups['kube-node'][1] }} {% for i in range(fabric_num_orgs|int) %}{% set org_index = loop.index %}{% for j in range(fabric_peers_per_org|int) %}peer{{ loop.index0 }}.org{{ org_index }} {% endfor %}{% endfor %}
     marker: "# {mark} ANSIBLE MANAGED BLOCK: sudo DNS mapping for orderers, peers and ca"
 
-- name: Waiting for Ports to open for orderer service
+- include_tasks: tasks/check_peers.yaml
+  with_sequence: count="{{ fabric_num_orgs|int }}"
+  loop_control:
+    loop_var: org_num
+
+- name: Waiting for Ports to open for orderer services
   wait_for:
-    host: "{{ fabric_orderer_address }}"
-    port: "{{ orderer_node_port }}"
+    host: "orderer{{ item }}.{{ fabric_orderer_domain }}"
+    port: "{{ node_port_mapping['orderer' + item + '.' + fabric_orderer_domain]['7050'] }}"
     state: started
+  with_sequence: start=0 end={{ fabric_num_orderer|int - 1 }}
 
 - include_tasks: tasks/check_zookeeper.yaml
   with_sequence: start=0 end={{ fabric_num_zookeeper|int - 1 }}
@@ -53,35 +64,36 @@
     seconds: "10"
   when: fabric_orderer_type == "kafka"
 
-- name: Create channel "{{ channel_name }}" on one peer
-  shell: >
-    export FABRIC_CFG_PATH={{ fabric_config_dir }}
-    export CORE_PEER_ADDRESS=peer0.org1:{{ node_port_mapping['peer0.org1']['7051'] }};
-    export CORE_PEER_LOCALMSPID=Org1MSP;
-    export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org1/users/Admin@org1/msp;
-    export CORE_PEER_TLS_ROOTCERT_FILE={{ crpto_config_dir }}/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt;
-    export CORE_LOGGING_LEVEL=info;
-    {{ fabric_config_dir }}/bin/peer channel create -o {{ fabric_orderer_address }}:{{ orderer_node_port }} -c {{ channel_name }}
-    -f {{ channel_artifacts_dir }}/{{ channel_name }}.tx --outputBlock {{ channel_artifacts_dir }}/{{ channel_name }}.block
-    --tls --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/{{ fabric_orderer_address }}/msp/tlscacerts/tlsca.orgorderer1-cert.pem
-  args:
-    creates: "{{ channel_artifacts_dir }}/{{ channel_name }}.block"
-
-- include_tasks: tasks/join_channel.yaml
-  with_sequence: count="{{ fabric_num_orgs|int }}"
-  loop_control:
-    loop_var: org_num
-
-- name: Update AnchorPeer in channel (peer0 for all Orgs)
-  shell: >
-    export FABRIC_CFG_PATH={{ fabric_config_dir }}
-    export CORE_PEER_ADDRESS=peer0.org{{ item }}:{{ node_port_mapping['peer0.org' + item]['7051'] }};
-    export CORE_PEER_LOCALMSPID=Org{{ item }}MSP;
-    export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org{{ item }}/users/Admin@org{{ item }}/msp;
-    export CORE_PEER_TLS_ROOTCERT_FILE={{ crpto_config_dir }}/peerOrganizations/org{{ item }}/peers/peer0.org{{ item }}/tls/ca.crt;
-    export CORE_LOGGING_LEVEL=info;
-    {{ fabric_config_dir }}/bin/peer channel update -o {{ fabric_orderer_address }}:{{ orderer_node_port }} -c {{ channel_name }}
-    -f {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx
-    --tls --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/{{ fabric_orderer_address }}/msp/tlscacerts/tlsca.orgorderer1-cert.pem
-  with_sequence: count="{{ fabric_num_orgs }}"
+# TODO: Remove this code when Caliper Fabric CCP is completely tested. Fabric CCP adapter now creates channels and join peers to them
+#- name: Create channel "{{ channel_name }}" on one peer
+#  shell: >
+#    export FABRIC_CFG_PATH={{ fabric_config_dir }}
+#    export CORE_PEER_ADDRESS=peer0.org1:{{ node_port_mapping['peer0.org1']['7051'] }};
+#    export CORE_PEER_LOCALMSPID=Org1MSP;
+#    export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org1/users/Admin@org1/msp;
+#    export CORE_PEER_TLS_ROOTCERT_FILE={{ crpto_config_dir }}/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt;
+#    export CORE_LOGGING_LEVEL=info;
+#    {{ fabric_config_dir }}/bin/peer channel create -o {{ fabric_orderer_address }}:{{ orderer_node_port }} -c {{ channel_name }}
+#    -f {{ channel_artifacts_dir }}/{{ channel_name }}.tx --outputBlock {{ channel_artifacts_dir }}/{{ channel_name }}.block
+#    --tls --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/{{ fabric_orderer_address }}/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+#  args:
+#    creates: "{{ channel_artifacts_dir }}/{{ channel_name }}.block"
+#
+#- include_tasks: tasks/join_channel.yaml
+#  with_sequence: count="{{ fabric_num_orgs|int }}"
+#  loop_control:
+#    loop_var: org_num
+#
+#- name: Update AnchorPeer in channel (peer0 for all Orgs)
+#  shell: >
+#    export FABRIC_CFG_PATH={{ fabric_config_dir }}
+#    export CORE_PEER_ADDRESS=peer0.org{{ item }}:{{ node_port_mapping['peer0.org' + item]['7051'] }};
+#    export CORE_PEER_LOCALMSPID=Org{{ item }}MSP;
+#    export CORE_PEER_MSPCONFIGPATH={{ crpto_config_dir }}/peerOrganizations/org{{ item }}/users/Admin@org{{ item }}/msp;
+#    export CORE_PEER_TLS_ROOTCERT_FILE={{ crpto_config_dir }}/peerOrganizations/org{{ item }}/peers/peer0.org{{ item }}/tls/ca.crt;
+#    export CORE_LOGGING_LEVEL=info;
+#    {{ fabric_config_dir }}/bin/peer channel update -o {{ fabric_orderer_address }}:{{ orderer_node_port }} -c {{ channel_name }}
+#    -f {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx
+#    --tls --cafile {{ crpto_config_dir }}/ordererOrganizations/orgorderer1/orderers/{{ fabric_orderer_address }}/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+#  with_sequence: count="{{ fabric_num_orgs }}"
 

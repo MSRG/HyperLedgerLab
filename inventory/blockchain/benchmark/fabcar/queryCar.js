@@ -12,14 +12,23 @@ module.exports.init = function (blockchain, context, args) {
 
 module.exports.run = function () {
     txIndex++;
+    let args;
+    if (bc.bcType === 'fabric-ccp') {
+        args = {
+            chaincodeFunction: 'queryCar',
+            chaincodeArguments: ['CAR' + (txIndex % 10).toString()]
+        };
+    } else {
+        args = {
+            transaction_type: "queryCar",
+            CarID: 'CAR' + (txIndex % 10).toString()
+        };
+    }
     return bc.invokeSmartContract(
         contx,
         'fabcar',
         'v1',
-        [{
-            transaction_type: "queryCar",
-            CarID: 'CAR' + (txIndex % 10).toString()
-        }],
+        [args],
         30
     );
 };
