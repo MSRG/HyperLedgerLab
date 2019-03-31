@@ -5,7 +5,7 @@
 
 source `dirname $0`/setup_env.sh node
 
-base_dir=$INVENTORY_DIR_PATH/blockchain/benchmark/
+base_dir=$INVENTORY_DIR_PATH/blockchain/benchmark
 
 chaincode=fabcar
 if [[ ! -z $1 ]]
@@ -16,5 +16,5 @@ fi
 benchmark_dir=$base_dir/$chaincode
 
 set -x
-node ./caliper/scripts/main.js -- -c $benchmark_dir/config.yaml -n $INVENTORY_DIR_PATH/blockchain/fabric_ccp_network.yaml
+node ./caliper/scripts/main.js -c $benchmark_dir/config.yaml -n $INVENTORY_DIR_PATH/blockchain/fabric_ccp_network.yaml
 set +x

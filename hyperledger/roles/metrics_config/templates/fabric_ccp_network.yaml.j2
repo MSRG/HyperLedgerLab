@@ -14,7 +14,7 @@ info:
   Orderer: "Orgs: 1, Orderers: {{ fabric_num_orderer }}"
   OrdererConsensus: "{{ fabric_orderer_type }}"
   OrdererAddress: "{% for i in range(fabric_num_orderer|int) %}orderer{{ loop.index0 }}.{{ fabric_orderer_domain }}{% if not loop.last %}| {% endif %}{% endfor %}"
-  Channels: "{{ channel_list | to_yaml }}"
+{#  Channels: {% for channel in channels %}{{ channel["name"] }} {% endfor %}#}
   LedgerBatchTimeout: "{{ fabric_batch_timeout }}"
   LedgerBatchSize: "MaxMessageCount:{{ fabric_batchsize[0] }} | AbsoluteMaxBytes:{{ fabric_batchsize[1] }} | PreferredMaxBytes:{{ fabric_batchsize[2] }}"
   details: "Fabric version {{ fabric_version }} on Kubernetes. Each Organisation is mapped to a Kubernetes namespace."
@@ -30,7 +30,7 @@ clients:
         cryptoStore:
           path: /tmp/{{ ansible_date_time.epoch }}-crypto/org{{ org_num }}
       clientPrivateKey:
-        path: {{ 'admin_org' + org_num + '_key' }}
+        path: {{ private_keys[org_num][0] }}
       clientSignedCert:
         path: {{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/User1@org{{ org_num }}/msp/signcerts/User1@org{{ org_num }}-cert.pem
 {% endfor %}
@@ -73,9 +73,9 @@ channels:
               mspId: Org{{ org_num }}MSP
 {% endfor %}
         policy:
-{% for i in range(fabric_num_orgs|int) %}
-{% set org_num = loop.index|string %}
           {{ fabric_num_orgs }}-of:
+{% for i in range(fabric_num_orgs|int) %}
+{% set org_num = loop.index0|string %}
             - signed-by: {{ org_num }}
 {% endfor %}
 {% endfor %}
@@ -84,7 +84,7 @@ channels:
 organizations:
 {% for i in range(fabric_num_orgs|int) %}
 {% set org_num = loop.index|string %}
-  Org1:
+  Org{{ org_num }}:
     mspid: Org{{ org_num }}MSP
     peers:
 {% for j in range(fabric_peers_per_org|int) %}
@@ -94,19 +94,20 @@ organizations:
     certificateAuthorities:
     - ca.org{{ org_num }}
     adminPrivateKey:
-      path: {{ 'user1_org' + org_num + '_key' }}
+      path: {{ private_keys[org_num][1] }}
     signedCert:
       path: {{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/Admin@org{{ org_num }}/msp/signcerts/Admin@org{{ org_num }}-cert.pem
 {% endfor %}
 
 orderers:
 {% for i in range(fabric_num_orderer|int) %}
-  orderer{{ loop.index0 }}:
-    url: grpcs://orderer{{ loop.index0 }}.{{ fabric_orderer_domain }}:{{ node_port_mapping['orderer' + item + '.' + fabric_orderer_domain]['7050'] }}
+{% set orderer_num=loop.index0|string %}
+  orderer{{ orderer_num }}:
+    url: grpcs://orderer{{ orderer_num }}.{{ fabric_orderer_domain }}:{{ node_port_mapping['orderer' + orderer_num + '.' + fabric_orderer_domain]['7050'] }}
     grpcOptions:
-      ssl-target-name-override: orderer{{ loop.index0 }}.{{ fabric_orderer_domain }}
+      ssl-target-name-override: orderer{{ orderer_num }}.{{ fabric_orderer_domain }}
     tlsCACerts:
-      path: {{ crpto_config_dir }}/ordererOrganizations/{{ fabric_orderer_domain }}/orderers/orderer{{ loop.index0 }}.{{ fabric_orderer_domain }}/msp/tlscacerts/tlsca.orgorderer{{ loop.index0 }}-cert.pem
+      path: {{ crpto_config_dir }}/ordererOrganizations/{{ fabric_orderer_domain }}/orderers/orderer{{ orderer_num }}.{{ fabric_orderer_domain }}/msp/tlscacerts/tlsca.{{ fabric_orderer_domain }}-cert.pem
 {% endfor %}
 
 peers:
@@ -127,7 +128,7 @@ peers:
 certificateAuthorities:
 {% for i in range(fabric_num_orgs|int) %}
 {% set org_num = loop.index|string %}
-  ca.org1:
+  ca.org{{ org_num }}:
     url: https://ca.org{{ org_num }}:{{ node_port_mapping['ca.org' + org_num]['7054'] }}
     httpOptions:
       verify: false

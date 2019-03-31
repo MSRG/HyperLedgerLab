@@ -44,7 +44,7 @@ fabric_state_db: couchdb
 
 # Metrics framework setting
 # inventory_dir is an ansible variable which stores location of hosts.ini file
-metrics_network_file: "{{ inventory_dir }}/fabric_network.yaml"
+metrics_network_file: "{{ inventory_dir }}/fabric_ccp_network.yaml"
 # Channel configuration
 channels:                   # List of channel objects
   - name: "mychannel"
