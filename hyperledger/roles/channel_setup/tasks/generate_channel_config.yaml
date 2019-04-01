@@ -6,10 +6,10 @@
   args:
     creates: "{{ channel_artifacts_dir }}/{{ channel['name'] }}.tx"
 
-- name: Generating anchor peer update for OrgMSPs for channel "{{ channel['name'] }}"
-  shell: |
-    export FABRIC_CFG_PATH={{ fabric_config_dir }}
-    {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputAnchorPeersUpdate {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx -channelID {{ channel["name"] }} -asOrg Org{{ item }}MSP
-  args:
-    creates: "{{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx"
-  with_sequence: count="{{ fabric_num_orgs }}"
+#- name: Generating anchor peer update for OrgMSPs for channel "{{ channel['name'] }}"
+#  shell: |
+#    export FABRIC_CFG_PATH={{ fabric_config_dir }}
+#    {{ fabric_config_dir }}/bin/configtxgen -profile OrgsChannel -outputAnchorPeersUpdate {{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx -channelID {{ channel["name"] }} -asOrg Org{{ item }}MSP
+#  args:
+#    creates: "{{ channel_artifacts_dir }}/Org{{ item }}MSPanchors.tx"
+#  with_sequence: count="{{ fabric_num_orgs }}"

@@ -66,6 +66,7 @@ channels:                   # List of channel objects
 
 # Uncomment the following lines to install and instantiate marbles chaincode on a separate channel
 #  - name: "mychannel1"
+#    created: false          # Update this value to true if channel is already created
 #    chaincodes:
 #      - id: marbles
 #        contractID: marbles               # NOTE: This should be unique for chaincodes across channels
