@@ -1,0 +1,179 @@
+---
+name: Fabric
+version: "1.0"
+mutual-tls: false
+
+caliper:
+  blockchain: fabric-ccp
+
+info:
+  Version: "1.4.0"
+  Distribution: "Kubernetes"
+  Size: "Orgs: 2, Peers per org:2"
+  StateDB: "couchdb"
+  Orderer: "Orgs: 1, Orderers: 2"
+  OrdererConsensus: "kafka"
+  OrdererAddress: "orderer0.orgorderer1| orderer1.orgorderer1"
+  LedgerBatchTimeout: "2s"
+  LedgerBatchSize: "MaxMessageCount:20 | AbsoluteMaxBytes:128 MB | PreferredMaxBytes:128 MB"
+  details: "Fabric version 1.4.0 on Kubernetes. Each Organisation is mapped to a Kubernetes namespace."
+
+clients:
+  client0.org1:
+    client:
+      organization: Org1
+      credentialStore:
+        path: /tmp/1554128538-cred/org1
+        cryptoStore:
+          path: /tmp/1554128538-crypto/org1
+      clientPrivateKey:
+        path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/7f62b222b302b944d6c3ebd8d79041a9f51b9b1f34ef6aad3638e4a62870ce90_sk
+      clientSignedCert:
+        path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/User1@org1/msp/signcerts/User1@org1-cert.pem
+  client0.org2:
+    client:
+      organization: Org2
+      credentialStore:
+        path: /tmp/1554128538-cred/org2
+        cryptoStore:
+          path: /tmp/1554128538-crypto/org2
+      clientPrivateKey:
+        path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/User1@org2/msp/keystore/07f9cb846cd6a1b332f879c548d1fd6d60b1a37f3da1bc1f90ae985d3558f3b9_sk
+      clientSignedCert:
+        path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/User1@org2/msp/signcerts/User1@org2-cert.pem
+
+channels:
+  mychannel:
+    configBinary: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts/mychannel.tx
+    created: False
+    orderers:
+    - orderer0
+    - orderer1
+    peers:
+      peer0.org1:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.org1:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer0.org2:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.org2:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+    chaincodes:
+    - id: fabcar
+      contractID: fabcar
+      version: v1
+      language: golang
+      path: contract/fabcar/go/
+      metadataPath:
+      endorsement-policy:
+        identities:
+          - role:
+              name: member
+              mspId: Org1MSP
+          - role:
+              name: member
+              mspId: Org2MSP
+        policy:
+          2-of:
+            - signed-by: 0
+            - signed-by: 1
+
+organizations:
+  Org1:
+    mspid: Org1MSP
+    peers:
+    - peer0.org1
+    - peer1.org1
+    certificateAuthorities:
+    - ca.org1
+    adminPrivateKey:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/ed176f3072c948e61f4d6c33c0f13ab51ad5bd2af04a5406c8ba453ec2dcce3b_sk
+    signedCert:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/signcerts/Admin@org1-cert.pem
+  Org2:
+    mspid: Org2MSP
+    peers:
+    - peer0.org2
+    - peer1.org2
+    certificateAuthorities:
+    - ca.org2
+    adminPrivateKey:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/Admin@org2/msp/keystore/3cfbb414a07ef55588b8ab2465642915fb67735aff39e6ed1dc282180326632f_sk
+    signedCert:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/Admin@org2/msp/signcerts/Admin@org2-cert.pem
+
+orderers:
+  orderer0:
+    url: grpcs://orderer0.orgorderer1:32000
+    grpcOptions:
+      ssl-target-name-override: orderer0.orgorderer1
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+  orderer1:
+    url: grpcs://orderer1.orgorderer1:32001
+    grpcOptions:
+      ssl-target-name-override: orderer1.orgorderer1
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem
+
+peers:
+  peer0.org1:
+    url: grpcs://peer0.org1:30001
+    grpcOptions:
+      ssl-target-name-override: peer0.org1
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/tlscacerts/tlsca.org1-cert.pem
+  peer1.org1:
+    url: grpcs://peer1.org1:30004
+    grpcOptions:
+      ssl-target-name-override: peer1.org1
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/tlscacerts/tlsca.org1-cert.pem
+  peer0.org2:
+    url: grpcs://peer0.org2:30101
+    grpcOptions:
+      ssl-target-name-override: peer0.org2
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/tlscacerts/tlsca.org2-cert.pem
+  peer1.org2:
+    url: grpcs://peer1.org2:30104
+    grpcOptions:
+      ssl-target-name-override: peer1.org2
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/tlscacerts/tlsca.org2-cert.pem
+
+certificateAuthorities:
+  ca.org1:
+    url: https://ca.org1:30000
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/tlsca/tlsca.org1-cert.pem
+    registrar:
+    - enrollId: admin
+      enrollSecret: adminpw
+  ca.org2:
+    url: https://ca.org2:30100
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/tlsca/tlsca.org2-cert.pem
+    registrar:
+    - enrollId: admin
+      enrollSecret: adminpw

@@ -8,6 +8,6 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 # BEGIN ANSIBLE MANAGED BLOCK: sudo DNS mapping for orderers, peers and ca
-172.24.49.100 orderer0.orgorderer1 ca.org1 ca.org2
+172.24.49.100 orderer0.orgorderer1 orderer1.orgorderer1 ca.org1 ca.org2
 172.24.49.101 peer0.org1 peer1.org1 peer0.org2 peer1.org2
 # END ANSIBLE MANAGED BLOCK: sudo DNS mapping for orderers, peers and ca

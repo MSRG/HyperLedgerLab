@@ -12,6 +12,10 @@
   loop_control:
     loop_var: org_num
 
+- name: Get timestamp from the system for random credential tmp path
+  shell: "date +%s"
+  register: random_credential_val
+
 - name: Generate blockchain network config for Metrics tool
   template: src={{ item.src }} dest={{ metrics_network_file }} mode=0644
   with_items:

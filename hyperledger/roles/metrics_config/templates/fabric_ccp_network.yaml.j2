@@ -26,9 +26,9 @@ clients:
     client:
       organization: Org{{ org_num }}
       credentialStore:
-        path: /tmp/{{ ansible_date_time.epoch }}-cred/org{{ org_num }}
+        path: /tmp/{{ random_credential_val.stdout }}-cred/org{{ org_num }}
         cryptoStore:
-          path: /tmp/{{ ansible_date_time.epoch }}-crypto/org{{ org_num }}
+          path: /tmp/{{ random_credential_val.stdout }}-crypto/org{{ org_num }}
       clientPrivateKey:
         path: {{ private_keys[org_num][0] }}
       clientSignedCert:
