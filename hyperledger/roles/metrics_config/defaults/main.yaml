@@ -19,14 +19,3 @@ metrics_network_file: "{{ inventory_dir }}/fabric_ccp_network.yaml"
 channels:                   # List of channel objects
   - name: "mychannel"
     chaincodes:
-
-# TODO: Remove this code when Caliper Fabric CCP is completely tested. Fabric CCP adapter now creates channels and join peers to them
-#metrics_network_file: "{{ inventory_dir }}/fabric_network.json"
-#metrics_chaincodes:
-#  - id: marbles
-#    path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
-#    metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
-#    language: golang
-#    version: v1
-#    channel: "{{ channel_name }}"
-#metrics_tx_context: null

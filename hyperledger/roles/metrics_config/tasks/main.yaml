@@ -1,19 +1,16 @@
 ---
-- set_fact:
-    node_port_mapping: {
-      'peer1.org1': {'7053': 30006, '7052': 30005, '7051': 30004}, 'ca.org1': {'7054': 30000}, 'peer0.org2': {'7053': 30103, '7052': 30102, '7051': 30101},
-      'peer0.org1': {'7053': 30003, '7052': 30002, '7051': 30001}, 'ca.org2': {'7054': 30100}, 'orderer0.orgorderer1': {'7050': 32000},
-      'peer1.org2': {'7053': 30106, '7052': 30105, '7051': 30104}, 'orderer1.orgorderer1': {'7050': 32001}
-    }
+#- set_fact:
+#    node_port_mapping: {
+#      'peer1.org1': {'7053': 30006, '7052': 30005, '7051': 30004}, 'ca.org1': {'7054': 30000}, 'peer0.org2': {'7053': 30103, '7052': 30102, '7051': 30101},
+#      'peer0.org1': {'7053': 30003, '7052': 30002, '7051': 30001}, 'ca.org2': {'7054': 30100}, 'orderer0.orgorderer1': {'7050': 32000},
+#      'peer1.org2': {'7053': 30106, '7052': 30105, '7051': 30104}, 'orderer1.orgorderer1': {'7050': 32001}
+#    }
 
 - name: Find user1 and admin private keys for all peer orgs
   include_tasks: tasks/private_keys.yaml
   with_sequence: count="{{ fabric_num_orgs|int }}"
   loop_control:
     loop_var: org_num
-
-#  - debug:
-#      msg: "{{ user1_org1_key }} ||||| {{ user1_org2_key }} ||| {{ admin_org1_key }} ||||| {{ admin_org2_key }}"
 
 - name: Generate blockchain network config for Metrics tool
   template: src={{ item.src }} dest={{ metrics_network_file }} mode=0644

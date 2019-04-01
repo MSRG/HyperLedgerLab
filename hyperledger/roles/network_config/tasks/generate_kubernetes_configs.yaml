@@ -29,10 +29,6 @@
 - name: Set exposed NodePort service ports in facts
   set_fact: node_port_mapping={{ generate_k8s_result.stdout }}
 
-# TODO: Remove this code when Caliper Fabric CCP is completely tested. Fabric CCP adapter now creates channels and join peers to them
-#- name: Set orderer NodePort as fact
-#  set_fact: orderer_node_port={{ node_port_mapping[fabric_orderer_address]['7050'] }}
-
 - name: Set owner and permission for kubernetes templates
   file:
     name: "{{ templates_dir }}"
