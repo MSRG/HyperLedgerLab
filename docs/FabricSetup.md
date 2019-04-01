@@ -40,8 +40,7 @@ Ansible **Playbook**: [blockchain_setup.yaml](../blockchain_setup.yaml)
     * `fabric_batchsize`: Batch Size: Controls the number of messages batched into a block
 - Metrics config:
     * `metrics_network_file`: Location of fabric network file generated for Caliper
-    * `metrics_chaincodes`: Define chaincodes which will be used in the [MetricsCollect](MetricsCollect.md) step
-    * `metrics_tx_context`: Define context for all transaction of chaincodes defined in `metrics_chaincodes` above
+    * `channels`: Defines a list of channels to create and chaincodes installed on the channels
 
 #### How it works ?
 
@@ -69,11 +68,11 @@ This command will call [blockchain_setup.yaml](../blockchain_setup.yaml) playboo
 4. Create configuration for metrics framework: 
     * Playbook: [playbooks/create_metrics_config.yaml](../playbooks/create_metrics_config.yaml)
     * Role: [hyperledger/roles/metrics_config](../hyperledger/roles/metrics_config)
-    1. Create a fabric network file for Caliper and store it in `metrics_network_file` location using template [fabric_network.json.j2](../hyperledger/roles/metrics_config/templates/fabric_network.json.j2)
-        * All chaincodes to install are defined in `metrics_chaincodes` dictionary 
-        * Context for all chaincode transactions is defined in `metrics_tx_context` 
-        * Caliper needs this file to communicate with Fabric network. See [documentation](https://hyperledger.github.io/caliper/docs/Fabric_Configuration.html#fabric)
-        * An example of network config file created can be found here: [fabric_network.json](samples/fabric_network.json)
+    1. Create a fabric network file for Caliper and store it in `metrics_network_file` location using template [fabric_ccp_network.yaml.j2](../hyperledger/roles/metrics_config/templates/fabric_ccp_network.yaml.j2)
+        * All channels defnined in `channels` dictionary will be created
+        * All chaincode are defnined per channel in `channels` dictionary
+        * Caliper needs this file to communicate with Fabric network via Common Connection Profile (CCP) of fabric-sdk. See [documentation](https://hyperledger.github.io/caliper/docs/Fabric_Ccp_Configuration.html)
+        * An example of network config file created can be found here: [fabric_ccp_network.yaml](samples/fabric_ccp_network.yaml)
     2. Make entries in etc/hosts for CLI with pseudo dns of peer and orderer domain to k8s worker nodes
         * Example of entries made in /etc/hosts can be found here: [etc_hosts](samples/etc_hosts)
     
@@ -81,7 +80,7 @@ This command will call [blockchain_setup.yaml](../blockchain_setup.yaml) playboo
 #### Generated configuration files
 
 - All configurations generated for Fabric network are located in [inventory/blockchain/fabric-config](../inventory/blockchain/fabric-config) directory
-- Metrics network configuration is located at `inventory/blockchain/fabric_network.json`
+- Metrics network configuration is located at `inventory/blockchain/fabric_ccp_network.yaml` or as defined in `metrics_network_file` setting.
 
 
 Delete Fabric Network

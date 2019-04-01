@@ -10,13 +10,22 @@ module.exports.init = function (blockchain, context, args) {
 };
 
 module.exports.run = function () {
+    let args;
+    if (bc.bcType === 'fabric-ccp') {
+        args = {
+            chaincodeFunction: 'initLedger',
+            chaincodeArguments: []
+        };
+    } else {
+        args = {
+            transaction_type: 'initLedger'
+        };
+    }
     return bc.invokeSmartContract(
         contx,
         'fabcar',
         'v1',
-        [{
-            transaction_type: "initLedger"
-        }],
+        [args],
         30
     );
 };

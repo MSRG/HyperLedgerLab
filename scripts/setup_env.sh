@@ -5,6 +5,12 @@ set -e
 # cd to project root
 cd `dirname $0`/..
 
+# Update the submodule code
+set -x
+git submodule sync
+git submodule update --init --recursive
+set +x
+
 # Set environment variables required for Openstack and k8s cluster setup
 if [[ -f .env ]]
 then
@@ -20,11 +26,13 @@ then
     if [[ ! -d node_modules ]]
     then
         # Setup node environment
+        set -x
         curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
         sudo apt-get install -y nodejs
         sudo npm install -g npm
         npm install
-        npm run fabric-deps
+        npm run fabric-v1.4-deps
+        set +x
     fi
 else
     # Setup python environment

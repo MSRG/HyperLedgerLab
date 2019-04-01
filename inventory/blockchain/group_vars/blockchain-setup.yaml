@@ -8,7 +8,7 @@ fabric_couchdb_version: 0.4.14
 fabric_num_orgs: 2
 fabric_peers_per_org: 2
 fabric_num_orderer: 2
-fabric_orderer_address: orderer0.orgorderer1
+fabric_orderer_domain: orgorderer1
 # Options for Orderer Consensus type: solo/kafka
 fabric_orderer_type: solo
 fabric_num_kafka: 3
@@ -44,31 +44,37 @@ fabric_state_db: couchdb
 
 # Metrics framework setting
 # inventory_dir is an ansible variable which stores location of hosts.ini file
-metrics_network_file: "{{ inventory_dir }}/fabric_network.json"
-metrics_chaincodes:
-# Uncomment the following line to install and instantiate marbles chaincode on the network
-#  - id: marbles
-#    path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
-#    metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
-#    language: golang
-#    version: v1
-#    channel: "{{ channel_name }}"
-  - id: fabcar
-    path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
-    metadataPath: ""
-    language: golang
-    version: v1
-    channel: "{{ channel_name }}"
-metrics_tx_context:                  # Define which transaction to be performed on which channel. if "null" then first channel will be used
-  # Marbles chaincode
-  init: "{{ channel_name }}"
-  query: "{{ channel_name }}"
-  # Fabcar chaincode
-  initLedger: "{{ channel_name }}"
-  createCar: "{{ channel_name }}"
-  queryCar: "{{ channel_name }}"
-  queryAllCars: "{{ channel_name }}"
-  changeCarOwner: "{{ channel_name }}"
+metrics_network_file: "{{ inventory_dir }}/fabric_ccp_network.yaml"
+# Channel configuration
+channels:                   # List of channel objects
+  - name: "mychannel"
+    created: false          # Update this value to true if channel is already created
+    chaincodes:
+      - id: fabcar
+        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
+        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
+        metadataPath: ""
+        language: golang
+        version: v1
+# Uncomment the following lines to install and instantiate marbles chaincode on this channel
+#      - id: marbles
+#        contractID: marbles               # NOTE: This should be unique for chaincodes across channels
+#        path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
+#        language: golang
+#        version: v1
+
+# Uncomment the following lines to install and instantiate marbles chaincode on a separate channel
+#  - name: "mychannel1"
+#    created: false          # Update this value to true if channel is already created
+#    chaincodes:
+#      - id: marbles
+#        contractID: marbles               # NOTE: This should be unique for chaincodes across channels
+#        path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
+#        language: golang
+#        version: v1
+
 
 # Config Directories
 fabric_config_dirname: fabric-config

@@ -1,10 +1,14 @@
 This software is developed under GNU GENERAL PUBLIC LICENSE Version 3.
 
 This software includes some modules which were developed under Apache License Version 2.0 and have been reused here:
+
 1. Module: `kubespray` has been used here to setup a kubernetes cluster
-A modified version of software is used to make it compatible with ubuntu xenial: https://github.com/sahilkalra1991/kubespray.git
+A modified version of software is used to make it compatible with ubuntu xenial: https://github.com/sahilkalra1991/kubespray
+All changes to orginial software are displayed here: https://github.com/kubernetes-sigs/kubespray/compare/master...sahilkalra1991:sk_2.6.0_xenial
+
 2. Module: `caliper` has been used here for gathering metrics for Fabric network.
-It is originally know as `Hyperledger Caliper`: https://github.com/hyperledger/caliper/tree/7502380504ca7ba832974839e18e118af1909a14
+A modified version of software, originally know as `Hyperledger Caliper`, has been used to make it compatible to be used as a submodule: https://github.com/sahilkalra1991/caliper
+All changes to original software are displayed here: https://github.com/hyperledger/caliper/compare/master...sahilkalra1991:master
 
 License texts are as follows:
 

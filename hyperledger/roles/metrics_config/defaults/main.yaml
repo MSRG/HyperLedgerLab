@@ -6,24 +6,16 @@ crpto_config_dir: "{{ fabric_config_dir }}/{{ crypto_config_dirname }}"
 channel_artifacts_dirname: channel-artifacts
 channel_artifacts_dir: "{{ fabric_config_dir }}/{{ channel_artifacts_dirname }}"
 
-# Channel configuration
-channel_name: mychannel
-
 # Fabric Network Config
 fabric_num_orgs: 2
 fabric_peers_per_org: 2
-fabric_orderer_address: orderer0.orgorderer1
+fabric_orderer_domain: orgorderer1
+#fabric_orderer_address: orderer0.orgorderer1
 
 # Metrics framework setting
 # inventory_dir is an ansible variable which stores location of hosts.ini file
-#metrics_benchmark: "{{ inventory_dir }}/benchmark/marbles/main.js"
-#metrics_config_file: "{{ inventory_dir }}/benchmark/marbles/config.yaml"
-metrics_network_file: "{{ inventory_dir }}/fabric_network.json"
-metrics_chaincodes:
-  - id: marbles
-    path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
-    metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
-    language: golang
-    version: v1
-    channel: "{{ channel_name }}"
-metrics_tx_context: null
+metrics_network_file: "{{ inventory_dir }}/fabric_ccp_network.yaml"
+# Channel configuration
+channels:                   # List of channel objects
+  - name: "mychannel"
+    chaincodes:

@@ -33,7 +33,6 @@
 3. Clone the repository:
     * `git clone https://github.com/MSRG/HyperLedgerLab.git`
     * `cd HyperLedgerLab`
-    * `git submodule sync; git submodule update --init`
 
 3. Create .env file with details about Openstack authentication
     * Copy `env_sample` to `.env`

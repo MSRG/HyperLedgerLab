@@ -1,0 +1,20 @@
+- name: "Find private key for User1@org{{ org_num }}"
+  find:
+    paths: "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/User1@org{{ org_num }}/msp/keystore/"
+    patterns: "*_sk"
+    recurse: yes
+  register: user1_key
+
+- name: "Find private key for Admin@org{{ org_num }}"
+  find:
+    paths: "{{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/Admin@org{{ org_num }}/msp/keystore/"
+    patterns: "*_sk"
+    recurse: yes
+  register: admin_key
+
+- name: Populate private_keys
+  set_fact:
+    private_keys: "{{ private_keys|default({})|combine({org_num: [user1_key.files[0].path, admin_key.files[0].path] }) }}"
+
+#- debug:
+#    msg: "{{ private_keys }}"

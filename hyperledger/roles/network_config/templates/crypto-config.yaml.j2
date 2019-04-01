@@ -6,7 +6,7 @@ OrdererOrgs:
   # ---------------------------------------------------------------------------
   # Orderer
   # ---------------------------------------------------------------------------
-{% set orderer_domain = fabric_orderer_address.split(".")[1] %}
+{% set orderer_domain = fabric_orderer_domain %}
   - Name: Orderer1
     Domain: {{ orderer_domain }}
     Template:

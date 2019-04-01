@@ -15,15 +15,15 @@ This is the final step in this project. It is required to test a chaincode on th
 Collect  Metrics
 ---------------
 
-**Command**: `node inventory/blockchain/benchmark/<benchmark_name>/main.js -c inventory/blockchain/benchmark/<benchmark_name>/config.yaml -n inventory/blockchain/fabric_network.json`
+**Command**: `node ./caliper/scripts/main.js -c inventory/blockchain/benchmark/<benchmark_name>/config.yaml -n inventory/blockchain/fabric_ccp_network.yaml`
 
-e.g. to exeucte `fabcar` benchmark, Run Command: `node inventory/blockchain/benchmark/fabcar/main.js -c inventory/blockchain/benchmark/fabcar/config.yaml -n inventory/blockchain/fabric_network.json`
+e.g. to exeucte `fabcar` benchmark, Run Command: `node ./caliper/scripts/main.js -c inventory/blockchain/benchmark/fabcar/config.yaml -n inventory/blockchain/fabric_ccp_network.yaml`
 
 **Variables**: Defined in the [FabricSetup](FabricSetup.md) step. File: [blockchain-setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
 
 #### How it works ?
 
-Configuration for fabric network and chaincode(s), which can be installed on network in this command, is already done in [FabricSetup](FabricSetup.md) step. File `inventory/blockchain/fabric_network.json` is created as a result.
+Configuration for fabric network and chaincode(s), which can be installed on network in this command, is already done in [FabricSetup](FabricSetup.md) step. File `inventory/blockchain/fabric_ccp_network.yaml` is created as a result.
 
 The example command will call the `fabcar` benchmark and perform some rounds of testing for various transactions as defined in [fabcar/config.yaml](../inventory/blockchain/benchmark/fabcar/config.yaml). See Caliper [documentation for details](https://hyperledger.github.io/caliper/docs/2_Architecture.html#configuration-file) on `config.yaml` options
 
