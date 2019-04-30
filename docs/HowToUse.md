@@ -80,7 +80,7 @@
     * Run Command: `./scripts/fabric_delete.sh`
     * Estimated time to complete: **120 seconds**
     * What will happen ?
-        * It will create Fabric Blockchain on kubernetes with command: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_delete.yaml`
+        * It will delete Fabric Blockchain on kubernetes with command: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_delete.yaml`
         * `crypto_config` and `channel_artifacts` will be deleted as well
 
 7. Benchmarking: Get chaincode metrics:
