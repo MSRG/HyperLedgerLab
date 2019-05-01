@@ -140,8 +140,7 @@ Benchmarking Options
 
 * Add the contract code in [contract](../inventory/blockchain/src/contract) directory. see [fabcar](../inventory/blockchain/src/contract/fabcar) and [marbles](../inventory/blockchain/src/contract/marbles) as example
 * Add a benchmark for the chaincode in [benchmark](../inventory/blockchain/benchmark) directory. see [fabcar](../inventory/blockchain/benchmark/fabcar) and [marbles](../inventory/blockchain/benchmark/marbles) benchmark examples
-* Define new chaincode in `metrics_chaincodes` dictionary variable defined in [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
-* Define context for each transaction in new chaincode in `metrics_tx_context` dictionary variable defined in [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
+* Define new chaincode in `chaincodes` list in the desired channel, as defined in `channels` variable, in [blockchain_setup.yaml](../inventory/blockchain/group_vars/blockchain-setup.yaml)
 
 #### Change benchmark settings: rounds, rate controlling etc
 
