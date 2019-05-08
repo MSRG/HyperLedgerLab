@@ -59,9 +59,9 @@ channels:                   # List of channel objects
 # Uncomment the following lines to install and instantiate marbles chaincode on this channel
 #      - id: marbles
 #        contractID: marbles               # NOTE: This should be unique for chaincodes across channels
-#        path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
-#        metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
-#        language: golang
+#        path: "{{ inventory_dir }}/src/contract/marbles/node/"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: "{{ inventory_dir }}/src/contract/marbles/node/metadata/"
+#        language: node
 #        version: v1
 
 # Uncomment the following lines to install and instantiate marbles chaincode on a separate channel
