@@ -34,7 +34,7 @@ fabric_images:
   couchdb: "hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}"
   kafka: "hyperledger/fabric-kafka:{{ fabric_couchdb_version }}"
   zookeeper: "hyperledger/fabric-zookeeper:{{ fabric_couchdb_version }}"
-  dind: "docker:stable-dind"
+  dind: "docker:18.09-dind"
 
 # Fabric Configuration
 # state_db options couchdb / goleveldb
