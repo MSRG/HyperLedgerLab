@@ -48,7 +48,7 @@
         * OS Instance Sizes: Ideally all instances should be size m1.medium or above
         * OS Security Groups: If you don't create security groups as mentioned above then change all to `default`.
     * Edit file [openstack_instance.py](../openstack_infra/roles/os_instance/files/openstack_instance.py) at line 226 and add current location of openstackall.crt
-	* sess = session.Session(auth=auth, verify='/home/ubuntu/openstackall.crt')
+        * sess = session.Session(auth=auth, verify='/home/ubuntu/HyperledgerLab/openstackall.crt')
     * Run Command: `./scripts/k8s_setup.sh` (Error 2. from Common Errors –on the bottom of this page– might occur.)
     * Estimated time to complete: **25 minutes**
     * After execution run: `source ~/.bash_aliases`
