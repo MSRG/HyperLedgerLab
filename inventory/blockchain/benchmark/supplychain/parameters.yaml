@@ -1,0 +1,4 @@
+tpsMax: 50
+tpsDeviation: 5
+permutationsToCompute: 1
+keyAccessStandardDeviation: 3

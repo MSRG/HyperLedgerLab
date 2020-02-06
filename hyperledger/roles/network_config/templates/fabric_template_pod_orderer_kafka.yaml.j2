@@ -113,6 +113,12 @@ spec:
         env:
         - name: KAFKA_BROKER_ID
           value: "{{ loop.index }}"
+        - name: KAFKA_RETRY_NETWORKTIMEOUTS_DIALTIMEOUT
+          value: "300s"
+        - name: KAFKA_RETRY_NETWORKTIMEOUTS_READTIMEOUT
+          value: "300s"
+        - name: KAFKA_RETRY_NETWORKTIMEOUTS_WRITETIMEOUT
+          value: "300s"
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: "{% for j in range(fabric_num_zookeeper|int) %}zookeeper{{ loop.index0 }}.$namespace:2181{% if not loop.last %},{% endif %}{% endfor %}"
         - name: KAFKA_ADVERTISED_LISTENERS

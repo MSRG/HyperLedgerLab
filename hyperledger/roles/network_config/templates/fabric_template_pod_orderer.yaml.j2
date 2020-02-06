@@ -28,6 +28,8 @@ spec:
           value: {{ fabric_orderer_loglevel }}
         - name: ORDERER_GENERAL_LISTENADDRESS
           value: 0.0.0.0
+        - name: ORDERER_GENERAL_KEEPALIVE_SERVERTIMEOUT
+          value: "300s"
         - name: ORDERER_GENERAL_GENESISMETHOD
           value: file
         - name: ORDERER_GENERAL_GENESISFILE
@@ -58,10 +60,16 @@ spec:
          - mountPath: /var/hyperledger/orderer/orderer.genesis.block
            name: orderer-crypto-pv
            subPath: genesis.block
+#         - mountPath: /var/hyperledger/production/
+#           name: ram-tmp-store
+
       volumes:
        - name: orderer-crypto-pv
          persistentVolumeClaim:
              claimName: $pvName
+#       - name: ram-tmp-store
+#         emptyDir:
+#           medium: Memory
 
 
 ---

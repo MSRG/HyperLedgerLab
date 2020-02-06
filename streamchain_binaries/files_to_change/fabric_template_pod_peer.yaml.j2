@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: $namespace
+  name:	$podName
+spec:
+  selector:
+    matchLabels:
+       app: hyperledger
+       role: peer
+       peer-id: $peerID
+       org: $namespace
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+       app: hyperledger
+       role: peer
+       peer-id: $peerID
+       org: $namespace
+    spec:
+      containers:
+{% if fabric_state_db == "couchdb"  %}
+        # CouchDB to store chaincodes
+      - name: couchdb
+        image: {{ fabric_images['couchdb'] }}
+        ports:
+         - containerPort: 5984
+{% endif %}
+
+        # Docker in Docker Daemon
+      - name: dind-daemon
+        image: {{ fabric_images['dind'] }}
+#        resources:
+#          requests:
+#            cpu: 20m
+#            memory: 512Mi
+        ports:
+          - containerPort: 2375
+        securityContext:
+          privileged: true
+#        args: ["--debug"]
+#        readinessProbe:
+#          exec:
+#            command:
+#              - /bin/sh
+#              - -c
+#              - "ping -c 3 -t 10 google.com"
+#          initialDelaySeconds: 10 # how long to wait before checking
+#          periodSeconds: 3 # how long to wait between checks
+#          successThreshold: 1 # how many successes to hit before accepting
+#          failureThreshold: 3 # how many failures to accept before failing
+#          timeoutSeconds: 11 # how long to wait for a response
+        volumeMounts:
+          - name: dind-graph-storage
+            mountPath: /var/lib/docker
+
+        # Fabric Peer
+      - name: $podName 
+        image: {{ fabric_images['peer'] }}
+        env:
+{% if fabric_state_db == "couchdb" %}
+        - name: CORE_LEDGER_STATE_STATEDATABASE
+          value: "CouchDB"
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+          value: "localhost:5984"
+{% else %}
+        - name: CORE_LEDGER_STATE_STATEDATABASE
+          value: "goleveldb"
+{% endif %}
+        - name: CORE_VM_ENDPOINT
+          value: "tcp://localhost:2375"
+        - name: CORE_LOGGING_LEVEL
+          value: {{ fabric_peer_loglevel }}
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_GOSSIP_USELEADERELECTION
+          value: "true"
+        - name: CORE_PEER_GOSSIP_ORGLEADER
+          value: "false"
+        - name: CORE_PEER_PROFILE_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: "/etc/hyperledger/fabric/tls/server.crt" 
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: "/etc/hyperledger/fabric/tls/server.key"
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: "/etc/hyperledger/fabric/tls/ca.crt"
+        - name: CORE_PEER_ID
+          value: $corePeerID
+        - name: CORE_PEER_ADDRESS
+          value: $peerAddress
+        - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+          value: $peerGossip
+        - name: CORE_PEER_GOSSIP_BOOTSTRAP
+          value: $peerGossip
+        - name: CORE_PEER_LOCALMSPID
+          value: $localMSPID
+# Added as mentioned here: https://github.com/MCLDG/fabric-on-kubernetes#peers-cannot-start-chaincode-server
+# Error: panic: Failed to create chaincode server: listen tcp ip:7052: bind: cannot assign requested address
+        - name: CORE_PEER_CHAINCODELISTENADDRESS
+          value: localhost:7052
+        - name: GOPATH
+          value: /opt/gopath
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        ports:
+         - containerPort: 7051
+         - containerPort: 7052
+         - containerPort: 7053
+        command: ["peer"]
+        args: ["node","start"]
+        volumeMounts:
+         - mountPath: /etc/hyperledger/fabric/msp 
+           name: org-crypto-pv
+           subPath: $mspPath
+         - mountPath: /etc/hyperledger/fabric/tls
+           name: org-crypto-pv
+           subPath: $tlsPath
+         - mountPath: /var/hyperledger/production
+           name: ram-tmp-store
+         - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/stateLeveldb
+           name: ram-tmp-store-new
+
+      volumes:
+       - name: org-crypto-pv
+         persistentVolumeClaim:
+             claimName: $pvName
+       - name: dind-graph-storage
+         emptyDir: {}
+       - name: ram-tmp-store
+         emptyDir:
+           medium: Memory
+       - name: ram-tmp-store-new
+         emptyDir:
+           medium: Memory
+       
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+   namespace: $namespace
+   name: $peerID
+spec:
+ selector:
+   app: hyperledger
+   role: peer
+   peer-id: $peerID
+   org: $namespace
+ type: NodePort
+ ports:
+   - name: externale-listen-endpoint
+     protocol: TCP
+     port: 7051
+     targetPort: 7051
+     nodePort: $nodePort1
+
+   - name: chaincode-listen
+     protocol: TCP
+     port: 7052
+     targetPort: 7052
+     nodePort: $nodePort2
+
+   - name: event-hub
+     protocol: TCP
+     port: 7053
+     targetPort: 7053
+     nodePort: $nodePort3
+---

@@ -5,7 +5,7 @@
   vars_prompt:
     - name: "prompt_del_inf"
       prompt: "Caution: This will delete the complete cluster including all cloud instances. Are you sure (yes/no)?"
-      default: "no"
+      default: "yes"
       private: no
   tasks:
     - set_fact:

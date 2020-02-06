@@ -1,0 +1,118 @@
+## Provide fabric versions as defined here:
+# https://hyperledger-fabric.readthedocs.io/en/release-1.2/install.html
+fabric_version: 1.4.0
+fabric_ca_version: "{{ fabric_version }}"
+fabric_couchdb_version: 0.4.14
+
+# Fabric Network Config
+fabric_num_orgs: 2
+fabric_peers_per_org: 2
+fabric_num_orderer: 3
+fabric_orderer_domain: orgorderer1
+# Options for Orderer Consensus type: solo/kafka
+fabric_orderer_type: kafka
+fabric_num_kafka: 3
+fabric_num_zookeeper: 3
+# Batch Timeout: The amount of time to wait before creating a batch
+fabric_batch_timeout: "2s"
+# Batch Size: Controls the number of messages batched into a block
+# Index0: Max Message Count: The maximum number of messages to permit in a batch
+# Index1: Absolute Max Bytes: The absolute maximum number of bytes allowed for the
+#         serialized messages in a batch.
+# Index2: Preferred Max Bytes: The preferred maximum number of bytes allowed for
+#         the serialized messages in a batch. A message larger than the preferred
+#         max bytes will result in a batch larger than preferred max bytes.
+fabric_batchsize: ["100", "2 MB", "2 MB"]
+
+# Create CLI Pod
+fabric_create_cli: false
+
+# Custom fabric container images
+fabric_images:
+  ca: "hyperledger/fabric-ca:{{ fabric_ca_version }}"
+  peer: "hyperledger/fabric-peer:{{ fabric_version }}"
+  tools: "hyperledger/fabric-tools:{{ fabric_version }}"
+  orderer: "hyperledger/fabric-orderer:{{ fabric_version }}"
+  couchdb: "hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}"
+  kafka: "hyperledger/fabric-kafka:{{ fabric_couchdb_version }}"
+  zookeeper: "hyperledger/fabric-zookeeper:{{ fabric_couchdb_version }}"
+  dind: "docker:18.09-dind"
+
+# Fabric Configuration
+# state_db options couchdb / goleveldb
+fabric_state_db: couchdb
+# fabric_state_db: goleveldb
+
+# Metrics framework setting
+# inventory_dir is an ansible variable which stores location of hosts.ini file
+metrics_network_file: "{{ inventory_dir }}/fabric_ccp_network.yaml"
+# Channel configuration
+channels:                   # List of channel objects
+  - name: "mychannel"
+    created: false          # Update this value to true if channel is already created
+    chaincodes:
+#      - id: fabcar
+#        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
+#        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: ""
+#        language: golang
+#        version: v1
+      - id: supplychain
+        contractID: supplychain               # NOTE: This should be unique for chaincodes across channels
+        path: "{{ inventory_dir }}/src/contract/supplychain/"      # NOTE: Path to Directory where chaincode file is located
+        metadataPath: "{{ inventory_dir }}/src/contract/supplychain/metadata/"
+        language: node
+        version: v1
+#      - id: electronic-health-record
+#        contractID: electronic-health-record
+#        path: "{{ inventory_dir }}/src/contract/electronic-health-record"
+#        metadataPath: "{{ inventory_dir }}/src/contract/electronic-health-record/metadata/"
+#        language: node
+#        version: v1
+#      - id: e-voting
+#        contractID: e-voting
+#        path: "{{ inventory_dir }}/src/contract/e-voting"
+#        metadataPath: "{{ inventory_dir }}/src/contract/e-voting/metadata/"
+#        language: node
+#        version: v1
+#      - id: drm
+#        contractID: drm
+#        path: "{{ inventory_dir }}/src/contract/drm"
+#        metadataPath: "{{ inventory_dir }}/src/contract/drm/metadata/"
+#        language: node
+#        version: v1
+# Uncomment the following lines to install and instantiate marbles chaincode on a separate channel
+#  - name: "mychannel1"
+#    created: false          # Update this value to true if channel is already created
+#    chaincodes:
+#      - id: marbles
+#        contractID: marbles               # NOTE: This should be unique for chaincodes across channels
+#        path: "contract/marbles/go/"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: "{{ inventory_dir }}/src/contract/marbles/go/metadata/"
+#        language: golang
+#        version: v1
+
+# Config Directories
+fabric_config_dirname: fabric-config
+fabric_config_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}"
+crypto_config_dirname: crypto-config
+crpto_config_dir: "{{ fabric_config_dir }}/{{ crypto_config_dirname }}"
+channel_artifacts_dirname: channel-artifacts
+channel_artifacts_dir: "{{ fabric_config_dir }}/{{ channel_artifacts_dirname }}"
+contract_dirname: "contract"
+contract_dir: "{{ inventory_dir }}/src/contract"
+templates_dirname: templates
+templates_dir: "{{ fabric_config_dir }}/{{ templates_dirname }}"
+cryptogen_config: "{{ fabric_config_dir }}/crypto-config.yaml"
+
+# Logging Level:
+fabric_cli_loglevel: "INFO"
+fabric_peer_loglevel: "INFO"
+fabric_orderer_loglevel: "INFO"
+
+# Dynamic Variables
+nfs_server_ip: "{{ groups['kube-nfs'][0] }}"
+nfs_server_mount_dir: "/opt/share"
+
+# kubernetes kubectl command
+k8s_kubectl_cmd: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl --kubeconfig={{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/admin.conf"

@@ -1,0 +1,16 @@
+{
+  "name": "e_voting",
+  "version": "1.0.0",
+  "description": "Package to support benchmark testing with a e voting application",
+  "author": "Luca A. Mueller",
+  "license": "ISC",
+  "dependencies": {
+    "fabric-contract-api": "1.4.1",
+    "fabric-shim": "1.4.1",
+    "read-yaml": "1.1.0",
+    "unirand": "2.4.5",
+    "zipfian-integer": "1.0.1",
+    "deck": "0.0.4",
+    "random-picker": "1.0.0"
+  }
+}

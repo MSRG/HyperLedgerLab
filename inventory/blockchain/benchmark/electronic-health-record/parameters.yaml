@@ -1,0 +1,3 @@
+tpsMax: 500
+tpsDeviation: 5
+permutationsToCompute: 1

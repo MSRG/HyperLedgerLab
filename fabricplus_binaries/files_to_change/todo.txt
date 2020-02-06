@@ -1,0 +1,37 @@
+docs/samples/fabric_network.json
+    "Ledger BatchSize": "MaxMessageCount:10 | AbsoluteMaxBytes:128 MB | PreferredMaxBytes:128 MB | MaxUniqueKeys:1024",
+hyperledger/roles/metrics_config/templates/fabric_ccp_network.yaml.j2
+    LedgerBatchSize: "MaxMessageCount:{{ fabric_batchsize[0] }} | AbsoluteMaxBytes:{{ fabric_batchsize[1] }} | PreferredMaxBytes:{{ fabric_batchsize[2] }} | MaxUniqueKeys:{{ fabric_batchsize[3] }}"
+hyperledger/roles/network_config/defaults/main.yaml
+    fabric_batchsize: ["10", "128 MB", "128 MB", "1024"]
+    peer: "jeetachacko/ankur-peer:latest"
+    orderer: "jeetachacko/ankur-orderer:latest"
+    tools: "jeetachacko/ankur-tools:latest"
+hyperledger/roles/network_config/files/bin_1.2.0/
+    Add binaries -- copy fabricplus_binaries/*
+hyperledger/roles/network_config/files/bin_1.2.0/get-docker-images.sh
+    docker pull jeetachacko/ankur-peer:latest
+    docker pull jeetachacko/ankur-orderer:latest
+hyperledger/roles/network_config/templates/configtx.yaml.j2
+    MaxUniqueKeys: {{ fabric_batchsize[3] }}
+inventory/blockchain/group_vars/blockchain-setup.yaml
+    fabric_version: 1.2.0
+    fabric_batchsize: ["300", "2 MB", "2 MB", "1024"]
+    peer: "jeetachacko/ankur-peer:latest"
+    orderer: "jeetachacko/ankur-orderer:latest"
+    tools: "jeetachacko/ankur-tools:latest"
+
+
+git clone --recursive
+
+cp editedcaliperfiles/bench-flow.js caliper/src/comm/
+cp editedcaliperfiles/fabric.js caliper/src/adapters/fabric-ccp/
+
+npm i zipfian-integer
+npm i @dagrejs/graphlib
+npm i deck
+npm i random-picker
+
+sudo apt-get install -y python-pandas
+sudo pip install -U matplotlib
+sudo apt-get install -y python-numpy

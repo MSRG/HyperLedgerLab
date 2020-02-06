@@ -223,7 +223,7 @@ def create_msrg_compute_helper(
                        project_name=os_project_name,
                        project_domain_name=os_project_domain_name,
                        user_domain_name=os_user_domain_name)
-    sess = session.Session(auth=auth, verify='/home/ubuntu/HyperledgerLab/openstackall.crt')
+    sess = session.Session(auth=auth, verify='/home/ubuntu/HyperLedgerLab/openstackall.crt')
     nova_client = nclient.Client(2, session=sess, endpoint_override='{}:8774/v2.1/'.format(os_base_url))
     n2 = nclient.Client(2, session=sess, endpoint_override='{}:9292'.format(os_base_url))
     nova_client.glance = n2.glance

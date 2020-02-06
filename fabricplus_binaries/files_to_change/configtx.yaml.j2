@@ -1,0 +1,147 @@
+---
+################################################################################
+#                                                                              #
+#   Section: Organizations
+#
+#   - This section defines the different organizational identities which will
+#   be referenced later in the configuration.
+#
+################################################################################
+Organizations:
+{% set orderer_domain = fabric_orderer_domain %}
+    # OrdererOrg defines an MSP for orderer.
+    - &OrdererOrg
+        Name: {{ orderer_domain|capitalize }}MSP
+
+        # ID to load the MSP definition as
+        ID: {{ orderer_domain|capitalize }}MSP
+
+        # MSPDir is the filesystem path which contains the MSP configuration
+        MSPDir: crypto-config/ordererOrganizations/{{ orderer_domain }}/msp
+
+        AdminPrincipal: Role.MEMBER
+{% for i in range(fabric_num_orgs|int) %}
+{% set org_index = loop.index %}
+    - &Org{{ org_index }}
+        # OrgMSP defines the organization which has peers
+        Name: Org{{ org_index }}MSP
+
+        # ID to load the MSP definition as
+        ID: Org{{ org_index }}MSP
+
+        MSPDir: crypto-config/peerOrganizations/org{{ org_index }}/msp
+
+        AdminPrincipal: Role.ADMIN
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+{% for j in range(fabric_peers_per_org|int) %}
+            - Host: peer{{ loop.index0 }}.org{{ org_index }}
+              Port: 7051
+            - Host: peer{{ loop.index0 }}.org{{ org_index }}
+              Port: 7051
+{% endfor %}
+{% endfor %}
+
+
+################################################################################
+#
+#   SECTION: Orderer
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for orderer related parameters
+#
+################################################################################
+Orderer: &OrdererDefaults
+
+    # Orderer Type: The orderer implementation to start
+    # Available types are "solo" and "kafka"
+    OrdererType: {{ fabric_orderer_type }}
+
+    Addresses:
+{% for i in range(fabric_num_orderer|int) %}
+        - orderer{{ loop.index0 }}.{{ orderer_domain }}:7050
+{% endfor %}
+
+    # Batch Timeout: The amount of time to wait before creating a batch
+    BatchTimeout: {{ fabric_batch_timeout }}
+# Batch Size: Controls the number of messages batched into a block
+
+    BatchSize:
+
+        # Max Message Count: The maximum number of messages to permit in a batch
+        MaxMessageCount: {{ fabric_batchsize[0] }}
+
+        # Absolute Max Bytes: The absolute maximum number of bytes allowed for
+        # the serialized messages in a batch.
+        AbsoluteMaxBytes: {{ fabric_batchsize[1] }}
+
+        # Preferred Max Bytes: The preferred maximum number of bytes allowed for
+        # the serialized messages in a batch. A message larger than the preferred
+        # max bytes will result in a batch larger than preferred max bytes.
+        PreferredMaxBytes: {{ fabric_batchsize[2] }}
+
+        # Preferred MaxUniqueKeys The preferred maximum number of bytes allowed for
+        # the serialized messages in a batch. A message larger than the preferred
+        # max bytes will result in a batch larger than preferred max bytes.
+        MaxUniqueKeys: {{ fabric_batchsize[3] }}
+
+    MaxChannels: 0
+
+    Kafka:
+        # Brokers: A list of Kafka brokers to which the orderer connects
+        # NOTE: Use IP:port notation
+        Brokers:
+{% for i in range(fabric_num_kafka|int) %}
+            - kafka{{ loop.index0 }}.{{ orderer_domain }}:9092
+{% endfor %}
+
+    # Organizations is the list of orgs which are defined as participants on
+    # the orderer side of the network
+    Organizations:
+
+################################################################################
+#
+#   SECTION: Application
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for application related parameters
+#
+################################################################################
+Application: &ApplicationDefaults
+
+    # Organizations is the list of orgs which are defined as participants on
+    # the application side of the network
+    Organizations:
+
+################################################################################
+#
+#   Profile
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+Profiles:
+
+    OrgsOrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+{% for i in range(fabric_num_orgs|int) %}
+                    - *Org{{ loop.index }}
+{% endfor %}
+    OrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+{% for i in range(fabric_num_orgs|int) %}
+                - *Org{{ loop.index }}
+{% endfor %}

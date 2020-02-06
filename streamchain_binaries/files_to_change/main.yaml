@@ -1,0 +1,71 @@
+# Fabric versions
+# Provide fabric versions as defined here:
+# https://hyperledger-fabric.readthedocs.io/en/release-1.2/install.html
+fabric_version: 1.2.1
+fabric_ca_version: 1.2.1
+fabric_couchdb_version: 0.4.12
+
+# Fabric Network Config
+fabric_num_orgs: 2
+fabric_peers_per_org: 2
+fabric_num_orderer: 1
+fabric_orderer_domain: orgorderer1
+#fabric_orderer_address: orderer0.orgorderer1
+fabric_orderer_type: solo       # Options: solo/kafka
+fabric_num_kafka: 3
+fabric_num_zookeeper: 3
+# Batch Timeout: The amount of time to wait before creating a batch
+fabric_batch_timeout: "250ms"
+# Batch Size: Controls the number of messages batched into a block
+# Index0: Max Message Count: The maximum number of messages to permit in a batch
+# Index1: Absolute Max Bytes: The absolute maximum number of bytes allowed for the
+#         serialized messages in a batch.
+# Index2: Preferred Max Bytes: The preferred maximum number of bytes allowed for
+#         the serialized messages in a batch. A message larger than the preferred
+#         max bytes will result in a batch larger than preferred max bytes.
+fabric_batchsize: ["10", "128 MB", "128 MB"]
+
+# Custom fabric container images
+fabric_images:
+  ca: "hyperledger/fabric-ca:{{ fabric_ca_version }}"
+  peer: "jeetachacko/streamchain-peer:latest"
+  tools: "jeetachacko/streamchain-tools:latest"
+  orderer: "jeetachacko/streamchain-orderer:latest"
+  kafka: "jeetachacko/streamchain-kafka:latest"
+  #peer: "hyperledger/fabric-peer:{{ fabric_version }}"
+  #tools: "hyperledger/fabric-tools:{{ fabric_version }}"
+  #orderer: "hyperledger/fabric-orderer:{{ fabric_version }}"
+  couchdb: "hyperledger/fabric-couchdb:{{ fabric_couchdb_version }}"
+  #kafka: "hyperledger/fabric-kafka:{{ fabric_couchdb_version }}"
+  zookeeper: "hyperledger/fabric-zookeeper:{{ fabric_couchdb_version }}"
+  dind: "docker:18.09-dind"
+
+# Fabric Configuration
+# state_db options couchdb / goleveldb
+fabric_state_db: couchdb
+
+# Config Directories
+fabric_config_dirname: fabric-config
+fabric_config_dir: "{{ inventory_dir }}/{{ fabric_config_dirname }}"
+crypto_config_dirname: crypto-config
+crpto_config_dir: "{{ fabric_config_dir }}/{{ crypto_config_dirname }}"
+channel_artifacts_dirname: channel-artifacts
+channel_artifacts_dir: "{{ fabric_config_dir }}/{{ channel_artifacts_dirname }}"
+contract_dirname: "contract"
+contract_dir: "{{ inventory_dir }}/src/contract"
+templates_dirname: templates
+templates_dir: "{{ fabric_config_dir }}/{{ templates_dirname }}"
+cryptogen_config: "{{ fabric_config_dir }}/crypto-config.yaml"
+
+# Logging Level:
+fabric_cli_loglevel: "INFO"
+fabric_peer_loglevel: "INFO"
+fabric_orderer_loglevel: "INFO"
+
+# Dynamic Variables
+nfs_server_ip: ""
+nfs_server_mount_dir: "/opt/share"
+
+# kubernetes kubectl command
+k8s_kubectl_cmd: ""
+

@@ -6,9 +6,13 @@ This repository contains scripts we are developing to deploy a Hyperledger Testb
 
 **CONTRIBUTOR**: Sahil Kalra (sahilkalra1991@gmail.com)
 
-**CONTRIBUTOR**: Pezhman Nasirifard 
+**CONTRIBUTOR**: Luca A. Müller
 
-**CONTRIBUTOR**: Kaiwen Zhang 
+**CONTRIBUTOR**: Pezhman Nasirifard
+
+**CONTRIBUTOR**: Jeeta Ann Chacko
+
+**CONTRIBUTOR**: Kaiwen Zhang
 
 **CONTRIBUTOR**: Arno Jacobsen
 
@@ -16,12 +20,12 @@ This repository contains scripts we are developing to deploy a Hyperledger Testb
 Quick Setup
 ------------
 
-For a quick setup of this software, please see: [HowToUse](docs/HowToUse.md)
+For a quick setup of this software, please see: [HowToUse](docs/HowToUse.md).
 
 Supported Versions
 -------------------
 
-- Openstack: 
+- Openstack:
     * Compute API: `v2`
     * Keystone API: `v3`
     * python-openstackclient: `>=3.16`

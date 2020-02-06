@@ -1,0 +1,94 @@
+{
+  "caliper": {
+    "blockchain": "fabric"
+  },
+  "fabric": {
+    "cryptodir": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config",
+    "network": {
+      "orderer": {
+        "url": "grpcs://orderer0.orgorderer1:32000",
+        "domain": "orgorderer1",
+        "mspid": "Orgorderer1MSP",
+        "msp": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/ordererOrganizations/orgorderer1/msp/",
+        "server-hostname": "orderer0.orgorderer1",
+        "tls_cacerts": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/ca.crt"
+      },
+      "org1": {
+        "name": "org1",
+        "domain": "org1",
+        "mspid": "Org1MSP",
+        "msp": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/msp/",
+        "ca": {
+          "url": "http://ca.org1:30000",
+          "name": "ca"
+        },
+        "peer0": {
+          "requests": "grpcs://peer0.org1:30001",
+          "events": "grpcs://peer0.org1:30003",
+          "server-hostname": "peer0.org1",
+          "tls_cacerts": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt"
+        },        "peer1": {
+          "requests": "grpcs://peer1.org1:30004",
+          "events": "grpcs://peer1.org1:30006",
+          "server-hostname": "peer1.org1",
+          "tls_cacerts": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt"
+        }      },      "org2": {
+        "name": "org2",
+        "domain": "org2",
+        "mspid": "Org2MSP",
+        "msp": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/msp/",
+        "ca": {
+          "url": "http://ca.org2:30100",
+          "name": "ca"
+        },
+        "peer0": {
+          "requests": "grpcs://peer0.org2:30101",
+          "events": "grpcs://peer0.org2:30103",
+          "server-hostname": "peer0.org2",
+          "tls_cacerts": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt"
+        },        "peer1": {
+          "requests": "grpcs://peer1.org2:30104",
+          "events": "grpcs://peer1.org2:30106",
+          "server-hostname": "peer1.org2",
+          "tls_cacerts": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt"
+        }      }    },
+    "channel": [
+      {
+        "name": "mychannel",
+        "deployed": true,
+        "config": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts/channel.tx",
+        "organizations": [
+          "org1",          "org2"        ]
+      }
+    ],
+    "chaincodes": [{"path": "contract/fabcar/go/", "metadataPath": "", "language": "golang", "id": "fabcar", "channel": "mychannel", "version": "v1"}],
+    "endorsement-policy": {
+      "identities": [
+        {
+          "role": {
+            "name": "member",
+            "mspId": "Org1MSP"
+          }
+        },        {
+          "role": {
+            "name": "member",
+            "mspId": "Org2MSP"
+          }
+        }      ],
+      "policy": { "2-of": [{"signed-by": 0}, {"signed-by": 1} ]}
+    },
+    "context": {"queryCar": "mychannel", "queryAllCars": "mychannel", "changeCarOwner": "mychannel", "initLedger": "mychannel", "query": "mychannel", "init": "mychannel", "createCar": "mychannel"}
+  },
+  "info": {
+    "Version": "1.4.0",
+    "Distribution": "Kubernetes",
+    "Peer": "Orgs: 2, Peers per org:2",
+    "Peer State Database": "couchdb",
+    "Orderer": "Orgs: 1, Orderers: 2",
+    "Orderer Consensus": "solo",
+    "Orderer Address": "orderer0.orgorderer1",
+    "Ledger BatchTimeout": "250ms",
+    "Ledger BatchSize": "MaxMessageCount:10 | AbsoluteMaxBytes:128 MB | PreferredMaxBytes:128 MB | MaxUniqueKeys:1024",
+    "details": "Fabric version 1.4.0 on Kubernetes. Each Organisation is mapped to a Kubernetes namespace."
+  }
+}

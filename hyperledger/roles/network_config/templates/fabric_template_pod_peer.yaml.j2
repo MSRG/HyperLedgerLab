@@ -72,6 +72,8 @@ spec:
 {% endif %}
         - name: CORE_VM_ENDPOINT
           value: "tcp://localhost:2375"
+        - name: CORE_CHAINCODE_EXECUTETIMEOUT
+          value: "300s"
         - name: CORE_LOGGING_LEVEL
           value: {{ fabric_peer_loglevel }}
         - name: CORE_PEER_TLS_ENABLED
@@ -118,6 +120,11 @@ spec:
          - mountPath: /etc/hyperledger/fabric/tls
            name: org-crypto-pv
            subPath: $tlsPath
+#         - mountPath: /var/hyperledger/production
+#           name: ram-tmp-store
+#         - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/stateLeveldb
+#           name: ram-tmp-store-new
+
 
       volumes:
        - name: org-crypto-pv
@@ -125,6 +132,12 @@ spec:
              claimName: $pvName
        - name: dind-graph-storage
          emptyDir: {}
+#       - name: ram-tmp-store
+#         emptyDir:
+#           medium: Memory
+#       - name: ram-tmp-store-new
+#         emptyDir:
+#           medium: Memory
        
 
 ---
