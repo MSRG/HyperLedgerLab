@@ -1,0 +1,7 @@
+type genstruct struct {
+	ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
+	ParameterA       string `json:"parametera"`    //the fieldtags are needed to keep case from bouncing around
+	ParameterB      string `json:"parameterb"`
+	ParameterC       int    `json:"parameterc"`
+	ParameterD      string `json:"parameterd"`
+}

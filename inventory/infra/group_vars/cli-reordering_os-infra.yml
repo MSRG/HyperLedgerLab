@@ -1,0 +1,31 @@
+# OS params
+os_username: "'{{ lookup('env', 'OS_USERNAME') }}'"
+os_password: "'{{ lookup('env', 'OS_PASSWORD') }}'"
+os_base_url: "https://openstack.cluster.msrg.in.tum.de"
+os_project_name: "'{{ lookup('env', 'OS_PROJECT_NAME') }}'"
+os_user_domain_name: "default"
+os_project_domain_name: "default"
+
+# Cluster instances 3 control nodes, 3 worker nodes, 1 lb/dns node and 1 nfs
+#k8s_ctl_instances: ["yk8sctl1", "yk8sctl2", "yk8sctl3", "yk8sctl4", "yk8sctl5", "yk8sctl6", "yk8sctl7", "yk8sctl8", "yk8sctl9", "yk8sctl10", "yk8sctl11", "yk8sctl12", "yk8sctl13", "yk8sctl14", "yk8sctl15", "yk8sctl16", "yk8sctl17", "yk8sctl18", "yk8sctl19", "yk8sctl20", "yk8sctl21", "yk8sctl22", "yk8sctl23"]
+#k8s_ctl_instances: ["yk8sctl1", "yk8sctl2", "yk8sctl3", "yk8sctl4", "yk8sctl5", "yk8sctl6", "yk8sctl7", "yk8sctl8", "yk8sctl9", "yk8sctl10", "yk8sctl11", "yk8sctl12", "yk8sctl13", "yk8sctl14", "yk8sctl15", "yk8sctl16", "yk8sctl17"]
+#k8s_wrk_instances: ["xk8swrk1", "xk8swrk2"]
+#k8s_wrk_instances: ["yk8swrk1", "yk8swrk2", "yk8swrk3", "yk8swrk4", "yk8swrk5", "yk8swrk6", "yk8swrk7", "yk8swrk8", "yk8swrk9", "yk8swrk10", "yk8swrk11", "yk8swrk12", "yk8swrk13", "yk8swrk14", "yk8swrk15", "yk8swrk16", "yk8swrk17", "yk8swrk18", "yk8swrk19", "yk8swrk20", "yk8swrk21", "yk8swrk22", "yk8swrk23"]
+#k8s_wrk_instances: ["yk8swrk1", "yk8swrk2", "yk8swrk3", "yk8swrk4", "yk8swrk5", "yk8swrk6", "yk8swrk7", "yk8swrk8", "yk8swrk9", "yk8swrk10", "yk8swrk11", "yk8swrk12", "yk8swrk13", "yk8swrk14", "yk8swrk15", "yk8swrk16", "yk8swrk17"]
+k8s_ctl_instances: ["yk8sctl1", "yk8sctl2", "yk8sctl3"]
+k8s_wrk_instances: ["yk8swrk1", "yk8swrk2", "yk8swrk3"]
+k8s_lb_instance: "yk8slb"
+k8s_nfs_instance: "yk8snfs"
+k8s_instance_flavour: "m1.xxlarge"
+k8s_ctl_instance_flavour: "m1.xxlarge"                  # Size of k8s control nodes
+k8s_wrk_instance_flavour: "m1.xxlarge"                  # Size of k8s worker nodes
+k8s_instance_image: "kvm-ubuntu-xenial"
+k8s_instance_availability_zone: "kvm-ssd"
+k8s_instance_security_groups: ["default"]        # Security groups to assign to k8s worker and control nodes
+k8s_instance_dns_security_groups: ["default"]    # Security groups to assign to DNS node
+k8s_instance_nfs_security_groups: ["default"]         # Security Groups to assign to NFS node. default allows everything
+k8s_instance_image_key: "jc-hyperledger"           # Key to use when creating an instance. Name should match the key in "Key-pairs" in openstack account
+
+# Cluster Inventory location
+k8s_cluster_inventory_file: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/hosts.ini"
+k8s_blockchain_inventory_file: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/blockchain/hosts.ini"

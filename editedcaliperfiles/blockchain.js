@@ -289,7 +289,7 @@ class Blockchain {
                 r.invokeTotal += v.invokeTotal;
                 r.length += v.length;
                 r.out.push.apply(r.out, v.out);
-		logger.info(' v.create.min: ' + v.create.min + ' of i: ' + i + ' v.final.max: ' + v.final.max + ' of i: ' + i );
+		//logger.info(' v.create.min: ' + v.create.min + ' of i: ' + i + ' v.final.max: ' + v.final.max + ' of i: ' + i );
                 if(v.create.min < r.create.min) {
                     r.create.min = v.create.min;
                 }

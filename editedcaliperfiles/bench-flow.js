@@ -125,11 +125,11 @@ function getResultValue(r) {
         (r.final.max === r.create.min) ? row.push(r.succ + ' tps') : row.push(((r.succ / (r.final.max - r.create.min)).toFixed(1)) + ' tps');
         (r.final.max === r.create.min) ? row.push((r.succ + r.fail) + ' tps') : row.push((((r.succ + r.fail) / (r.final.max - r.create.min)).toFixed(1)) + ' tps');
 	let throughputtime = (r.final.max - r.create.min)
-	if (r.label == 'common') {
+	if (r.label == 'common' || r.label == 'commonGen') {
 		logger.info('THROUGHPUT TIME ' + throughputtime);
 	}
-	logger.info('FIRST TRANSACTION SUBMIT TIME' + r.create.min);
-        logger.info('r.create.max: '+ r.create.max + ' r.create.min: ' + r.create.min + ' r.final.max: ' + r.final.max + ' r.final.min: '+ r.final.min);
+	//logger.info('FIRST TRANSACTION SUBMIT TIME' + r.create.min);
+        //logger.info('r.create.max: '+ r.create.max + ' r.create.min: ' + r.create.min + ' r.final.max: ' + r.final.max + ' r.final.min: '+ r.final.min);
     }
     catch (err) {
         // temporarily remove percentile row = [r.label, 0, 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A'];

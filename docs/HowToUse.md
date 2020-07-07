@@ -77,6 +77,7 @@
     * What will happen ?
         * It will deploy a Fabric network on kubernetes with command: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_setup.yaml`
         * Then it will create sample channel and join all peers into it.
+    * For use-case based chaincodes and generated chaincodes do not run `./scripts/fabric_setup.sh`. Instead follow the instructions given below.
 
 6. Delete Fabric Blockchain on kubernetes:
     * Run Command: `./scripts/fabric_delete.sh`
@@ -95,6 +96,26 @@
         * It will install, instantiate chaincode on the network using Caliper
         * Then it will run some rounds of testing
         * A HTML report will be created with the metrics gathered. Location of report will be displayed at the end of testing
+    * For use-case based chaincodes and generated chaincodes do not run `./scripts/get_metrics.sh <chaincode>`. Instead follow the instructions given below.
+
+8. Using the use-case based chaincodes and workloads (electronic-health-record, e-voting, supplychain, drm)
+    * Run Command: `./scripts/run_benchmark.sh <chaincode>`
+
+9. Using the chaincode and workload generator
+    * `cd inventory/blockchain/Generator/`
+    * `go run chaincodeGenerator.go`
+    * edit inventory/blockchain/Generator/chaincodeGenerator.go to give different input parameters and generate corresponding chaincode.
+    * `cd inventory/blockchain/Generator/`
+    * `node transactiongenerator.js`
+    * Edit inventory/blockchain/Generator/transactiongenerator.js to give different input parameters and generate corresponding workloads.
+
+10. Using the generated chaincode and workload with caliper
+    * inventory/blockchain/benchmark/generator/ contains the caliper benchmarking files suitable for generated workloads. 
+    * Modify these files based on the type of generated workloads.
+    * The generated workloads are copied to inventory/blockchain/benchmark/generator/workload
+    * Use the script inventory/blockchain/benchmark/generator/workload/splitfiles.sh to split large workloads.
+    * The generated chaincode is copied to inventory/blockchain/src/contract/generator/
+    * To run the benchmark with generated chaincode and workload: `./scripts/gen_run_benchmark.sh <chaincode>`
         
 Fabric-Metrics Workflow:
 -----
@@ -149,6 +170,16 @@ Benchmarking Options
 * Each chaincode benchmark contains a file `config.yaml` which defines the testing rounds and transaction type. 
 * For example: [fabcar/config.yaml](../inventory/blockchain/benchmark/fabcar/config.yaml)
 * See Caliper [documentation for configuration options](https://hyperledger.github.io/caliper/docs/2_Architecture.html#configuration-file)
+
+Extending Caliper
+-----
+
+* Use the files in the folder HyperLedgerLab/editedcaliperfiles to extend the metrics collection to include transaction failures and to use the workload generator with caliper.
+
+Integrating Fabric++, Streamchain and FabricSharp with HyperledgerLab
+-----
+
+* Replace the original files with the corresponding files in the folders fabricplus_binaries, streamchain_binaries and fabricsharp_binaries
 
 Common Errors
 -----

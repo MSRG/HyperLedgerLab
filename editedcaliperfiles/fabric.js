@@ -43,7 +43,7 @@ let otherfailurescode = new Array();
 let totalEndorsementFailures = 0;
 let totalPhantomReads = 0;
 let totalOtherFailures = 0;
-
+let oneclient = 0
 
 
 //const sortOp = new TopologicalSort();
@@ -203,7 +203,8 @@ class Fabric extends BlockchainInterface {
         this.configChaincodeInstantiateEventTimeout = config.get('fabricCcp:timeout:chaincodeInstantiateEvent', 300000);
         //this.configChaincodeInstantiateEventTimeout = 300000;
         //this.configDefaultTimeout = config.get('fabricCcp:timeout:invokeOrQuery', 60000);
-        this.configDefaultTimeout = 120000;
+        this.configDefaultTimeout = 900000;
+        //this.configDefaultTimeout = 120000;
         //this.configDefaultTimeout = 300000;
         this.configClientBasedLoadBalancing = config.get('fabricCcp:loadBalancing', 'client') === 'client';
         this.configCountQueryAsLoad = this._getBoolConfig('fabricCcp:countQueryAsLoad', true);
@@ -383,6 +384,7 @@ class Fabric extends BlockchainInterface {
                 });
 //            }, this._getRemainingTimeout(startTime, timeout));
             },900000); 
+            //},120000); 
 
             eventSource.eventHub.registerTxEvent(txId, (tx, code) => {
                 //clearTimeout(handle);
@@ -1776,6 +1778,7 @@ class Fabric extends BlockchainInterface {
                         reject(new Error('TIMEOUT'));
 //                    }, this._getRemainingTimeout(startTime, timeout));
                     }, 900000);
+                    //}, 120000);
 
                     let result = await channel.sendTransaction(transactionRequest);
                     clearTimeout(timeoutHandle);
@@ -2049,6 +2052,7 @@ class Fabric extends BlockchainInterface {
      * @async
      */
     async getContext(name, args, clientIdx) {
+	oneclient = oneclient + 1
         // reload the profiles silently
         await this._initializeRegistrars(false);
         await this._initializeAdmins(false);
@@ -2131,6 +2135,8 @@ class Fabric extends BlockchainInterface {
         }
 
 	if (name == 'readBlockchain' && clientIdx == 0) {
+	//if (name == 'readBlockchain' && oneclient == 1) {
+		//oneclient = 1
 		logger.info('Inside IF fabric-cpp.js');
 
 		let channelObj = null;
