@@ -9,7 +9,6 @@
 {% for zone in bind9_dns_zones %}
 zone {{ zone }} {
         type master;
-        multi-master yes;
         zone-statistics yes;
         file "{{ bind9_zones_dir }}/db.{{ zone }}";
 {#        allow-update { key "internal." ; };#}
