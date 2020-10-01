@@ -44,8 +44,7 @@ else
         set -x
         mkdir venv
         sudo apt update
-        sudo apt-get install --yes python-pip
-        pip install virtualenv
+        sudo apt-get install python-virtualenv
         virtualenv --python=python3 venv
         source ./venv/bin/activate
         pip install -r requirements.txt
