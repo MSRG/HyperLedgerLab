@@ -27,7 +27,8 @@ then
     then
         # Setup node environment
         set -x
-        curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+        #sudo apt-get install build-essential
+        curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
         sudo apt-get install -y nodejs
         sudo npm install -g npm
         npm install
