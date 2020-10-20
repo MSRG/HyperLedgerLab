@@ -19,6 +19,26 @@ Organizations:
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: crypto-config/ordererOrganizations/{{ orderer_domain }}/msp
 
+        Policies: &OrdererOrgPolicies
+            Readers:
+                Type: Signature
+                Rule: "OR('{{ orderer_domain|capitalize }}MSP.member')"
+                # If your MSP is configured with the new NodeOUs, you might
+                # want to use a more specific rule like the following:
+                # Rule: "OR('SampleOrg.admin', 'SampleOrg.peer', 'SampleOrg.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('{{ orderer_domain|capitalize }}MSP.member')"
+                # If your MSP is configured with the new NodeOUs, you might
+                # want to use a more specific rule like the following:
+                # Rule: "OR('SampleOrg.admin', 'SampleOrg.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('{{ orderer_domain|capitalize }}MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('{{ orderer_domain|capitalize }}MSP.member')"
+
         AdminPrincipal: Role.MEMBER
 {% for i in range(fabric_num_orgs|int) %}
 {% set org_index = loop.index %}
@@ -30,6 +50,26 @@ Organizations:
         ID: Org{{ org_index }}MSP
 
         MSPDir: crypto-config/peerOrganizations/org{{ org_index }}/msp
+
+        Policies: &Org{{ org_index }}Policies
+            Readers:
+                Type: Signature
+                Rule: "OR('Org{{ org_index }}MSP.member')"
+                # If your MSP is configured with the new NodeOUs, you might
+                # want to use a more specific rule like the following:
+                # Rule: "OR('SampleOrg.admin', 'SampleOrg.peer', 'SampleOrg.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org{{ org_index }}MSP.member')"
+                # If your MSP is configured with the new NodeOUs, you might
+                # want to use a more specific rule like the following:
+                # Rule: "OR('SampleOrg.admin', 'SampleOrg.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org{{ org_index }}MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Org{{ org_index }}MSP.member')"
 
         AdminPrincipal: Role.ADMIN
 
@@ -96,6 +136,21 @@ Orderer: &OrdererDefaults
     # Organizations is the list of orgs which are defined as participants on
     # the orderer side of the network
     Organizations:
+    Policies:
+            Readers:
+                Type: ImplicitMeta
+                Rule: "ANY Readers"
+            Writers:
+                Type: ImplicitMeta
+                Rule: "ANY Writers"
+            Admins:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Admins"
+            # BlockValidation specifies what signatures must be included in the block
+            # from the orderer for the peer to validate it.
+            BlockValidation:
+                Type: ImplicitMeta
+                Rule: "ANY Writers"
 
 ################################################################################
 #
@@ -110,6 +165,48 @@ Application: &ApplicationDefaults
     # Organizations is the list of orgs which are defined as participants on
     # the application side of the network
     Organizations:
+    Policies: &ApplicationDefaultPolicies
+            LifecycleEndorsement:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Endorsement"
+            Endorsement:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Endorsement"
+            Readers:
+                Type: ImplicitMeta
+                Rule: "ANY Readers"
+            Writers:
+                Type: ImplicitMeta
+                Rule: "ANY Writers"
+            Admins:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Admins"
+
+################################################################################
+#
+#   CHANNEL
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for channel related parameters.
+#
+################################################################################
+Channel: &ChannelDefaults
+    # Policies defines the set of policies at this level of the config tree
+    # For Channel policies, their canonical path is
+    #   /Channel/<PolicyName>
+    Policies:
+        # Who may invoke the 'Deliver' API
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        # Who may invoke the 'Broadcast' API
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        # By default, who may modify elements at this config level
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"  
 
 ################################################################################
 #
@@ -122,6 +219,7 @@ Application: &ApplicationDefaults
 Profiles:
 
     OrgsOrdererGenesis:
+        <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
             Organizations:
@@ -133,6 +231,7 @@ Profiles:
                     - *Org{{ loop.index }}
 {% endfor %}
     OrgsChannel:
+        <<: *ChannelDefaults
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
