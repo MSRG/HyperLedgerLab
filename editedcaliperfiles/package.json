@@ -57,7 +57,7 @@
     "read-yaml": "1.1.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
-    "systeminformation": "^3.23.7",
+    "systeminformation": "^4.27.11",
     "table": "^4.0.1",
     "tmp": "0.0.33",
     "unirand": "2.7.11",
