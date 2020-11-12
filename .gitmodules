@@ -3,4 +3,4 @@
 	url = https://github.com/oykuyilmaz/kubespray.git
 [submodule "caliper"]
 	path = caliper
-	url = https://github.com/sahilkalra1991/caliper.git
+	url = https://github.com/oykuyilmaz/caliper.git

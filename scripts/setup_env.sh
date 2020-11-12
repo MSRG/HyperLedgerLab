@@ -31,8 +31,9 @@ then
         curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
         sudo apt-get install -y nodejs
         sudo npm install -g npm
-        npm install
-        npm run fabric-v1.4-deps
+        #npm install
+        #npm run fabric-v1.4-deps
+        npm install --only=prod @hyperledger/caliper-cli@0.4.0
         set +x
     fi
 else

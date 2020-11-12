@@ -54,7 +54,7 @@ channels:                   # List of channel objects
 #      - id: fabcar
 #        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
 #        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
-#        metadataPath: ""
+#        metadataPath: "contract/fabcar/go/metadata"
 #        language: golang
 #        version: v1
 #      - id: supplychain
