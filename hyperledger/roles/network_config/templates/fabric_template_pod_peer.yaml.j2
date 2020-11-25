@@ -70,6 +70,8 @@ spec:
         - name: CORE_LEDGER_STATE_STATEDATABASE
           value: "goleveldb"
 {% endif %}
+        - name: CORE_CHAINCODE_BUILDER
+          value: "hyperledger/fabric-ccenv:1.4.0"
         - name: CORE_VM_ENDPOINT
           value: "tcp://localhost:2375"
         - name: CORE_CHAINCODE_EXECUTETIMEOUT

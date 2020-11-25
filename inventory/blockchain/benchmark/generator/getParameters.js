@@ -8,7 +8,7 @@ class getParameters {
    }
    static zipfianSkew() {
         //zipfianSkew values: 0==uniform, Negative==HigherValues, Positive==LowerValues
-        let zipfianSkew = 1;
+        let zipfianSkew = 2;
         return zipfianSkew;
    }
    static hotKeyProb() {

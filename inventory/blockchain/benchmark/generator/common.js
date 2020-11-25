@@ -24,6 +24,14 @@ let ntransactions = 144000
 //let ntransactions = 90000
 let tranperclient = ntransactions/nclients 
 
+function isDefined(t) {
+  if (t === undefined) {
+     return false;
+  }
+  return true;
+}
+
+
 module.exports.info = 'Chaincode function randomizer';
 
 let bc, contx;
@@ -33,14 +41,6 @@ module.exports.init = function (blockchain, context, args) {
     contx = context;
     return Promise.resolve();
 };
-/*function isItemInArray(array, item) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][0] == item) {
-            return i;  
-        }
-    }
-    return -1;   
-}*/
 module.exports.run = function (clientIdx) {
 
 	//let filearray = [];
@@ -52,7 +52,7 @@ module.exports.run = function (clientIdx) {
 
 	if (txIndex == 0) {
 	
-                filearray = fs.readFileSync(__dirname + '/workload/wdeleteheavy' + zeroPad(clientIdx, 2)).toString().split("\n");
+                filearray = fs.readFileSync(__dirname + '/workload/wnorangedeleteheavy' + zeroPad(clientIdx, 2)).toString().split("\n");
 	}
 
 	//if (filearray.length > 0) {
@@ -94,13 +94,28 @@ module.exports.run = function (clientIdx) {
 //	args = "{ \"chaincodeFunction\":\"func1\", \"chaincodeArguments\":\"[\'449\',\'715\']\" }"
 //	argsj = JSON.parse(args);
 
-	return bc.invokeSmartContract(
+    let txstatus = bc.invokeSmartContract(contx, 'generator', 'v1', [argsj], 30);
+
+    txstatus.then(function(result) {
+        //Latencies
+        if (isDefined(result[0].Get('endorse_latency'))){
+                console.info('endorse_latency: ', result[0].Get('endorse_latency'));
+        }
+        if (isDefined(result[0].Get('orderingandvalidation_time'))){
+                console.info('orderingandvalidation_time: ', result[0].Get('orderingandvalidation_time'));
+        }
+
+    })
+
+    return txstatus;
+
+/*	return bc.invokeSmartContract(
         contx,
         'generator',
         'v1',
         [argsj],
         30
-    );
+    );*/
 
 
 	

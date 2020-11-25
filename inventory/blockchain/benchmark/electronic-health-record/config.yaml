@@ -2,7 +2,7 @@
 test:
   clients:
     type: local
-    number: 5
+    number: 25
 
   rounds:
   - label: initLedger
@@ -20,7 +20,7 @@ test:
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 100
+        tps: 200
     callback: ../inventory/blockchain/benchmark/electronic-health-record/common.js
 
   - label: readBlockchain

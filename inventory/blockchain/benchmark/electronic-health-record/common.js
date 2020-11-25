@@ -109,7 +109,7 @@ module.exports.run = function () {
     let txstatus = bc.invokeSmartContract(contx, 'electronic-health-record', 'v1', args, 120);
     //console.info('TRANSACTION STATUS');
 
-    txstatus.then(function(result) {
+/*    txstatus.then(function(result) {
 	//Endorse errors
 	if (isDefined(result[0].Get('endorse_error'))){
 		console.info('endorse_error: ', result[0].Get('endorse_error'));
@@ -161,7 +161,7 @@ module.exports.run = function () {
         }
 
 
-    })
+    })*/
     return txstatus;
 };
 

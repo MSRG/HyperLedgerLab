@@ -1,5 +1,6 @@
 import os
 import argparse
+import time
 
 ORDERER = None  # it must point to the ordererOrganizations dir
 PEER = None  # it must point to the peerOrganizations dir
@@ -41,9 +42,32 @@ def kubernetes_delete(f):
     :return: None
     """
     if os.path.isfile(f):
-        os.system(KUBECTL + " delete -f " + f)
+        os.system(KUBECTL + " delete -f " + f + " --wait=false ")
+  
+def kubernetes_force_delete():
+   time.sleep(120)
+   os.system(KUBECTL + " delete --all pods --namespace=org1 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=org2 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=org3 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=org4 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=org5 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=org6 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=org7 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=org8 --grace-period=0 --force")
+   os.system(KUBECTL + " delete --all pods --namespace=orgorderer1 --grace-period=0 --force")
+   time.sleep(120)
+   os.system(KUBECTL + " delete namespace org1")
+   os.system(KUBECTL + " delete namespace org2")
+   os.system(KUBECTL + " delete namespace org3")
+   os.system(KUBECTL + " delete namespace org4")
+   os.system(KUBECTL + " delete namespace org5")
+   os.system(KUBECTL + " delete namespace org6")
+   os.system(KUBECTL + " delete namespace org7")
+   os.system(KUBECTL + " delete namespace org8")
+   os.system(KUBECTL + " delete namespace orgorderer1")
+   time.sleep(120)
 
-
+ 
 def delete_orderers(path):
     """
     Delete Orderers
@@ -94,6 +118,7 @@ def delete_peers(path):
 if __name__ == "__main__":
     kwargs_obj = parse_cmd_line_args()
     set_global_vars(kwargs_obj.crypto_config_dir[0], kwargs_obj.kubectl_cmd[0])
-
-    delete_orderers(ORDERER)
     delete_peers(PEER)
+    delete_orderers(ORDERER)
+    kubernetes_force_delete()
+    

@@ -1,0 +1,958 @@
+Synchronizing submodule url for 'caliper'
+Synchronizing submodule url for 'kubespray'
+source .env
+
+================================================================================
+================================================================================
+
+                              DEPRECATION WARNING                            
+
+  Node.js 8.x LTS Carbon is no longer actively supported!
+
+  You will not receive security or critical stability updates for this version.
+
+  You should migrate to a supported version of Node.js as soon as possible.
+  Use the installation script that corresponds to the version of Node.js you
+  wish to install. e.g.
+
+   * https://deb.nodesource.com/setup_10.x — Node.js 10 LTS "Dubnium"
+   * https://deb.nodesource.com/setup_12.x — Node.js 12 LTS "Erbium" (recommended)
+   * https://deb.nodesource.com/setup_14.x — Node.js 14 LTS "Fermium"
+
+  Please see https://github.com/nodejs/Release for details about which
+  version may be appropriate for you.
+
+  The NodeSource Node.js distributions repository contains
+  information both about supported versions of Node.js and supported Linux
+  distributions. To learn more about usage, see the repository:
+    https://github.com/nodesource/distributions
+
+================================================================================
+================================================================================
+
+Continuing in 20 seconds ...
+
+
+## Installing the NodeSource Node.js 8.x LTS Carbon repo...
+
+
+## Populating apt-get cache...
+
++ apt-get update
+Hit:1 http://kvm-ssd.clouds.archive.ubuntu.com/ubuntu xenial InRelease
+Get:2 http://kvm-ssd.clouds.archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]
+Hit:3 https://deb.nodesource.com/node_8.x xenial InRelease
+Get:4 http://security.ubuntu.com/ubuntu xenial-security InRelease [109 kB]
+Get:5 http://kvm-ssd.clouds.archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]
+Get:6 http://kvm-ssd.clouds.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [805 kB]
+Get:7 http://security.ubuntu.com/ubuntu xenial-security/universe amd64 Packages [502 kB]
+Get:8 http://security.ubuntu.com/ubuntu xenial-security/universe Translation-en [207 kB]
+Fetched 1,840 kB in 1s (1,335 kB/s)
+Reading package lists...
+
+## Confirming "xenial" is supported...
+
++ curl -sLf -o /dev/null 'https://deb.nodesource.com/node_8.x/dists/xenial/Release'
+
+## Adding the NodeSource signing key to your keyring...
+
++ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+OK
+
+## Creating apt sources list file for the NodeSource Node.js 8.x LTS Carbon repo...
+
++ echo 'deb https://deb.nodesource.com/node_8.x xenial main' > /etc/apt/sources.list.d/nodesource.list
++ echo 'deb-src https://deb.nodesource.com/node_8.x xenial main' >> /etc/apt/sources.list.d/nodesource.list
+
+## Running `apt-get update` for you...
+
++ apt-get update
+Hit:1 http://kvm-ssd.clouds.archive.ubuntu.com/ubuntu xenial InRelease
+Hit:2 http://kvm-ssd.clouds.archive.ubuntu.com/ubuntu xenial-updates InRelease
+Hit:3 http://kvm-ssd.clouds.archive.ubuntu.com/ubuntu xenial-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Hit:5 https://deb.nodesource.com/node_8.x xenial InRelease
+Reading package lists...
+
+## Run `sudo apt-get install -y nodejs` to install Node.js 8.x LTS Carbon and npm
+## You may also need development tools to build native addons:
+     sudo apt-get install gcc g++ make
+## To install the Yarn package manager, run:
+     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+     sudo apt-get update && sudo apt-get install yarn
+
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+nodejs is already the newest version (8.17.0-1nodesource1).
+0 upgraded, 0 newly installed, 0 to remove and 32 not upgraded.
+/usr/bin/npm -> /usr/lib/node_modules/npm/bin/npm-cli.js
+/usr/bin/npx -> /usr/lib/node_modules/npm/bin/npx-cli.js
++ npm@6.14.8
+updated 1 package in 5.405s
+added 521 packages from 938 contributors and audited 523 packages in 9.038s
+
+3 packages are looking for funding
+  run `npm fund` for details
+
+found 62 vulnerabilities (37 low, 1 moderate, 22 high, 2 critical)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+> caliper@0.1.0 fabric-v1.4-deps /home/ubuntu/HyperLedgerLab
+> npm install --no-save grpc@1.14.2 fabric-ca-client@1.4.0 fabric-client@1.4.0 fabric-network@1.4.0
+
+
+> pkcs11js@1.0.22 install /home/ubuntu/HyperLedgerLab/node_modules/pkcs11js
+> node-gyp rebuild
+
+make: Entering directory '/home/ubuntu/HyperLedgerLab/node_modules/pkcs11js/build'
+  CXX(target) Release/obj.target/pkcs11/src/main.o
+  CXX(target) Release/obj.target/pkcs11/src/dl.o
+  CXX(target) Release/obj.target/pkcs11/src/const.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/error.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/v8_convert.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/template.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/mech.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/param.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/param_aes.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/param_rsa.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/param_ecdh.o
+  CXX(target) Release/obj.target/pkcs11/src/pkcs11/pkcs11.o
+  CXX(target) Release/obj.target/pkcs11/src/async.o
+  CXX(target) Release/obj.target/pkcs11/src/node.o
+  SOLINK_MODULE(target) Release/obj.target/pkcs11.node
+  COPY Release/pkcs11.node
+make: Leaving directory '/home/ubuntu/HyperLedgerLab/node_modules/pkcs11js/build'
+
+> grpc@1.24.2 install /home/ubuntu/HyperLedgerLab/node_modules/fabric-network/node_modules/grpc
+> node-pre-gyp install --fallback-to-build --library=static_library
+
+[grpc] Success: "/home/ubuntu/HyperLedgerLab/node_modules/fabric-network/node_modules/grpc/src/node/extension_binary/node-v57-linux-x64-glibc/grpc_node.node" is installed via remote
+
+> grpc@1.14.2 install /home/ubuntu/HyperLedgerLab/node_modules/grpc
+> node-pre-gyp install --fallback-to-build --library=static_library
+
+[grpc] Success: "/home/ubuntu/HyperLedgerLab/node_modules/grpc/src/node/extension_binary/node-v57-linux-x64-glibc/grpc_node.node" is installed via remote
+
+> protobufjs@6.10.1 postinstall /home/ubuntu/HyperLedgerLab/node_modules/@grpc/proto-loader/node_modules/protobufjs
+> node scripts/postinstall
+
+
+> protobufjs@6.10.1 postinstall /home/ubuntu/HyperLedgerLab/node_modules/fabric-protos/node_modules/protobufjs
+> node scripts/postinstall
+
++ grpc@1.14.2
++ fabric-network@1.4.0
++ fabric-client@1.4.0
++ fabric-ca-client@1.4.0
+added 207 packages from 112 contributors and audited 523 packages in 31.161s
+
+3 packages are looking for funding
+  run `npm fund` for details
+
+found 62 vulnerabilities (37 low, 1 moderate, 22 high, 2 critical)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Synchronizing submodule url for 'caliper'
+Synchronizing submodule url for 'kubespray'
+source .env
+source venv/bin/activate
+Using /home/ubuntu/HyperLedgerLab/ansible.cfg as config file
+
+PLAY [blockchain-setup] ********************************************************
+
+TASK [prepare_cli_node : Install NFS client on CLI] ****************************
+Monday 14 September 2020  20:46:03 +0000 (0:00:00.161)       0:00:00.161 ****** 
+ok: [localhost] => {"cache_update_time": 1600116281, "cache_updated": false, "changed": false}
+
+TASK [prepare_cli_node : Mount/Unmount 172.24.42.103:/opt/share on /opt/share in CLI] ***
+Monday 14 September 2020  20:46:04 +0000 (0:00:01.120)       0:00:01.282 ****** 
+changed: [localhost] => {"changed": true, "dump": "0", "fstab": "/etc/fstab", "fstype": "nfs4", "name": "/opt/share", "opts": "defaults", "passno": "0", "src": "172.24.42.103:/opt/share"}
+
+PLAY [blockchain-setup] ********************************************************
+
+TASK [network_config : Remove crypto configs] **********************************
+Monday 14 September 2020  20:46:04 +0000 (0:00:00.457)       0:00:01.739 ****** 
+
+TASK [network_config : Remove channel artifacts] *******************************
+Monday 14 September 2020  20:46:04 +0000 (0:00:00.076)       0:00:01.816 ****** 
+
+TASK [network_config : Remove kubernetes templates] ****************************
+Monday 14 September 2020  20:46:05 +0000 (0:00:00.064)       0:00:01.881 ****** 
+
+TASK [network_config : Remove fabric binaries] *********************************
+Monday 14 September 2020  20:46:05 +0000 (0:00:00.037)       0:00:01.918 ****** 
+
+TASK [network_config : Copy fabric binaries with version "1.4.0" to inventory fabric-config] ***
+Monday 14 September 2020  20:46:05 +0000 (0:00:00.045)       0:00:01.964 ****** 
+changed: [localhost] => {"changed": true, "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/bin/", "src": "/home/ubuntu/HyperLedgerLab/hyperledger/roles/network_config/files/bin_1.4.0/"}
+
+TASK [network_config : Generate configtx.yaml and crypto-config.yaml] **********
+Monday 14 September 2020  20:46:09 +0000 (0:00:04.308)       0:00:06.272 ****** 
+changed: [localhost] => (item={'src': 'configtx.yaml.j2', 'dest': 'configtx.yaml'}) => {"changed": true, "checksum": "ea4cfc05a0b0ee95efacb2e79ed29199efc147fa", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "configtx.yaml", "src": "configtx.yaml.j2"}, "md5sum": "53a4bd46e1e12c957c4f5042941c8c4d", "mode": "0644", "owner": "ubuntu", "size": 5189, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116369.4766557-259409788313355/source", "state": "file", "uid": 1000}
+ok: [localhost] => (item={'src': 'crypto-config.yaml.j2', 'dest': 'crypto-config.yaml'}) => {"changed": false, "checksum": "c1694ee62eb178b29fff5f0f38774232da648fe3", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "crypto-config.yaml", "src": "crypto-config.yaml.j2"}, "mode": "0644", "owner": "ubuntu", "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config.yaml", "size": 1667, "state": "file", "uid": 1000}
+
+TASK [network_config : (cryptogen) Generate crypto config] *********************
+Monday 14 September 2020  20:46:10 +0000 (0:00:00.949)       0:00:07.221 ****** 
+changed: [localhost] => {"changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/bin/cryptogen generate --config=/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config.yaml --output=/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config", "delta": "0:00:00.106149", "end": "2020-09-14 20:46:10.833129", "rc": 0, "start": "2020-09-14 20:46:10.726980", "stderr": "", "stderr_lines": [], "stdout": "org1\norg2", "stdout_lines": ["org1", "org2"]}
+
+TASK [network_config : Create channel artifacts dir] ***************************
+Monday 14 September 2020  20:46:10 +0000 (0:00:00.523)       0:00:07.745 ****** 
+changed: [localhost] => {"changed": true, "gid": 1000, "group": "ubuntu", "mode": "0774", "owner": "ubuntu", "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts", "size": 4096, "state": "directory", "uid": 1000}
+
+TASK [network_config : Set permissions crypto config] **************************
+Monday 14 September 2020  20:46:11 +0000 (0:00:00.248)       0:00:07.993 ****** 
+changed: [localhost] => {"changed": true, "gid": 1000, "group": "ubuntu", "mode": "0774", "owner": "ubuntu", "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config", "size": 4096, "state": "directory", "uid": 1000}
+
+TASK [network_config : (configtxgen) Generate Orderer genesis block] ***********
+Monday 14 September 2020  20:46:11 +0000 (0:00:00.251)       0:00:08.245 ****** 
+changed: [localhost] => {"changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/bin/configtxgen -configPath /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config -profile OrgsOrdererGenesis -outputBlock /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts/genesis.block -channelID orderer-system-channel", "delta": "0:00:00.053773", "end": "2020-09-14 20:46:11.634890", "rc": 0, "start": "2020-09-14 20:46:11.581117", "stderr": "\u001b[34m2020-09-14 20:46:11.622 UTC [common.tools.configtxgen] main -> INFO 001\u001b[0m Loading configuration\n\u001b[34m2020-09-14 20:46:11.627 UTC [common.tools.configtxgen.localconfig] completeInitialization -> INFO 002\u001b[0m orderer type: kafka\n\u001b[34m2020-09-14 20:46:11.627 UTC [common.tools.configtxgen.localconfig] Load -> INFO 003\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml\n\u001b[34m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.localconfig] completeInitialization -> INFO 004\u001b[0m orderer type: kafka\n\u001b[34m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 005\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml\n\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] NewChannelGroup -> WARN 006\u001b[0m Default policy emission is deprecated, please include policy specifications for the channel group in configtx.yaml\n\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] NewOrdererGroup -> WARN 007\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer group in configtx.yaml\n\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] NewOrdererOrgGroup -> WARN 008\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer org group Orgorderer1MSP in configtx.yaml\n\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] addSignaturePolicyDefaults -> WARN 009\u001b[0m Specifying AdminPrincipal is deprecated and will be removed in a future release, override the admin principal with explicit policies.\n\u001b[33m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen.encoder] NewOrdererOrgGroup -> WARN 00a\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer org group Org1MSP in configtx.yaml\n\u001b[33m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen.encoder] NewOrdererOrgGroup -> WARN 00b\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer org group Org2MSP in configtx.yaml\n\u001b[34m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen] doOutputBlock -> INFO 00c\u001b[0m Generating genesis block\n\u001b[34m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen] doOutputBlock -> INFO 00d\u001b[0m Writing genesis block", "stderr_lines": ["\u001b[34m2020-09-14 20:46:11.622 UTC [common.tools.configtxgen] main -> INFO 001\u001b[0m Loading configuration", "\u001b[34m2020-09-14 20:46:11.627 UTC [common.tools.configtxgen.localconfig] completeInitialization -> INFO 002\u001b[0m orderer type: kafka", "\u001b[34m2020-09-14 20:46:11.627 UTC [common.tools.configtxgen.localconfig] Load -> INFO 003\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml", "\u001b[34m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.localconfig] completeInitialization -> INFO 004\u001b[0m orderer type: kafka", "\u001b[34m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 005\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml", "\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] NewChannelGroup -> WARN 006\u001b[0m Default policy emission is deprecated, please include policy specifications for the channel group in configtx.yaml", "\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] NewOrdererGroup -> WARN 007\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer group in configtx.yaml", "\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] NewOrdererOrgGroup -> WARN 008\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer org group Orgorderer1MSP in configtx.yaml", "\u001b[33m2020-09-14 20:46:11.631 UTC [common.tools.configtxgen.encoder] addSignaturePolicyDefaults -> WARN 009\u001b[0m Specifying AdminPrincipal is deprecated and will be removed in a future release, override the admin principal with explicit policies.", "\u001b[33m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen.encoder] NewOrdererOrgGroup -> WARN 00a\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer org group Org1MSP in configtx.yaml", "\u001b[33m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen.encoder] NewOrdererOrgGroup -> WARN 00b\u001b[0m Default policy emission is deprecated, please include policy specifications for the orderer org group Org2MSP in configtx.yaml", "\u001b[34m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen] doOutputBlock -> INFO 00c\u001b[0m Generating genesis block", "\u001b[34m2020-09-14 20:46:11.632 UTC [common.tools.configtxgen] doOutputBlock -> INFO 00d\u001b[0m Writing genesis block"], "stdout": "", "stdout_lines": []}
+
+TASK [network_config : Copy genesis block to orderer] **************************
+Monday 14 September 2020  20:46:11 +0000 (0:00:00.300)       0:00:08.545 ****** 
+changed: [localhost] => {"changed": true, "cmd": "cp /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts/genesis.block /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/ordererOrganizations/*", "delta": "0:00:00.007507", "end": "2020-09-14 20:46:11.929939", "rc": 0, "start": "2020-09-14 20:46:11.922432", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [network_config : Copy channel artifacts to NFS] **************************
+Monday 14 September 2020  20:46:11 +0000 (0:00:00.293)       0:00:08.839 ****** 
+changed: [localhost] => {"changed": true, "cmd": "/usr/bin/rsync --delay-updates -F --compress --checksum --archive --out-format=<<CHANGED>>%i %n%L /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts /opt/share", "msg": "cd+++++++++ channel-artifacts/\n>f+++++++++ channel-artifacts/genesis.block\n", "rc": 0, "stdout_lines": ["cd+++++++++ channel-artifacts/", ">f+++++++++ channel-artifacts/genesis.block"]}
+
+TASK [network_config : Copy crypto configs to NFS] *****************************
+Monday 14 September 2020  20:46:12 +0000 (0:00:00.548)       0:00:09.387 ****** 
+changed: [localhost] => {"changed": true, "cmd": "/usr/bin/rsync --delay-updates -F --compress --checksum --archive --out-format=<<CHANGED>>%i %n%L /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config /opt/share", "msg": "cd+++++++++ crypto-config/\ncd+++++++++ crypto-config/ordererOrganizations/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/genesis.block\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/ca/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/ca/0a92a740ca9626b6f6990a6ad8739d5a44d5f07fc9bb1b09443af1e6562bd6bb_sk\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/ca/ca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/admincerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/cacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/tlscacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/admincerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/cacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/keystore/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/keystore/9b1b353f1a2acd18d1bdc9d0d6aad13cfeda43b2288ddddfefb66327639bd9a3_sk\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/signcerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/signcerts/orderer0.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/ca.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/server.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/server.key\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/admincerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/cacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/keystore/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/keystore/08b6ceeb1186e2821a6217f1fffa28390739b7e477f5e2138c3ef4adb2d5b8a7_sk\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/signcerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/signcerts/orderer1.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/tlscacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/ca.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/server.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/server.key\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/admincerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/cacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/keystore/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/keystore/2f742a3552929a3e7d9fa40bf6f6e475f9891f7f9c3e4936c2215da3cbfc1e6f_sk\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/signcerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/signcerts/orderer2.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/tlscacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/ca.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/server.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/server.key\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/tlsca/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/tlsca/49e7292945b6e42f511d87685ad519e17402d8762b7260ea61a0f46dfbf411f7_sk\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/tlsca/tlsca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/admincerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/cacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/keystore/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/keystore/72a4ef2ff10ebd174eae54cc47cd9b5bc093d5ed78fa8e464fdab68380867f17_sk\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/signcerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/signcerts/Admin@orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/tlscacerts/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem\ncd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/ca.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/client.crt\n>f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/client.key\ncd+++++++++ crypto-config/peerOrganizations/\ncd+++++++++ crypto-config/peerOrganizations/org1/\ncd+++++++++ crypto-config/peerOrganizations/org1/ca/\n>f+++++++++ crypto-config/peerOrganizations/org1/ca/ca.org1-cert.pem\n>f+++++++++ crypto-config/peerOrganizations/org1/ca/d0551482e84050d01313f06e7f90af699dad57cbc43c0665399bb2df83d3eeb0_sk\ncd+++++++++ crypto-config/peerOrganizations/org1/msp/\ncd+++++++++ crypto-config/peerOrganizations/org1/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/msp/admincerts/Admin@org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/msp/cacerts/ca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/msp/tlscacerts/tlsca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/admincerts/Admin@org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/cacerts/ca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/keystore/6a9f0e8f4bf00397c76a71dbe25505dea9805e22e8bbefb71e0e29f72ddf1594_sk\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/signcerts/peer0.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/tlscacerts/tlsca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/server.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/server.key\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/admincerts/Admin@org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/cacerts/ca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/keystore/406fae4dff8fb65604cd400dfec5237354cf87e5a50ced65480fe89edc262e1e_sk\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/signcerts/peer1.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/tlscacerts/tlsca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/server.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/server.key\ncd+++++++++ crypto-config/peerOrganizations/org1/tlsca/\n>f+++++++++ crypto-config/peerOrganizations/org1/tlsca/0ae0db54325f3c004430dafe426b2c39a8c88d28ae6eee0578f0444f001887ed_sk\n>f+++++++++ crypto-config/peerOrganizations/org1/tlsca/tlsca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/admincerts/Admin@org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/cacerts/ca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/45484750459d3ef2c2c8b18ec0c98d7c8934d41db483dcb81d06f64af0ea7d0c_sk\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/signcerts/Admin@org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/tlscacerts/tlsca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/client.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/client.key\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/admincerts/User1@org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/cacerts/ca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/2de8b14974f5cff09906997135af3f00f44cca1f5a6cd848d26528e3b9934c00_sk\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/signcerts/User1@org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/tlscacerts/tlsca.org1-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/client.crt\n>f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/client.key\ncd+++++++++ crypto-config/peerOrganizations/org2/\ncd+++++++++ crypto-config/peerOrganizations/org2/ca/\n>f+++++++++ crypto-config/peerOrganizations/org2/ca/be049b8c5fb2903ff14598f36ba8b6957b4e94b6bfd01aef8cd972bdd3cbee3e_sk\n>f+++++++++ crypto-config/peerOrganizations/org2/ca/ca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/msp/\ncd+++++++++ crypto-config/peerOrganizations/org2/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/msp/admincerts/Admin@org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/msp/cacerts/ca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/msp/tlscacerts/tlsca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/admincerts/Admin@org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/cacerts/ca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/keystore/4b19ab7ea927c0134e49970728795ad1e77c012f9780c35ea0088eaac260e582_sk\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/signcerts/peer0.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/tlscacerts/tlsca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/server.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/server.key\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/admincerts/Admin@org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/cacerts/ca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/keystore/754f5b2a7aede7891b7ba8cb0edf7a865afac4c52c39360b3f5c6b41e7e117a1_sk\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/signcerts/peer1.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/tlscacerts/tlsca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/server.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/server.key\ncd+++++++++ crypto-config/peerOrganizations/org2/tlsca/\n>f+++++++++ crypto-config/peerOrganizations/org2/tlsca/5e38329c7e7101b58a24a1b825342acd01bf9d21751c348d8a30d4f31692e92d_sk\n>f+++++++++ crypto-config/peerOrganizations/org2/tlsca/tlsca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/admincerts/Admin@org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/cacerts/ca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/keystore/ccd45a12e70500326faf0b146c2badbf4b64ffb135675ad413b49382e832a0f7_sk\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/signcerts/Admin@org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/tlscacerts/tlsca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/client.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/client.key\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/admincerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/admincerts/User1@org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/cacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/cacerts/ca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/keystore/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/keystore/b4bc24534af5442ab770239b69fa2ee2ed9fe51f9cb3a5748d44e4504e37b543_sk\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/signcerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/signcerts/User1@org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/tlscacerts/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/tlscacerts/tlsca.org2-cert.pem\ncd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/ca.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/client.crt\n>f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/client.key\n", "rc": 0, "stdout_lines": ["cd+++++++++ crypto-config/", "cd+++++++++ crypto-config/ordererOrganizations/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/genesis.block", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/ca/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/ca/0a92a740ca9626b6f6990a6ad8739d5a44d5f07fc9bb1b09443af1e6562bd6bb_sk", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/ca/ca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/admincerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/cacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/tlscacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/admincerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/cacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/keystore/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/keystore/9b1b353f1a2acd18d1bdc9d0d6aad13cfeda43b2288ddddfefb66327639bd9a3_sk", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/signcerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/signcerts/orderer0.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/ca.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/server.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer0.orgorderer1/tls/server.key", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/admincerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/cacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/keystore/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/keystore/08b6ceeb1186e2821a6217f1fffa28390739b7e477f5e2138c3ef4adb2d5b8a7_sk", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/signcerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/signcerts/orderer1.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/tlscacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/ca.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/server.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer1.orgorderer1/tls/server.key", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/admincerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/cacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/keystore/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/keystore/2f742a3552929a3e7d9fa40bf6f6e475f9891f7f9c3e4936c2215da3cbfc1e6f_sk", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/signcerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/signcerts/orderer2.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/tlscacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/ca.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/server.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/orderers/orderer2.orgorderer1/tls/server.key", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/tlsca/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/tlsca/49e7292945b6e42f511d87685ad519e17402d8762b7260ea61a0f46dfbf411f7_sk", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/tlsca/tlsca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/admincerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/admincerts/Admin@orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/cacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/cacerts/ca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/keystore/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/keystore/72a4ef2ff10ebd174eae54cc47cd9b5bc093d5ed78fa8e464fdab68380867f17_sk", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/signcerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/signcerts/Admin@orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/tlscacerts/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/msp/tlscacerts/tlsca.orgorderer1-cert.pem", "cd+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/ca.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/client.crt", ">f+++++++++ crypto-config/ordererOrganizations/orgorderer1/users/Admin@orgorderer1/tls/client.key", "cd+++++++++ crypto-config/peerOrganizations/", "cd+++++++++ crypto-config/peerOrganizations/org1/", "cd+++++++++ crypto-config/peerOrganizations/org1/ca/", ">f+++++++++ crypto-config/peerOrganizations/org1/ca/ca.org1-cert.pem", ">f+++++++++ crypto-config/peerOrganizations/org1/ca/d0551482e84050d01313f06e7f90af699dad57cbc43c0665399bb2df83d3eeb0_sk", "cd+++++++++ crypto-config/peerOrganizations/org1/msp/", "cd+++++++++ crypto-config/peerOrganizations/org1/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/msp/admincerts/Admin@org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/msp/cacerts/ca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/msp/tlscacerts/tlsca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/admincerts/Admin@org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/cacerts/ca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/keystore/6a9f0e8f4bf00397c76a71dbe25505dea9805e22e8bbefb71e0e29f72ddf1594_sk", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/signcerts/peer0.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/tlscacerts/tlsca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/server.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer0.org1/tls/server.key", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/admincerts/Admin@org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/cacerts/ca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/keystore/406fae4dff8fb65604cd400dfec5237354cf87e5a50ced65480fe89edc262e1e_sk", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/signcerts/peer1.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/tlscacerts/tlsca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/server.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/peers/peer1.org1/tls/server.key", "cd+++++++++ crypto-config/peerOrganizations/org1/tlsca/", ">f+++++++++ crypto-config/peerOrganizations/org1/tlsca/0ae0db54325f3c004430dafe426b2c39a8c88d28ae6eee0578f0444f001887ed_sk", ">f+++++++++ crypto-config/peerOrganizations/org1/tlsca/tlsca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/admincerts/Admin@org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/cacerts/ca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/45484750459d3ef2c2c8b18ec0c98d7c8934d41db483dcb81d06f64af0ea7d0c_sk", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/signcerts/Admin@org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/msp/tlscacerts/tlsca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/client.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/users/Admin@org1/tls/client.key", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/admincerts/User1@org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/cacerts/ca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/2de8b14974f5cff09906997135af3f00f44cca1f5a6cd848d26528e3b9934c00_sk", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/signcerts/User1@org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/msp/tlscacerts/tlsca.org1-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/client.crt", ">f+++++++++ crypto-config/peerOrganizations/org1/users/User1@org1/tls/client.key", "cd+++++++++ crypto-config/peerOrganizations/org2/", "cd+++++++++ crypto-config/peerOrganizations/org2/ca/", ">f+++++++++ crypto-config/peerOrganizations/org2/ca/be049b8c5fb2903ff14598f36ba8b6957b4e94b6bfd01aef8cd972bdd3cbee3e_sk", ">f+++++++++ crypto-config/peerOrganizations/org2/ca/ca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/msp/", "cd+++++++++ crypto-config/peerOrganizations/org2/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/msp/admincerts/Admin@org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/msp/cacerts/ca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/msp/tlscacerts/tlsca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/admincerts/Admin@org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/cacerts/ca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/keystore/4b19ab7ea927c0134e49970728795ad1e77c012f9780c35ea0088eaac260e582_sk", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/signcerts/peer0.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/msp/tlscacerts/tlsca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/server.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer0.org2/tls/server.key", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/admincerts/Admin@org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/cacerts/ca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/keystore/754f5b2a7aede7891b7ba8cb0edf7a865afac4c52c39360b3f5c6b41e7e117a1_sk", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/signcerts/peer1.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/msp/tlscacerts/tlsca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/server.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/peers/peer1.org2/tls/server.key", "cd+++++++++ crypto-config/peerOrganizations/org2/tlsca/", ">f+++++++++ crypto-config/peerOrganizations/org2/tlsca/5e38329c7e7101b58a24a1b825342acd01bf9d21751c348d8a30d4f31692e92d_sk", ">f+++++++++ crypto-config/peerOrganizations/org2/tlsca/tlsca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/admincerts/Admin@org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/cacerts/ca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/keystore/ccd45a12e70500326faf0b146c2badbf4b64ffb135675ad413b49382e832a0f7_sk", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/signcerts/Admin@org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/msp/tlscacerts/tlsca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/client.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/users/Admin@org2/tls/client.key", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/admincerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/admincerts/User1@org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/cacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/cacerts/ca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/keystore/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/keystore/b4bc24534af5442ab770239b69fa2ee2ed9fe51f9cb3a5748d44e4504e37b543_sk", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/signcerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/signcerts/User1@org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/tlscacerts/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/msp/tlscacerts/tlsca.org2-cert.pem", "cd+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/ca.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/client.crt", ">f+++++++++ crypto-config/peerOrganizations/org2/users/User1@org2/tls/client.key"]}
+
+TASK [network_config : Create kubernetes templates directory] ******************
+Monday 14 September 2020  20:46:17 +0000 (0:00:05.205)       0:00:14.593 ****** 
+changed: [localhost] => {"changed": true, "gid": 1000, "group": "ubuntu", "mode": "0775", "owner": "ubuntu", "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates", "size": 4096, "state": "directory", "uid": 1000}
+
+TASK [network_config : Generate Kubernetes configuration templates] ************
+Monday 14 September 2020  20:46:17 +0000 (0:00:00.233)       0:00:14.826 ****** 
+changed: [localhost] => (item={'src': 'fabric_template_peer_org_namespace.yaml.j2', 'dest': 'fabric_template_peer_org_namespace.yaml'}) => {"changed": true, "checksum": "b64a1a690e2bceda649bfeb04a242f1476bf02ff", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates/fabric_template_peer_org_namespace.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "fabric_template_peer_org_namespace.yaml", "src": "fabric_template_peer_org_namespace.yaml.j2"}, "md5sum": "d0b6904767b24666869b6596c59e8c0b", "mode": "0644", "owner": "ubuntu", "size": 428, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116378.0440202-279561897038921/source", "state": "file", "uid": 1000}
+changed: [localhost] => (item={'src': 'fabric_template_orderer_org_namespace.yaml.j2', 'dest': 'fabric_template_orderer_org_namespace.yaml'}) => {"changed": true, "checksum": "b64a1a690e2bceda649bfeb04a242f1476bf02ff", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates/fabric_template_orderer_org_namespace.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "fabric_template_orderer_org_namespace.yaml", "src": "fabric_template_orderer_org_namespace.yaml.j2"}, "md5sum": "d0b6904767b24666869b6596c59e8c0b", "mode": "0644", "owner": "ubuntu", "size": 428, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116378.3626792-185696058296096/source", "state": "file", "uid": 1000}
+changed: [localhost] => (item={'src': 'fabric_template_pod_ca.yaml.j2', 'dest': 'fabric_template_pod_ca.yaml'}) => {"changed": true, "checksum": "bfd6770e79b46b7be98ee89383ef0f3807740153", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates/fabric_template_pod_ca.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "fabric_template_pod_ca.yaml", "src": "fabric_template_pod_ca.yaml.j2"}, "md5sum": "0ef6b439c45a951b8ddf28b912a0cbb6", "mode": "0644", "owner": "ubuntu", "size": 1474, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116378.6723616-254351175178312/source", "state": "file", "uid": 1000}
+changed: [localhost] => (item={'src': 'fabric_template_pod_cli.yaml.j2', 'dest': 'fabric_template_pod_cli.yaml'}) => {"changed": true, "checksum": "123abc41efb5961633a991e217fbb6792a2f91e7", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates/fabric_template_pod_cli.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "fabric_template_pod_cli.yaml", "src": "fabric_template_pod_cli.yaml.j2"}, "md5sum": "3b412a0030d81393b4b86829cd2cd7ee", "mode": "0644", "owner": "ubuntu", "size": 3208, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116379.029032-214665353551439/source", "state": "file", "uid": 1000}
+changed: [localhost] => (item={'src': 'fabric_template_pod_orderer.yaml.j2', 'dest': 'fabric_template_pod_orderer.yaml'}) => {"changed": true, "checksum": "70eb19f1bf213b4713c726d10b5f1947fafcb4a3", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates/fabric_template_pod_orderer.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "fabric_template_pod_orderer.yaml", "src": "fabric_template_pod_orderer.yaml.j2"}, "md5sum": "f1873745348a8513cda30092570cff8c", "mode": "0644", "owner": "ubuntu", "size": 2564, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116379.351596-128391849398300/source", "state": "file", "uid": 1000}
+changed: [localhost] => (item={'src': 'fabric_template_pod_orderer_kafka.yaml.j2', 'dest': 'fabric_template_pod_orderer_kafka.yaml'}) => {"changed": true, "checksum": "5d0fa8baf0f01bd26a806ffec016bacdd158c833", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates/fabric_template_pod_orderer_kafka.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "fabric_template_pod_orderer_kafka.yaml", "src": "fabric_template_pod_orderer_kafka.yaml.j2"}, "md5sum": "ee98f3838cb217531010147c3e3c4748", "mode": "0644", "owner": "ubuntu", "size": 10215, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116379.6785827-123306726512475/source", "state": "file", "uid": 1000}
+changed: [localhost] => (item={'src': 'fabric_template_pod_peer.yaml.j2', 'dest': 'fabric_template_pod_peer.yaml'}) => {"changed": true, "checksum": "14a712c6d903bf88585b04d6ea8026af1e9363bc", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates/fabric_template_pod_peer.yaml", "gid": 1000, "group": "ubuntu", "item": {"dest": "fabric_template_pod_peer.yaml", "src": "fabric_template_pod_peer.yaml.j2"}, "md5sum": "1ad101aaa588e2303c3232de95b69d80", "mode": "0644", "owner": "ubuntu", "size": 4624, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116380.0212684-126001232715948/source", "state": "file", "uid": 1000}
+
+TASK [network_config : Generate kubernetes configuration] **********************
+Monday 14 September 2020  20:46:20 +0000 (0:00:02.400)       0:00:17.227 ****** 
+changed: [localhost] => {"changed": true, "rc": 0, "stderr": "", "stderr_lines": [], "stdout": "{'peer1.org2': {'7053': 30106, '7052': 30105, '7051': 30104}, 'ca.org1': {'7054': 30000}, 'peer1.org1': {'7053': 30006, '7052': 30005, '7051': 30004}, 'ca.org2': {'7054': 30100}, 'orderer0.orgorderer1': {'7050': 32000}, 'orderer1.orgorderer1': {'7050': 32001}, 'peer0.org2': {'7053': 30103, '7052': 30102, '7051': 30101}, 'orderer2.orgorderer1': {'7050': 32002}, 'peer0.org1': {'7053': 30003, '7052': 30002, '7051': 30001}}\n", "stdout_lines": ["{'peer1.org2': {'7053': 30106, '7052': 30105, '7051': 30104}, 'ca.org1': {'7054': 30000}, 'peer1.org1': {'7053': 30006, '7052': 30005, '7051': 30004}, 'ca.org2': {'7054': 30100}, 'orderer0.orgorderer1': {'7050': 32000}, 'orderer1.orgorderer1': {'7050': 32001}, 'peer0.org2': {'7053': 30103, '7052': 30102, '7051': 30101}, 'orderer2.orgorderer1': {'7050': 32002}, 'peer0.org1': {'7053': 30003, '7052': 30002, '7051': 30001}}"]}
+
+TASK [network_config : Set exposed NodePort service ports in facts] ************
+Monday 14 September 2020  20:46:20 +0000 (0:00:00.196)       0:00:17.423 ****** 
+ok: [localhost] => {"ansible_facts": {"node_port_mapping": {"ca.org1": {"7054": 30000}, "ca.org2": {"7054": 30100}, "orderer0.orgorderer1": {"7050": 32000}, "orderer1.orgorderer1": {"7050": 32001}, "orderer2.orgorderer1": {"7050": 32002}, "peer0.org1": {"7051": 30001, "7052": 30002, "7053": 30003}, "peer0.org2": {"7051": 30101, "7052": 30102, "7053": 30103}, "peer1.org1": {"7051": 30004, "7052": 30005, "7053": 30006}, "peer1.org2": {"7051": 30104, "7052": 30105, "7053": 30106}}}, "changed": false}
+
+TASK [network_config : Set owner and permission for kubernetes templates] ******
+Monday 14 September 2020  20:46:20 +0000 (0:00:00.072)       0:00:17.495 ****** 
+changed: [localhost] => {"changed": true, "gid": 1000, "group": "ubuntu", "mode": "0774", "owner": "ubuntu", "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/templates", "size": 4096, "state": "directory", "uid": 1000}
+
+PLAY [blockchain-setup] ********************************************************
+
+TASK [network_setup : Create kubernetes blockchain] ****************************
+Monday 14 September 2020  20:46:20 +0000 (0:00:00.240)       0:00:17.736 ****** 
+changed: [localhost] => {"changed": true, "rc": 0, "stderr": "", "stderr_lines": [], "stdout": "namespace/orgorderer1 created\npersistentvolume/orgorderer1-pv created\npersistentvolumeclaim/orgorderer1-pv created\ndeployment.apps/zookeeper0-orgorderer1 created\nservice/zookeeper0 created\ndeployment.apps/zookeeper1-orgorderer1 created\nservice/zookeeper1 created\ndeployment.apps/zookeeper2-orgorderer1 created\nservice/zookeeper2 created\ndeployment.apps/kafka0-orgorderer1 created\nservice/kafka0 created\ndeployment.apps/kafka1-orgorderer1 created\nservice/kafka1 created\ndeployment.apps/kafka2-orgorderer1 created\nservice/kafka2 created\ndeployment.apps/orderer0-orgorderer1 created\nservice/orderer0 created\ndeployment.apps/orderer1-orgorderer1 created\nservice/orderer1 created\ndeployment.apps/orderer2-orgorderer1 created\nservice/orderer2 created\nnamespace/org1 created\npersistentvolume/org1-pv created\npersistentvolumeclaim/org1-pv created\ndeployment.apps/ca created\nservice/ca created\npersistentvolume/org1-artifacts-pv created\npersistentvolumeclaim/org1-artifacts-pv created\npersistentvolume/org1-crypto-pv created\npersistentvolumeclaim/org1-crypto-pv created\ndeployment.apps/cli created\ndeployment.apps/peer1-org1 created\nservice/peer1 created\ndeployment.apps/peer0-org1 created\nservice/peer0 created\nnamespace/org2 created\npersistentvolume/org2-pv created\npersistentvolumeclaim/org2-pv created\ndeployment.apps/ca created\nservice/ca created\npersistentvolume/org2-artifacts-pv created\npersistentvolumeclaim/org2-artifacts-pv created\npersistentvolume/org2-crypto-pv created\npersistentvolumeclaim/org2-crypto-pv created\ndeployment.apps/cli created\ndeployment.apps/peer0-org2 created\nservice/peer0 created\ndeployment.apps/peer1-org2 created\nservice/peer1 created\n", "stdout_lines": ["namespace/orgorderer1 created", "persistentvolume/orgorderer1-pv created", "persistentvolumeclaim/orgorderer1-pv created", "deployment.apps/zookeeper0-orgorderer1 created", "service/zookeeper0 created", "deployment.apps/zookeeper1-orgorderer1 created", "service/zookeeper1 created", "deployment.apps/zookeeper2-orgorderer1 created", "service/zookeeper2 created", "deployment.apps/kafka0-orgorderer1 created", "service/kafka0 created", "deployment.apps/kafka1-orgorderer1 created", "service/kafka1 created", "deployment.apps/kafka2-orgorderer1 created", "service/kafka2 created", "deployment.apps/orderer0-orgorderer1 created", "service/orderer0 created", "deployment.apps/orderer1-orgorderer1 created", "service/orderer1 created", "deployment.apps/orderer2-orgorderer1 created", "service/orderer2 created", "namespace/org1 created", "persistentvolume/org1-pv created", "persistentvolumeclaim/org1-pv created", "deployment.apps/ca created", "service/ca created", "persistentvolume/org1-artifacts-pv created", "persistentvolumeclaim/org1-artifacts-pv created", "persistentvolume/org1-crypto-pv created", "persistentvolumeclaim/org1-crypto-pv created", "deployment.apps/cli created", "deployment.apps/peer1-org1 created", "service/peer1 created", "deployment.apps/peer0-org1 created", "service/peer0 created", "namespace/org2 created", "persistentvolume/org2-pv created", "persistentvolumeclaim/org2-pv created", "deployment.apps/ca created", "service/ca created", "persistentvolume/org2-artifacts-pv created", "persistentvolumeclaim/org2-artifacts-pv created", "persistentvolume/org2-crypto-pv created", "persistentvolumeclaim/org2-crypto-pv created", "deployment.apps/cli created", "deployment.apps/peer0-org2 created", "service/peer0 created", "deployment.apps/peer1-org2 created", "service/peer1 created"]}
+
+TASK [network_setup : Mark kubernetes blockchain created] **********************
+Monday 14 September 2020  20:46:27 +0000 (0:00:07.013)       0:00:24.749 ****** 
+changed: [localhost] => {"changed": true, "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/k8s_created", "gid": 1000, "group": "ubuntu", "mode": "0664", "owner": "ubuntu", "size": 0, "state": "file", "uid": 1000}
+
+TASK [network_setup : Sleeing "30" seconds for Fabric network to come-up] ******
+Monday 14 September 2020  20:46:28 +0000 (0:00:00.253)       0:00:25.003 ****** 
+Pausing for 30 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [localhost] => {"changed": false, "delta": 30, "echo": true, "rc": 0, "start": "2020-09-14 20:46:28.200224", "stderr": "", "stdout": "Paused for 30.0 seconds", "stop": "2020-09-14 20:46:58.200603", "user_input": ""}
+
+TASK [network_setup : Unmount NFS from k8s worker nodes. To resolve kubectl delete hanging problem] ***
+Monday 14 September 2020  20:46:58 +0000 (0:00:30.079)       0:00:55.083 ****** 
+
+TASK [network_setup : Delete kubernetes blockchain] ****************************
+Monday 14 September 2020  20:46:58 +0000 (0:00:00.068)       0:00:55.151 ****** 
+
+PLAY [blockchain-setup] ********************************************************
+
+TASK [channel_setup : Generate configuration for all Channels] *****************
+Monday 14 September 2020  20:46:58 +0000 (0:00:00.054)       0:00:55.206 ****** 
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/generate_channel_config.yaml for localhost
+
+TASK [channel_setup : Generating channel configuration transaction "mychannel.tx"] ***
+Monday 14 September 2020  20:46:58 +0000 (0:00:00.083)       0:00:55.290 ****** 
+changed: [localhost] => {"changed": true, "cmd": "export FABRIC_CFG_PATH=/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config\n /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/bin/configtxgen -profile OrgsChannel -outputCreateChannelTx /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts/mychannel.tx -channelID mychannel", "delta": "0:00:00.055580", "end": "2020-09-14 20:46:58.690236", "rc": 0, "start": "2020-09-14 20:46:58.634656", "stderr": "\u001b[34m2020-09-14 20:46:58.678 UTC [common.tools.configtxgen] main -> INFO 001\u001b[0m Loading configuration\n\u001b[34m2020-09-14 20:46:58.683 UTC [common.tools.configtxgen.localconfig] Load -> INFO 002\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml\n\u001b[34m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003\u001b[0m orderer type: kafka\n\u001b[34m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 004\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml\n\u001b[34m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 005\u001b[0m Generating new channel configtx\n\u001b[33m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.encoder] NewApplicationGroup -> WARN 006\u001b[0m Default policy emission is deprecated, please include policy specifications for the application group in configtx.yaml\n\u001b[33m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.encoder] NewApplicationOrgGroup -> WARN 007\u001b[0m Default policy emission is deprecated, please include policy specifications for the application org group Org1MSP in configtx.yaml\n\u001b[33m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.encoder] NewApplicationOrgGroup -> WARN 008\u001b[0m Default policy emission is deprecated, please include policy specifications for the application org group Org2MSP in configtx.yaml\n\u001b[34m2020-09-14 20:46:58.688 UTC [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 009\u001b[0m Writing new channel tx", "stderr_lines": ["\u001b[34m2020-09-14 20:46:58.678 UTC [common.tools.configtxgen] main -> INFO 001\u001b[0m Loading configuration", "\u001b[34m2020-09-14 20:46:58.683 UTC [common.tools.configtxgen.localconfig] Load -> INFO 002\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml", "\u001b[34m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.localconfig] completeInitialization -> INFO 003\u001b[0m orderer type: kafka", "\u001b[34m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.localconfig] LoadTopLevel -> INFO 004\u001b[0m Loaded configuration: /home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/configtx.yaml", "\u001b[34m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 005\u001b[0m Generating new channel configtx", "\u001b[33m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.encoder] NewApplicationGroup -> WARN 006\u001b[0m Default policy emission is deprecated, please include policy specifications for the application group in configtx.yaml", "\u001b[33m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.encoder] NewApplicationOrgGroup -> WARN 007\u001b[0m Default policy emission is deprecated, please include policy specifications for the application org group Org1MSP in configtx.yaml", "\u001b[33m2020-09-14 20:46:58.687 UTC [common.tools.configtxgen.encoder] NewApplicationOrgGroup -> WARN 008\u001b[0m Default policy emission is deprecated, please include policy specifications for the application org group Org2MSP in configtx.yaml", "\u001b[34m2020-09-14 20:46:58.688 UTC [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 009\u001b[0m Writing new channel tx"], "stdout": "", "stdout_lines": []}
+
+TASK [channel_setup : Copy channel artifacts to NFS] ***************************
+Monday 14 September 2020  20:46:58 +0000 (0:00:00.309)       0:00:55.600 ****** 
+changed: [localhost] => {"changed": true, "dest": "/opt/share/", "src": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/channel-artifacts"}
+
+TASK [channel_setup : Add pseudo DNS mapping of Orderer and peer serivce to NodePort in /etc/hosts] ***
+Monday 14 September 2020  20:46:59 +0000 (0:00:00.770)       0:00:56.371 ****** 
+ok: [localhost] => {"changed": false, "msg": ""}
+
+TASK [channel_setup : include_tasks] *******************************************
+Monday 14 September 2020  20:46:59 +0000 (0:00:00.408)       0:00:56.779 ****** 
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_peers.yaml for localhost
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_peers.yaml for localhost
+
+TASK [channel_setup : Wait for port of "org1" peers to be available] ***********
+Monday 14 September 2020  20:47:00 +0000 (0:00:00.100)       0:00:56.880 ****** 
+ok: [localhost] => (item=0) => {"changed": false, "elapsed": 0, "item": "0", "path": null, "port": 30001, "search_regex": null, "state": "started"}
+ok: [localhost] => (item=1) => {"changed": false, "elapsed": 0, "item": "1", "path": null, "port": 30004, "search_regex": null, "state": "started"}
+
+TASK [channel_setup : Wait for port of "org2" peers to be available] ***********
+Monday 14 September 2020  20:47:00 +0000 (0:00:00.580)       0:00:57.461 ****** 
+ok: [localhost] => (item=0) => {"changed": false, "elapsed": 0, "item": "0", "path": null, "port": 30101, "search_regex": null, "state": "started"}
+ok: [localhost] => (item=1) => {"changed": false, "elapsed": 0, "item": "1", "path": null, "port": 30104, "search_regex": null, "state": "started"}
+
+TASK [channel_setup : Waiting for Ports to open for orderer services] **********
+Monday 14 September 2020  20:47:01 +0000 (0:00:00.443)       0:00:57.904 ****** 
+ok: [localhost] => (item=0) => {"changed": false, "elapsed": 0, "item": "0", "path": null, "port": 32000, "search_regex": null, "state": "started"}
+ok: [localhost] => (item=1) => {"changed": false, "elapsed": 0, "item": "1", "path": null, "port": 32001, "search_regex": null, "state": "started"}
+ok: [localhost] => (item=2) => {"changed": false, "elapsed": 0, "item": "2", "path": null, "port": 32002, "search_regex": null, "state": "started"}
+
+TASK [channel_setup : include_tasks] *******************************************
+Monday 14 September 2020  20:47:01 +0000 (0:00:00.691)       0:00:58.596 ****** 
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_zookeeper.yaml for localhost
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_zookeeper.yaml for localhost
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_zookeeper.yaml for localhost
+
+TASK [channel_setup : Get zookeeper0's status and wait till available] *********
+Monday 14 September 2020  20:47:01 +0000 (0:00:00.123)       0:00:58.719 ****** 
+changed: [localhost] => {"attempts": 1, "changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/kubectl --kubeconfig=/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/admin.conf -n orgorderer1 get deployment zookeeper0-orgorderer1 -o=custom-columns=NAME:status", "delta": "0:00:00.234051", "end": "2020-09-14 20:47:02.294506", "rc": 0, "start": "2020-09-14 20:47:02.060455", "stderr": "", "stderr_lines": [], "stdout": "NAME\nmap[availableReplicas:1 conditions:[map[status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability. type:Available] map[lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"zookeeper0-orgorderer1-7bf6797fd7\" has successfully progressed. type:Progressing status:True]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1]", "stdout_lines": ["NAME", "map[availableReplicas:1 conditions:[map[status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability. type:Available] map[lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"zookeeper0-orgorderer1-7bf6797fd7\" has successfully progressed. type:Progressing status:True]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1]"]}
+
+TASK [channel_setup : Get zookeeper1's status and wait till available] *********
+Monday 14 September 2020  20:47:02 +0000 (0:00:00.509)       0:00:59.228 ****** 
+changed: [localhost] => {"attempts": 1, "changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/kubectl --kubeconfig=/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/admin.conf -n orgorderer1 get deployment zookeeper1-orgorderer1 -o=custom-columns=NAME:status", "delta": "0:00:00.235731", "end": "2020-09-14 20:47:02.804894", "rc": 0, "start": "2020-09-14 20:47:02.569163", "stderr": "", "stderr_lines": [], "stdout": "NAME\nmap[conditions:[map[status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability. type:Available] map[lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"zookeeper1-orgorderer1-56f58bc4f9\" has successfully progressed. type:Progressing status:True lastUpdateTime:2020-09-14T20:45:45Z]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1]", "stdout_lines": ["NAME", "map[conditions:[map[status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability. type:Available] map[lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"zookeeper1-orgorderer1-56f58bc4f9\" has successfully progressed. type:Progressing status:True lastUpdateTime:2020-09-14T20:45:45Z]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1]"]}
+
+TASK [channel_setup : Get zookeeper2's status and wait till available] *********
+Monday 14 September 2020  20:47:02 +0000 (0:00:00.490)       0:00:59.719 ****** 
+changed: [localhost] => {"attempts": 1, "changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/kubectl --kubeconfig=/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/admin.conf -n orgorderer1 get deployment zookeeper2-orgorderer1 -o=custom-columns=NAME:status", "delta": "0:00:00.214812", "end": "2020-09-14 20:47:03.262049", "rc": 0, "start": "2020-09-14 20:47:03.047237", "stderr": "", "stderr_lines": [], "stdout": "NAME\nmap[replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1 conditions:[map[type:Available status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability.] map[type:Progressing status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"zookeeper2-orgorderer1-67f8bc5cc9\" has successfully progressed.]] observedGeneration:1]", "stdout_lines": ["NAME", "map[replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1 conditions:[map[type:Available status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability.] map[type:Progressing status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"zookeeper2-orgorderer1-67f8bc5cc9\" has successfully progressed.]] observedGeneration:1]"]}
+
+TASK [channel_setup : include_tasks] *******************************************
+Monday 14 September 2020  20:47:03 +0000 (0:00:00.458)       0:01:00.177 ****** 
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_kafka.yaml for localhost
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_kafka.yaml for localhost
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/channel_setup/tasks/check_kafka.yaml for localhost
+
+TASK [channel_setup : Get kafka0's status and wait till available] *************
+Monday 14 September 2020  20:47:03 +0000 (0:00:00.136)       0:01:00.314 ****** 
+changed: [localhost] => {"attempts": 1, "changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/kubectl --kubeconfig=/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/admin.conf -n orgorderer1 get deployment kafka0-orgorderer1 -o=custom-columns=NAME:status", "delta": "0:00:00.233769", "end": "2020-09-14 20:47:03.896514", "rc": 0, "start": "2020-09-14 20:47:03.662745", "stderr": "", "stderr_lines": [], "stdout": "NAME\nmap[observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1 conditions:[map[lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability. type:Available status:True lastUpdateTime:2020-09-14T20:45:45Z] map[status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"kafka0-orgorderer1-7ff69f8564\" has successfully progressed. type:Progressing]]]", "stdout_lines": ["NAME", "map[observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1 conditions:[map[lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability. type:Available status:True lastUpdateTime:2020-09-14T20:45:45Z] map[status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"kafka0-orgorderer1-7ff69f8564\" has successfully progressed. type:Progressing]]]"]}
+
+TASK [channel_setup : Get kafka1's status and wait till available] *************
+Monday 14 September 2020  20:47:03 +0000 (0:00:00.501)       0:01:00.815 ****** 
+changed: [localhost] => {"attempts": 1, "changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/kubectl --kubeconfig=/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/admin.conf -n orgorderer1 get deployment kafka1-orgorderer1 -o=custom-columns=NAME:status", "delta": "0:00:00.255558", "end": "2020-09-14 20:47:04.398172", "rc": 0, "start": "2020-09-14 20:47:04.142614", "stderr": "", "stderr_lines": [], "stdout": "NAME\nmap[conditions:[map[message:Deployment has minimum availability. type:Available status:True lastUpdateTime:2020-09-14T20:45:49Z lastTransitionTime:2020-09-14T20:45:49Z reason:MinimumReplicasAvailable] map[message:ReplicaSet \"kafka1-orgorderer1-d89bf5494\" has successfully progressed. type:Progressing status:True lastUpdateTime:2020-09-14T20:45:49Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1]", "stdout_lines": ["NAME", "map[conditions:[map[message:Deployment has minimum availability. type:Available status:True lastUpdateTime:2020-09-14T20:45:49Z lastTransitionTime:2020-09-14T20:45:49Z reason:MinimumReplicasAvailable] map[message:ReplicaSet \"kafka1-orgorderer1-d89bf5494\" has successfully progressed. type:Progressing status:True lastUpdateTime:2020-09-14T20:45:49Z lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1]"]}
+
+TASK [channel_setup : Get kafka2's status and wait till available] *************
+Monday 14 September 2020  20:47:04 +0000 (0:00:00.499)       0:01:01.315 ****** 
+changed: [localhost] => {"attempts": 1, "changed": true, "cmd": "/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/kubectl --kubeconfig=/home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts/admin.conf -n orgorderer1 get deployment kafka2-orgorderer1 -o=custom-columns=NAME:status", "delta": "0:00:00.245288", "end": "2020-09-14 20:47:04.909803", "rc": 0, "start": "2020-09-14 20:47:04.664515", "stderr": "", "stderr_lines": [], "stdout": "NAME\nmap[conditions:[map[type:Available status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability.] map[lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"kafka2-orgorderer1-78bc475ccb\" has successfully progressed. type:Progressing status:True lastUpdateTime:2020-09-14T20:45:45Z]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1]", "stdout_lines": ["NAME", "map[conditions:[map[type:Available status:True lastUpdateTime:2020-09-14T20:45:45Z lastTransitionTime:2020-09-14T20:45:45Z reason:MinimumReplicasAvailable message:Deployment has minimum availability.] map[lastTransitionTime:2020-09-14T20:45:43Z reason:NewReplicaSetAvailable message:ReplicaSet \"kafka2-orgorderer1-78bc475ccb\" has successfully progressed. type:Progressing status:True lastUpdateTime:2020-09-14T20:45:45Z]] observedGeneration:1 replicas:1 updatedReplicas:1 readyReplicas:1 availableReplicas:1]"]}
+
+TASK [channel_setup : Wait 10 seconds for kafka to comeup] *********************
+Monday 14 September 2020  20:47:04 +0000 (0:00:00.509)       0:01:01.824 ****** 
+Pausing for 10 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+ok: [localhost] => {"changed": false, "delta": 10, "echo": true, "rc": 0, "start": "2020-09-14 20:47:05.036834", "stderr": "", "stdout": "Paused for 10.0 seconds", "stop": "2020-09-14 20:47:15.037138", "user_input": ""}
+
+PLAY [blockchain-setup] ********************************************************
+
+TASK [metrics_config : Find user1 and admin private keys for all peer orgs] ****
+Monday 14 September 2020  20:47:15 +0000 (0:00:10.099)       0:01:11.924 ****** 
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/metrics_config/tasks/private_keys.yaml for localhost
+included: /home/ubuntu/HyperLedgerLab/hyperledger/roles/metrics_config/tasks/private_keys.yaml for localhost
+
+TASK [metrics_config : Find private key for User1@org1] ************************
+Monday 14 September 2020  20:47:15 +0000 (0:00:00.104)       0:01:12.028 ****** 
+ok: [localhost] => {"changed": false, "examined": 1, "files": [{"atime": 1600116372.784, "ctime": 1600116370.808, "dev": 64769, "gid": 1000, "gr_name": "ubuntu", "inode": 2322418, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mode": "0600", "mtime": 1600116370.808, "nlink": 1, "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/2de8b14974f5cff09906997135af3f00f44cca1f5a6cd848d26528e3b9934c00_sk", "pw_name": "ubuntu", "rgrp": false, "roth": false, "rusr": true, "size": 241, "uid": 1000, "wgrp": false, "woth": false, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}], "matched": 1, "msg": ""}
+
+TASK [metrics_config : Find private key for Admin@org1] ************************
+Monday 14 September 2020  20:47:15 +0000 (0:00:00.440)       0:01:12.469 ****** 
+ok: [localhost] => {"changed": false, "examined": 1, "files": [{"atime": 1600116372.784, "ctime": 1600116370.812, "dev": 64769, "gid": 1000, "gr_name": "ubuntu", "inode": 2322434, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mode": "0600", "mtime": 1600116370.812, "nlink": 1, "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/45484750459d3ef2c2c8b18ec0c98d7c8934d41db483dcb81d06f64af0ea7d0c_sk", "pw_name": "ubuntu", "rgrp": false, "roth": false, "rusr": true, "size": 241, "uid": 1000, "wgrp": false, "woth": false, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}], "matched": 1, "msg": ""}
+
+TASK [metrics_config : Populate private_keys] **********************************
+Monday 14 September 2020  20:47:15 +0000 (0:00:00.291)       0:01:12.760 ****** 
+ok: [localhost] => {"ansible_facts": {"private_keys": {"1": ["/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/2de8b14974f5cff09906997135af3f00f44cca1f5a6cd848d26528e3b9934c00_sk", "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/45484750459d3ef2c2c8b18ec0c98d7c8934d41db483dcb81d06f64af0ea7d0c_sk"]}}, "changed": false}
+
+TASK [metrics_config : Find private key for User1@org2] ************************
+Monday 14 September 2020  20:47:15 +0000 (0:00:00.081)       0:01:12.842 ****** 
+ok: [localhost] => {"changed": false, "examined": 1, "files": [{"atime": 1600116372.784, "ctime": 1600116370.816, "dev": 64769, "gid": 1000, "gr_name": "ubuntu", "inode": 2322498, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mode": "0600", "mtime": 1600116370.816, "nlink": 1, "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/User1@org2/msp/keystore/b4bc24534af5442ab770239b69fa2ee2ed9fe51f9cb3a5748d44e4504e37b543_sk", "pw_name": "ubuntu", "rgrp": false, "roth": false, "rusr": true, "size": 241, "uid": 1000, "wgrp": false, "woth": false, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}], "matched": 1, "msg": ""}
+
+TASK [metrics_config : Find private key for Admin@org2] ************************
+Monday 14 September 2020  20:47:16 +0000 (0:00:00.249)       0:01:13.091 ****** 
+ok: [localhost] => {"changed": false, "examined": 1, "files": [{"atime": 1600116372.784, "ctime": 1600116370.82, "dev": 64769, "gid": 1000, "gr_name": "ubuntu", "inode": 2322514, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mode": "0600", "mtime": 1600116370.82, "nlink": 1, "path": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/Admin@org2/msp/keystore/ccd45a12e70500326faf0b146c2badbf4b64ffb135675ad413b49382e832a0f7_sk", "pw_name": "ubuntu", "rgrp": false, "roth": false, "rusr": true, "size": 241, "uid": 1000, "wgrp": false, "woth": false, "wusr": true, "xgrp": false, "xoth": false, "xusr": false}], "matched": 1, "msg": ""}
+
+TASK [metrics_config : Populate private_keys] **********************************
+Monday 14 September 2020  20:47:16 +0000 (0:00:00.239)       0:01:13.331 ****** 
+ok: [localhost] => {"ansible_facts": {"private_keys": {"1": ["/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/User1@org1/msp/keystore/2de8b14974f5cff09906997135af3f00f44cca1f5a6cd848d26528e3b9934c00_sk", "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/45484750459d3ef2c2c8b18ec0c98d7c8934d41db483dcb81d06f64af0ea7d0c_sk"], "2": ["/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/User1@org2/msp/keystore/b4bc24534af5442ab770239b69fa2ee2ed9fe51f9cb3a5748d44e4504e37b543_sk", "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org2/users/Admin@org2/msp/keystore/ccd45a12e70500326faf0b146c2badbf4b64ffb135675ad413b49382e832a0f7_sk"]}}, "changed": false}
+
+TASK [metrics_config : Get timestamp from the system for random credential tmp path] ***
+Monday 14 September 2020  20:47:16 +0000 (0:00:00.094)       0:01:13.425 ****** 
+changed: [localhost] => {"changed": true, "cmd": "date +%s", "delta": "0:00:00.006302", "end": "2020-09-14 20:47:16.853575", "rc": 0, "start": "2020-09-14 20:47:16.847273", "stderr": "", "stderr_lines": [], "stdout": "1600116436", "stdout_lines": ["1600116436"]}
+
+TASK [metrics_config : Generate blockchain network config for Metrics tool] ****
+Monday 14 September 2020  20:47:16 +0000 (0:00:00.337)       0:01:13.762 ****** 
+changed: [localhost] => (item={'src': 'fabric_ccp_network.yaml.j2'}) => {"changed": true, "checksum": "42026dd8cd088210793100f7e89692bdacf7a46d", "dest": "/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric_ccp_network.yaml", "gid": 1000, "group": "ubuntu", "item": {"src": "fabric_ccp_network.yaml.j2"}, "md5sum": "3c83652a6fe0471760cc338c4a18c5c9", "mode": "0644", "owner": "ubuntu", "size": 6970, "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1600116437.0171947-266878715994980/source", "state": "file", "uid": 1000}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=51   changed=26   unreachable=0    failed=0   
+
+Monday 14 September 2020  20:47:17 +0000 (0:00:00.489)       0:01:14.251 ****** 
+=============================================================================== 
+network_setup : Sleeing "30" seconds for Fabric network to come-up ----- 30.08s
+channel_setup : Wait 10 seconds for kafka to comeup -------------------- 10.10s
+network_setup : Create kubernetes blockchain ---------------------------- 7.01s
+network_config : Copy crypto configs to NFS ----------------------------- 5.21s
+network_config : Copy fabric binaries with version "1.4.0" to inventory fabric-config --- 4.31s
+network_config : Generate Kubernetes configuration templates ------------ 2.40s
+prepare_cli_node : Install NFS client on CLI ---------------------------- 1.12s
+network_config : Generate configtx.yaml and crypto-config.yaml ---------- 0.95s
+channel_setup : Copy channel artifacts to NFS --------------------------- 0.77s
+channel_setup : Waiting for Ports to open for orderer services ---------- 0.69s
+channel_setup : Wait for port of "org1" peers to be available ----------- 0.58s
+network_config : Copy channel artifacts to NFS -------------------------- 0.55s
+network_config : (cryptogen) Generate crypto config --------------------- 0.52s
+channel_setup : Get kafka2's status and wait till available ------------- 0.51s
+channel_setup : Get zookeeper0's status and wait till available --------- 0.51s
+channel_setup : Get kafka0's status and wait till available ------------- 0.50s
+channel_setup : Get kafka1's status and wait till available ------------- 0.50s
+channel_setup : Get zookeeper1's status and wait till available --------- 0.49s
+metrics_config : Generate blockchain network config for Metrics tool ---- 0.49s
+channel_setup : Get zookeeper2's status and wait till available --------- 0.46s
+Synchronizing submodule url for 'caliper'
+Synchronizing submodule url for 'kubespray'
+source .env
+info: [bench-flow.js]: ####### Caliper Test #######
+info: [adapters/fabric-ccp]: Fabric SDK version: 1.4.0; TLS: server
+info: [adapters/fabric-ccp]: Org1's registrar enrolled successfully
+info: [adapters/fabric-ccp]: Org2's registrar enrolled successfully
+info: [adapters/fabric-ccp]: Org1's admin's materials are successfully loaded
+info: [adapters/fabric-ccp]: Org2's admin's materials are successfully loaded
+info: [adapters/fabric-ccp]: client0.org1's materials are successfully loaded
+info: [adapters/fabric-ccp]: client0.org2's materials are successfully loaded
+info: [adapters/fabric-ccp]: mychannel successfully created
+info: [adapters/fabric-ccp]: Sleeping 5s...
+info: [adapters/fabric-ccp]: Org1's peers successfully joined mychannel: peer0.org1,peer1.org1
+info: [adapters/fabric-ccp]: Org2's peers successfully joined mychannel: peer0.org2,peer1.org2
+info: [adapters/fabric-ccp]: Sleeping 5s...
+info: [adapters/fabric-ccp]: Installing chaincodes for mychannel...
+info: [adapters/fabric-ccp]: generator@v1 successfully installed on Org1's peers: peer0.org1,peer1.org1
+info: [adapters/fabric-ccp]: generator@v1 successfully installed on Org2's peers: peer0.org2,peer1.org2
+info: [adapters/fabric-ccp]: Instantiating generator@v1 in mychannel. This might take some time...
+info: [adapters/fabric-ccp]: Successfully instantiated generator@v1 in mychannel
+info: [adapters/fabric-ccp]: Sleeping 5s...
+info: [bench-flow.js]: Started monitor successfully
+info: [bench-flow.js]: ####### Testing 'initLedgerGen' #######
+info: [bench-flow.js]: ------ Test round 1 ------
+info: [demo.js]: [Transaction Info] - Submitted: 0 Succ: 0 Fail:0 Unfinished:0
+info: [demo.js]: [Transaction Info] - Submitted: 0 Succ: 0 Fail:0 Unfinished:0
+info: [demo.js]: [Transaction Info] - Submitted: 0 Succ: 0 Fail:0 Unfinished:0
+info: [demo.js]: [Transaction Info] - Submitted: 84 Succ: 0 Fail:0 Unfinished:84
+info: [demo.js]: [Transaction Info] - Submitted: 324 Succ: 0 Fail:0 Unfinished:324
+info: [demo.js]: [Transaction Info] - Submitted: 809 Succ: 0 Fail:0 Unfinished:809
+info: [demo.js]: [Transaction Info] - Submitted: 1204 Succ: 38 Fail:0 Unfinished:1166
+info: [demo.js]: [Transaction Info] - Submitted: 1630 Succ: 164 Fail:0 Unfinished:1466
+info: [demo.js]: [Transaction Info] - Submitted: 2248 Succ: 300 Fail:0 Unfinished:1948
+info: [demo.js]: [Transaction Info] - Submitted: 2474 Succ: 514 Fail:0 Unfinished:1960
+info: [demo.js]: [Transaction Info] - Submitted: 2635 Succ: 615 Fail:0 Unfinished:2020
+info: [demo.js]: [Transaction Info] - Submitted: 3150 Succ: 799 Fail:0 Unfinished:2351
+info: [demo.js]: [Transaction Info] - Submitted: 3669 Succ: 962 Fail:0 Unfinished:2707
+info: [demo.js]: [Transaction Info] - Submitted: 3921 Succ: 1045 Fail:0 Unfinished:2876
+info: [demo.js]: [Transaction Info] - Submitted: 4612 Succ: 1509 Fail:0 Unfinished:3103
+info: [demo.js]: [Transaction Info] - Submitted: 4801 Succ: 1603 Fail:0 Unfinished:3198
+info: [demo.js]: [Transaction Info] - Submitted: 5061 Succ: 1756 Fail:0 Unfinished:3305
+info: [demo.js]: [Transaction Info] - Submitted: 5517 Succ: 1871 Fail:0 Unfinished:3646
+info: [demo.js]: [Transaction Info] - Submitted: 6474 Succ: 2232 Fail:0 Unfinished:4242
+info: [demo.js]: [Transaction Info] - Submitted: 6774 Succ: 2265 Fail:0 Unfinished:4509
+info: [demo.js]: [Transaction Info] - Submitted: 7337 Succ: 2551 Fail:0 Unfinished:4786
+info: [demo.js]: [Transaction Info] - Submitted: 7657 Succ: 2702 Fail:0 Unfinished:4955
+info: [demo.js]: [Transaction Info] - Submitted: 8111 Succ: 3060 Fail:0 Unfinished:5051
+info: [demo.js]: [Transaction Info] - Submitted: 8891 Succ: 3305 Fail:0 Unfinished:5586
+info: [demo.js]: [Transaction Info] - Submitted: 9343 Succ: 3459 Fail:0 Unfinished:5884
+info: [demo.js]: [Transaction Info] - Submitted: 9775 Succ: 3861 Fail:0 Unfinished:5914
+info: [demo.js]: [Transaction Info] - Submitted: 10208 Succ: 4055 Fail:0 Unfinished:6153
+info: [demo.js]: [Transaction Info] - Submitted: 10518 Succ: 4348 Fail:0 Unfinished:6170
+info: [demo.js]: [Transaction Info] - Submitted: 10925 Succ: 4520 Fail:0 Unfinished:6405
+info: [demo.js]: [Transaction Info] - Submitted: 11500 Succ: 4887 Fail:0 Unfinished:6613
+info: [demo.js]: [Transaction Info] - Submitted: 11811 Succ: 5224 Fail:0 Unfinished:6587
+info: [demo.js]: [Transaction Info] - Submitted: 12140 Succ: 5470 Fail:0 Unfinished:6670
+info: [demo.js]: [Transaction Info] - Submitted: 12673 Succ: 5927 Fail:0 Unfinished:6746
+info: [demo.js]: [Transaction Info] - Submitted: 13559 Succ: 6446 Fail:0 Unfinished:7113
+info: [demo.js]: [Transaction Info] - Submitted: 13659 Succ: 6488 Fail:0 Unfinished:7171
+info: [demo.js]: [Transaction Info] - Submitted: 14486 Succ: 6904 Fail:0 Unfinished:7582
+info: [demo.js]: [Transaction Info] - Submitted: 14825 Succ: 7116 Fail:0 Unfinished:7709
+info: [demo.js]: [Transaction Info] - Submitted: 15289 Succ: 7334 Fail:0 Unfinished:7955
+info: [demo.js]: [Transaction Info] - Submitted: 15600 Succ: 7672 Fail:0 Unfinished:7928
+info: [demo.js]: [Transaction Info] - Submitted: 15712 Succ: 7800 Fail:0 Unfinished:7912
+info: [demo.js]: [Transaction Info] - Submitted: 16221 Succ: 8111 Fail:0 Unfinished:8110
+info: [demo.js]: [Transaction Info] - Submitted: 16609 Succ: 8438 Fail:0 Unfinished:8171
+info: [demo.js]: [Transaction Info] - Submitted: 17392 Succ: 8685 Fail:0 Unfinished:8707
+info: [demo.js]: [Transaction Info] - Submitted: 18018 Succ: 9033 Fail:0 Unfinished:8985
+info: [demo.js]: [Transaction Info] - Submitted: 18348 Succ: 9233 Fail:0 Unfinished:9115
+info: [demo.js]: [Transaction Info] - Submitted: 19005 Succ: 9567 Fail:0 Unfinished:9438
+info: [demo.js]: [Transaction Info] - Submitted: 19350 Succ: 9742 Fail:0 Unfinished:9608
+info: [demo.js]: [Transaction Info] - Submitted: 19935 Succ: 10084 Fail:0 Unfinished:9851
+info: [demo.js]: [Transaction Info] - Submitted: 20568 Succ: 10333 Fail:0 Unfinished:10235
+info: [demo.js]: [Transaction Info] - Submitted: 20897 Succ: 10511 Fail:0 Unfinished:10386
+info: [demo.js]: [Transaction Info] - Submitted: 21487 Succ: 10920 Fail:0 Unfinished:10567
+info: [demo.js]: [Transaction Info] - Submitted: 21974 Succ: 11281 Fail:0 Unfinished:10693
+info: [demo.js]: [Transaction Info] - Submitted: 22270 Succ: 11491 Fail:0 Unfinished:10779
+info: [demo.js]: [Transaction Info] - Submitted: 22523 Succ: 11740 Fail:0 Unfinished:10783
+info: [demo.js]: [Transaction Info] - Submitted: 22809 Succ: 11914 Fail:0 Unfinished:10895
+info: [demo.js]: [Transaction Info] - Submitted: 23009 Succ: 12164 Fail:0 Unfinished:10845
+info: [demo.js]: [Transaction Info] - Submitted: 23205 Succ: 12249 Fail:0 Unfinished:10956
+info: [demo.js]: [Transaction Info] - Submitted: 23870 Succ: 12897 Fail:0 Unfinished:10973
+info: [demo.js]: [Transaction Info] - Submitted: 24476 Succ: 13213 Fail:0 Unfinished:11263
+info: [demo.js]: [Transaction Info] - Submitted: 24709 Succ: 13583 Fail:0 Unfinished:11126
+info: [demo.js]: [Transaction Info] - Submitted: 24955 Succ: 13682 Fail:0 Unfinished:11273
+info: [demo.js]: [Transaction Info] - Submitted: 25434 Succ: 13865 Fail:0 Unfinished:11569
+info: [demo.js]: [Transaction Info] - Submitted: 26088 Succ: 14340 Fail:0 Unfinished:11748
+info: [demo.js]: [Transaction Info] - Submitted: 26681 Succ: 14534 Fail:0 Unfinished:12147
+info: [demo.js]: [Transaction Info] - Submitted: 27379 Succ: 14837 Fail:0 Unfinished:12542
+info: [demo.js]: [Transaction Info] - Submitted: 27747 Succ: 15062 Fail:0 Unfinished:12685
+info: [demo.js]: [Transaction Info] - Submitted: 28147 Succ: 15339 Fail:0 Unfinished:12808
+info: [demo.js]: [Transaction Info] - Submitted: 28747 Succ: 15710 Fail:0 Unfinished:13037
+info: [demo.js]: [Transaction Info] - Submitted: 29072 Succ: 15920 Fail:0 Unfinished:13152
+info: [demo.js]: [Transaction Info] - Submitted: 29745 Succ: 16486 Fail:0 Unfinished:13259
+info: [demo.js]: [Transaction Info] - Submitted: 30206 Succ: 17136 Fail:0 Unfinished:13070
+info: [demo.js]: [Transaction Info] - Submitted: 30984 Succ: 17782 Fail:0 Unfinished:13202
+info: [demo.js]: [Transaction Info] - Submitted: 31800 Succ: 18405 Fail:0 Unfinished:13395
+info: [demo.js]: [Transaction Info] - Submitted: 32518 Succ: 19021 Fail:0 Unfinished:13497
+info: [demo.js]: [Transaction Info] - Submitted: 33018 Succ: 19254 Fail:0 Unfinished:13764
+info: [demo.js]: [Transaction Info] - Submitted: 33292 Succ: 19507 Fail:0 Unfinished:13785
+info: [demo.js]: [Transaction Info] - Submitted: 33655 Succ: 19729 Fail:0 Unfinished:13926
+info: [demo.js]: [Transaction Info] - Submitted: 33755 Succ: 19764 Fail:0 Unfinished:13991
+info: [demo.js]: [Transaction Info] - Submitted: 33855 Succ: 19830 Fail:0 Unfinished:14025
+info: [demo.js]: [Transaction Info] - Submitted: 34016 Succ: 19872 Fail:0 Unfinished:14144
+info: [demo.js]: [Transaction Info] - Submitted: 34116 Succ: 19970 Fail:0 Unfinished:14146
+info: [demo.js]: [Transaction Info] - Submitted: 34680 Succ: 20572 Fail:0 Unfinished:14108
+info: [demo.js]: [Transaction Info] - Submitted: 35035 Succ: 20911 Fail:0 Unfinished:14124
+info: [demo.js]: [Transaction Info] - Submitted: 35776 Succ: 21323 Fail:0 Unfinished:14453
+info: [demo.js]: [Transaction Info] - Submitted: 36510 Succ: 21910 Fail:0 Unfinished:14600
+info: [demo.js]: [Transaction Info] - Submitted: 37277 Succ: 22482 Fail:0 Unfinished:14795
+info: [demo.js]: [Transaction Info] - Submitted: 38020 Succ: 23177 Fail:0 Unfinished:14843
+info: [demo.js]: [Transaction Info] - Submitted: 38520 Succ: 23360 Fail:0 Unfinished:15160
+info: [demo.js]: [Transaction Info] - Submitted: 39274 Succ: 23742 Fail:0 Unfinished:15532
+info: [demo.js]: [Transaction Info] - Submitted: 39946 Succ: 24013 Fail:0 Unfinished:15933
+info: [demo.js]: [Transaction Info] - Submitted: 40230 Succ: 24098 Fail:0 Unfinished:16132
+info: [demo.js]: [Transaction Info] - Submitted: 40815 Succ: 24679 Fail:0 Unfinished:16136
+info: [demo.js]: [Transaction Info] - Submitted: 40940 Succ: 24898 Fail:0 Unfinished:16042
+info: [demo.js]: [Transaction Info] - Submitted: 41556 Succ: 25327 Fail:0 Unfinished:16229
+info: [demo.js]: [Transaction Info] - Submitted: 42262 Succ: 25838 Fail:0 Unfinished:16424
+info: [demo.js]: [Transaction Info] - Submitted: 42505 Succ: 26160 Fail:0 Unfinished:16345
+info: [demo.js]: [Transaction Info] - Submitted: 42803 Succ: 26412 Fail:0 Unfinished:16391
+info: [demo.js]: [Transaction Info] - Submitted: 43096 Succ: 26629 Fail:0 Unfinished:16467
+info: [demo.js]: [Transaction Info] - Submitted: 43396 Succ: 26766 Fail:0 Unfinished:16630
+info: [demo.js]: [Transaction Info] - Submitted: 43754 Succ: 26910 Fail:0 Unfinished:16844
+info: [demo.js]: [Transaction Info] - Submitted: 44148 Succ: 27241 Fail:0 Unfinished:16907
+info: [demo.js]: [Transaction Info] - Submitted: 44248 Succ: 27252 Fail:0 Unfinished:16996
+info: [demo.js]: [Transaction Info] - Submitted: 45003 Succ: 28388 Fail:0 Unfinished:16615
+info: [demo.js]: [Transaction Info] - Submitted: 45503 Succ: 28722 Fail:0 Unfinished:16781
+info: [demo.js]: [Transaction Info] - Submitted: 45863 Succ: 29008 Fail:0 Unfinished:16855
+info: [demo.js]: [Transaction Info] - Submitted: 46086 Succ: 29293 Fail:0 Unfinished:16793
+info: [demo.js]: [Transaction Info] - Submitted: 46425 Succ: 29920 Fail:0 Unfinished:16505
+info: [demo.js]: [Transaction Info] - Submitted: 46586 Succ: 30203 Fail:0 Unfinished:16383
+info: [demo.js]: [Transaction Info] - Submitted: 47288 Succ: 30577 Fail:0 Unfinished:16711
+info: [demo.js]: [Transaction Info] - Submitted: 47788 Succ: 30750 Fail:0 Unfinished:17038
+info: [demo.js]: [Transaction Info] - Submitted: 48158 Succ: 31046 Fail:0 Unfinished:17112
+info: [demo.js]: [Transaction Info] - Submitted: 48681 Succ: 31501 Fail:0 Unfinished:17180
+info: [demo.js]: [Transaction Info] - Submitted: 49215 Succ: 31676 Fail:0 Unfinished:17539
+info: [demo.js]: [Transaction Info] - Submitted: 49761 Succ: 32017 Fail:0 Unfinished:17744
+info: [demo.js]: [Transaction Info] - Submitted: 50161 Succ: 32140 Fail:0 Unfinished:18021
+info: [demo.js]: [Transaction Info] - Submitted: 50468 Succ: 32318 Fail:0 Unfinished:18150
+info: [demo.js]: [Transaction Info] - Submitted: 51056 Succ: 32679 Fail:0 Unfinished:18377
+info: [demo.js]: [Transaction Info] - Submitted: 51556 Succ: 32784 Fail:0 Unfinished:18772
+info: [demo.js]: [Transaction Info] - Submitted: 52426 Succ: 33422 Fail:0 Unfinished:19004
+info: [demo.js]: [Transaction Info] - Submitted: 52926 Succ: 33867 Fail:0 Unfinished:19059
+info: [demo.js]: [Transaction Info] - Submitted: 53440 Succ: 34097 Fail:0 Unfinished:19343
+info: [demo.js]: [Transaction Info] - Submitted: 54082 Succ: 34519 Fail:0 Unfinished:19563
+info: [demo.js]: [Transaction Info] - Submitted: 54887 Succ: 34974 Fail:0 Unfinished:19913
+info: [demo.js]: [Transaction Info] - Submitted: 55339 Succ: 35491 Fail:0 Unfinished:19848
+info: [demo.js]: [Transaction Info] - Submitted: 56021 Succ: 35880 Fail:0 Unfinished:20141
+info: [demo.js]: [Transaction Info] - Submitted: 56686 Succ: 36629 Fail:0 Unfinished:20057
+info: [demo.js]: [Transaction Info] - Submitted: 57185 Succ: 37045 Fail:0 Unfinished:20140
+info: [demo.js]: [Transaction Info] - Submitted: 57285 Succ: 37164 Fail:0 Unfinished:20121
+info: [demo.js]: [Transaction Info] - Submitted: 57939 Succ: 37775 Fail:0 Unfinished:20164
+info: [demo.js]: [Transaction Info] - Submitted: 58367 Succ: 38433 Fail:0 Unfinished:19934
+info: [demo.js]: [Transaction Info] - Submitted: 58367 Succ: 38433 Fail:0 Unfinished:19934
+info: [demo.js]: [Transaction Info] - Submitted: 58819 Succ: 38804 Fail:0 Unfinished:20015
+info: [demo.js]: [Transaction Info] - Submitted: 59219 Succ: 39059 Fail:0 Unfinished:20160
+info: [demo.js]: [Transaction Info] - Submitted: 59237 Succ: 39155 Fail:0 Unfinished:20082
+info: [demo.js]: [Transaction Info] - Submitted: 59945 Succ: 39731 Fail:0 Unfinished:20214
+info: [demo.js]: [Transaction Info] - Submitted: 60453 Succ: 40081 Fail:0 Unfinished:20372
+info: [demo.js]: [Transaction Info] - Submitted: 60774 Succ: 40659 Fail:0 Unfinished:20115
+info: [demo.js]: [Transaction Info] - Submitted: 61315 Succ: 41085 Fail:0 Unfinished:20230
+info: [demo.js]: [Transaction Info] - Submitted: 61963 Succ: 41517 Fail:0 Unfinished:20446
+info: [demo.js]: [Transaction Info] - Submitted: 62363 Succ: 41648 Fail:0 Unfinished:20715
+info: [demo.js]: [Transaction Info] - Submitted: 62663 Succ: 42055 Fail:0 Unfinished:20608
+info: [demo.js]: [Transaction Info] - Submitted: 63263 Succ: 42741 Fail:0 Unfinished:20522
+info: [demo.js]: [Transaction Info] - Submitted: 63900 Succ: 43204 Fail:0 Unfinished:20696
+info: [demo.js]: [Transaction Info] - Submitted: 64600 Succ: 43599 Fail:0 Unfinished:21001
+info: [demo.js]: [Transaction Info] - Submitted: 65371 Succ: 44062 Fail:0 Unfinished:21309
+info: [demo.js]: [Transaction Info] - Submitted: 65371 Succ: 44062 Fail:0 Unfinished:21309
+info: [demo.js]: [Transaction Info] - Submitted: 65867 Succ: 44390 Fail:0 Unfinished:21477
+info: [demo.js]: [Transaction Info] - Submitted: 66163 Succ: 44406 Fail:0 Unfinished:21757
+info: [demo.js]: [Transaction Info] - Submitted: 66663 Succ: 44760 Fail:0 Unfinished:21903
+info: [demo.js]: [Transaction Info] - Submitted: 67174 Succ: 45452 Fail:0 Unfinished:21722
+info: [demo.js]: [Transaction Info] - Submitted: 68069 Succ: 46276 Fail:0 Unfinished:21793
+info: [demo.js]: [Transaction Info] - Submitted: 68469 Succ: 46390 Fail:0 Unfinished:22079
+info: [demo.js]: [Transaction Info] - Submitted: 68769 Succ: 46524 Fail:0 Unfinished:22245
+info: [demo.js]: [Transaction Info] - Submitted: 69328 Succ: 46998 Fail:0 Unfinished:22330
+info: [demo.js]: [Transaction Info] - Submitted: 70228 Succ: 47349 Fail:0 Unfinished:22879
+info: [demo.js]: [Transaction Info] - Submitted: 70842 Succ: 47760 Fail:0 Unfinished:23082
+info: [demo.js]: [Transaction Info] - Submitted: 71634 Succ: 48445 Fail:0 Unfinished:23189
+info: [demo.js]: [Transaction Info] - Submitted: 72375 Succ: 49158 Fail:0 Unfinished:23217
+info: [demo.js]: [Transaction Info] - Submitted: 72575 Succ: 49193 Fail:0 Unfinished:23382
+info: [demo.js]: [Transaction Info] - Submitted: 73057 Succ: 49552 Fail:0 Unfinished:23505
+info: [demo.js]: [Transaction Info] - Submitted: 73362 Succ: 50039 Fail:0 Unfinished:23323
+info: [demo.js]: [Transaction Info] - Submitted: 73962 Succ: 50524 Fail:0 Unfinished:23438
+info: [demo.js]: [Transaction Info] - Submitted: 74762 Succ: 51235 Fail:0 Unfinished:23527
+info: [demo.js]: [Transaction Info] - Submitted: 75362 Succ: 51627 Fail:0 Unfinished:23735
+info: [demo.js]: [Transaction Info] - Submitted: 76388 Succ: 52526 Fail:0 Unfinished:23862
+info: [demo.js]: [Transaction Info] - Submitted: 76850 Succ: 53199 Fail:0 Unfinished:23651
+info: [demo.js]: [Transaction Info] - Submitted: 77299 Succ: 53721 Fail:0 Unfinished:23578
+info: [demo.js]: [Transaction Info] - Submitted: 77599 Succ: 54036 Fail:0 Unfinished:23563
+info: [demo.js]: [Transaction Info] - Submitted: 77998 Succ: 54429 Fail:0 Unfinished:23569
+info: [demo.js]: [Transaction Info] - Submitted: 78467 Succ: 54820 Fail:0 Unfinished:23647
+info: [demo.js]: [Transaction Info] - Submitted: 78989 Succ: 55085 Fail:0 Unfinished:23904
+info: [demo.js]: [Transaction Info] - Submitted: 79347 Succ: 55217 Fail:0 Unfinished:24130
+info: [demo.js]: [Transaction Info] - Submitted: 79685 Succ: 55498 Fail:0 Unfinished:24187
+info: [demo.js]: [Transaction Info] - Submitted: 79919 Succ: 55953 Fail:0 Unfinished:23966
+info: [demo.js]: [Transaction Info] - Submitted: 80393 Succ: 56142 Fail:0 Unfinished:24251
+info: [demo.js]: [Transaction Info] - Submitted: 81103 Succ: 57071 Fail:0 Unfinished:24032
+info: [demo.js]: [Transaction Info] - Submitted: 81503 Succ: 57415 Fail:0 Unfinished:24088
+info: [demo.js]: [Transaction Info] - Submitted: 81903 Succ: 57610 Fail:0 Unfinished:24293
+info: [demo.js]: [Transaction Info] - Submitted: 82725 Succ: 58024 Fail:0 Unfinished:24701
+info: [demo.js]: [Transaction Info] - Submitted: 82942 Succ: 58520 Fail:0 Unfinished:24422
+info: [demo.js]: [Transaction Info] - Submitted: 83655 Succ: 59235 Fail:0 Unfinished:24420
+info: [demo.js]: [Transaction Info] - Submitted: 83831 Succ: 59400 Fail:0 Unfinished:24431
+info: [demo.js]: [Transaction Info] - Submitted: 84231 Succ: 59667 Fail:0 Unfinished:24564
+info: [demo.js]: [Transaction Info] - Submitted: 84331 Succ: 59757 Fail:0 Unfinished:24574
+info: [demo.js]: [Transaction Info] - Submitted: 84753 Succ: 60237 Fail:0 Unfinished:24516
+info: [demo.js]: [Transaction Info] - Submitted: 85353 Succ: 60845 Fail:0 Unfinished:24508
+info: [demo.js]: [Transaction Info] - Submitted: 85953 Succ: 61024 Fail:0 Unfinished:24929
+info: [demo.js]: [Transaction Info] - Submitted: 86653 Succ: 61786 Fail:0 Unfinished:24867
+info: [demo.js]: [Transaction Info] - Submitted: 87610 Succ: 62668 Fail:0 Unfinished:24942
+info: [demo.js]: [Transaction Info] - Submitted: 88186 Succ: 63488 Fail:0 Unfinished:24698
+info: [demo.js]: [Transaction Info] - Submitted: 89337 Succ: 64395 Fail:0 Unfinished:24942
+info: [demo.js]: [Transaction Info] - Submitted: 90511 Succ: 65453 Fail:0 Unfinished:25058
+info: [demo.js]: [Transaction Info] - Submitted: 91080 Succ: 66169 Fail:0 Unfinished:24911
+info: [demo.js]: [Transaction Info] - Submitted: 91981 Succ: 66476 Fail:0 Unfinished:25505
+info: [demo.js]: [Transaction Info] - Submitted: 92739 Succ: 67359 Fail:0 Unfinished:25380
+info: [demo.js]: [Transaction Info] - Submitted: 93467 Succ: 67901 Fail:0 Unfinished:25566
+info: [demo.js]: [Transaction Info] - Submitted: 93867 Succ: 68165 Fail:0 Unfinished:25702
+info: [demo.js]: [Transaction Info] - Submitted: 93967 Succ: 68165 Fail:0 Unfinished:25802
+info: [demo.js]: [Transaction Info] - Submitted: 94571 Succ: 68959 Fail:0 Unfinished:25612
+info: [demo.js]: [Transaction Info] - Submitted: 95413 Succ: 70639 Fail:0 Unfinished:24774
+info: [demo.js]: [Transaction Info] - Submitted: 95736 Succ: 71350 Fail:0 Unfinished:24386
+info: [demo.js]: [Transaction Info] - Submitted: 95861 Succ: 71456 Fail:0 Unfinished:24405
+info: [demo.js]: [Transaction Info] - Submitted: 96089 Succ: 71585 Fail:0 Unfinished:24504
+info: [demo.js]: [Transaction Info] - Submitted: 96489 Succ: 71675 Fail:0 Unfinished:24814
+info: [demo.js]: [Transaction Info] - Submitted: 96889 Succ: 72167 Fail:0 Unfinished:24722
+info: [demo.js]: [Transaction Info] - Submitted: 97089 Succ: 73470 Fail:0 Unfinished:23619
+info: [demo.js]: [Transaction Info] - Submitted: 97524 Succ: 74572 Fail:0 Unfinished:22952
+info: [demo.js]: [Transaction Info] - Submitted: 97842 Succ: 75457 Fail:0 Unfinished:22385
+info: [demo.js]: [Transaction Info] - Submitted: 98142 Succ: 76666 Fail:0 Unfinished:21476
+info: [demo.js]: [Transaction Info] - Submitted: 98600 Succ: 77510 Fail:0 Unfinished:21090
+info: [demo.js]: [Transaction Info] - Submitted: 99200 Succ: 77990 Fail:0 Unfinished:21210
+info: [demo.js]: [Transaction Info] - Submitted: 99500 Succ: 78476 Fail:0 Unfinished:21024
+info: [demo.js]: [Transaction Info] - Submitted: 99700 Succ: 78565 Fail:0 Unfinished:21135
+info: [demo.js]: [Transaction Info] - Submitted: 99700 Succ: 78635 Fail:0 Unfinished:21065
+info: [demo.js]: [Transaction Info] - Submitted: 99800 Succ: 79380 Fail:0 Unfinished:20420
+info: [demo.js]: [Transaction Info] - Submitted: 99900 Succ: 80274 Fail:0 Unfinished:19626
+info: [demo.js]: [Transaction Info] - Submitted: 99900 Succ: 81170 Fail:0 Unfinished:18730
+info: [demo.js]: [Transaction Info] - Submitted: 99900 Succ: 81911 Fail:0 Unfinished:17989
+info: [demo.js]: [Transaction Info] - Submitted: 99900 Succ: 82573 Fail:0 Unfinished:17327
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 83930 Fail:0 Unfinished:16070
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 85574 Fail:0 Unfinished:14426
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 86849 Fail:0 Unfinished:13151
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 89364 Fail:315 Unfinished:10321
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 90692 Fail:315 Unfinished:8993
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 92306 Fail:315 Unfinished:7379
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 94211 Fail:315 Unfinished:5474
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 95201 Fail:315 Unfinished:4484
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 96050 Fail:315 Unfinished:3635
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 96825 Fail:315 Unfinished:2860
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98004 Fail:315 Unfinished:1681
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650
+info: [demo.js]: [Transaction Info] - Submitted: 100000 Succ: 98035 Fail:315 Unfinished:1650

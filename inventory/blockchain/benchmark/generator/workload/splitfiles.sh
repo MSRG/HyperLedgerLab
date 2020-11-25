@@ -9,4 +9,8 @@ split -l 5760 insertheavy_generatedtransactions.txt winsertheavy -d
 split -l 5760 updateheavy_generatedtransactions.txt wupdateheavy -d
 split -l 5760 deleteheavy_generatedtransactions.txt wdeleteheavy -d
 split -l 5760 couchdbheavy_generatedtransactions.txt wcouchdbheavy -d
-
+#split -l 5760 norangereadheavy_generatedtransactions.txt wnorangereadheavy -d
+#split -l 5760 norangeinsertheavy_generatedtransactions.txt wnorangeinsertheavy -d
+#split -l 5760 norangeupdateheavy_generatedtransactions.txt wnorangeupdateheavy -d
+#split -l 5760 norangedeleteheavy_generatedtransactions.txt wnorangedeleteheavy -d
+#split -l 5760 norangeuniformskew0_generatedtransactions.txt wnorangeuniformskew -d

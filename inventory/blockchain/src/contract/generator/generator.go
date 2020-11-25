@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	sc "github.com/hyperledger/fabric/protos/peer"
 )
+
 
 type SmartContract struct {
 }
@@ -82,7 +84,10 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
 func (s *SmartContract) func1(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	//Read key
+	start:= time.Now()
 	value, _ := APIstub.GetState(args[0])
+        fmt.Printf("fmtTime taken for GetState: %v\n", time.Since(start))
+
 	//Read key
 	value, _ = APIstub.GetState(args[1])
 	_ = value
@@ -132,7 +137,12 @@ func (s *SmartContract) func4(APIstub shim.ChaincodeStubInterface, args []string
 
 	//Insert new key
 	jvalue, _ := json.Marshal(args[1])
+
+	start:= time.Now()
 	APIstub.PutState(args[0], jvalue)
+        fmt.Printf("fmtTime taken for PutState: %v\n", time.Since(start))
+
+
 	//Insert new key
 	jvalue, _ = json.Marshal(args[3])
 	APIstub.PutState(args[2], jvalue)
@@ -198,7 +208,11 @@ func (s *SmartContract) func7(APIstub shim.ChaincodeStubInterface, args []string
 	valuex = args[3]
 	jvalue, _ = json.Marshal(valuex)
 
+
+	start:= time.Now()
 	APIstub.PutState(args[2], jvalue)
+        fmt.Printf("fmtTime taken for PutState: %v\n", time.Since(start))
+
 	_ = value
 	fmt.Println(value)
 
@@ -293,7 +307,9 @@ func (s *SmartContract) func9(APIstub shim.ChaincodeStubInterface, args []string
 func (s *SmartContract) func10(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	//Delete a key
+	start:= time.Now()
 	APIstub.DelState(args[0])
+        fmt.Printf("fmtTime taken for DelState: %v\n", time.Since(start))
 	//Delete a key
 	APIstub.DelState(args[1])
 
@@ -336,7 +352,10 @@ func (s *SmartContract) func12(APIstub shim.ChaincodeStubInterface, args []strin
 func (s *SmartContract) func13(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	//Get range of keys
+	start:= time.Now()
 	value, _ := APIstub.GetStateByRange(args[0], args[1])
+	fmt.Printf("fmtTime taken for GetStateByRange: %v\n", time.Since(start))
+
 	//Get range of keys
 	value, _ = APIstub.GetStateByRange(args[2], args[3])
 	_ = value

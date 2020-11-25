@@ -26,7 +26,7 @@ class getParameters {
         return chaincodeType;
    }
    static readWriteProb() {
-        let readWriteProb = 50;
+        let readWriteProb = 80;
         return readWriteProb;
    }
 

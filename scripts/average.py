@@ -2,7 +2,11 @@
 import numpy as np
 import pandas as pd
 
+#files = ["1metricslog.csv"]
 files = ["1metricslog.csv", "2metricslog.csv", "3metricslog.csv"]
+#files = ["1metricslog.csv", "2metricslog.csv"]
+#files = ["1metricslog.csv", "3metricslog.csv"]
+#files = ["1metricslog.csv", "2metricslog.csv", "3metricslog.csv", "4metricslog.csv", "5metricslog.csv"]
 #files = ["1metricslog.csv", "2metricslog.csv", "3metricslog.csv", "4metricslog.csv", "5metricslog.csv", "6metricslog.csv", "7metricslog.csv", "8metricslog.csv", "9metricslog.csv", "10metricslog.csv"]
 for num, filename in enumerate(files, 1):
 	print filename
@@ -29,7 +33,11 @@ f1.write('ExpNum,UseCase,WorkloadType,RWProbability,TPS,TxDuration,KeyDistType,Z
 f2=open('./stderr_metricslog.csv', 'ab')
 f2.write('ExpNumStdErr,UseCaseStdErr,WorkloadTypeStdErr,RWProbabilityStdErr,TPSStdErr,TxDurationStdErr,KeyDistTypeStdErr,ZipSkewStdErr,PercentHotKeysStdErr,ProbHotKeysStdErr,BlockSizeStdErr,NumOfOrgsStdErr,PeersPerOrgStdErr,EndorsePolicyStdErr,DatabaseStdErr,TotTxSubmittedStdErr,SuccTxBCStdErr,SuccTxCalStdErr,FailTxBCStdErr,FailTxCalStdErr,TotCommTxBCStdErr,TotCommTxCalStdErr,EndorseFailBCStdErr,EndorseErrCalStdErr,EndSigErrCalStdErr,EndDenyErrCalStdErr,TotMVCC,MVCCInterStdErr,MVCCIntraStdErr,PhantomReadStdErr,NumOfCyclesStdErr,OtherFailBCStdErr,OtherFailNameBCStdErr,TimeoutFailStdErr,OrdererErrorStdErr,SubmitTxErrorStdErr,EndRWMismatCalStdErr,CommitErrCalStdErr,SubmittxExpErrCalStdErr,AvgEndoLatStdErr,AvgOrdSubLatStdErr,AvgOrdValLatStdErr,AvgSuccLatStdErr,AvgCommLatStdErr,CommThrputStdErr,SuccThrputStdErr,BroadcastTimeoutFailureStdErr,failTxPercentStdErr,succTxPercentStdErr,EndorseFailBCPercentStdErr,TotMVCCPercentStdErr,MVCCInterPercentStdErr,MVCCIntraPercentStdErr,PhantomReadPercentStdErr,OtherFailBCPercentStdErr\n')
 
+#files = ["1finalmetricslog.csv"]
 files = ["1finalmetricslog.csv", "2finalmetricslog.csv", "3finalmetricslog.csv"]
+#files = ["1finalmetricslog.csv", "2finalmetricslog.csv"]
+#files = ["1finalmetricslog.csv", "3finalmetricslog.csv"]
+#files = ["1finalmetricslog.csv", "2finalmetricslog.csv", "3finalmetricslog.csv", "4finalmetricslog.csv", "5finalmetricslog.csv"]
 #files = ["1finalmetricslog.csv", "2finalmetricslog.csv", "3finalmetricslog.csv", "4finalmetricslog.csv", "5finalmetricslog.csv", "6finalmetricslog.csv", "7finalmetricslog.csv", "8finalmetricslog.csv", "9finalmetricslog.csv", "10finalmetricslog.csv"]
 
 float_formatter = lambda x: "%.2f" % x

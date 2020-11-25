@@ -5,8 +5,8 @@ fabric_ca_version: "{{ fabric_version }}"
 fabric_couchdb_version: 0.4.14
 
 # Fabric Network Config
-fabric_num_orgs: 2
-fabric_peers_per_org: 2
+fabric_num_orgs: 8
+fabric_peers_per_org: 4
 fabric_num_orderer: 3
 fabric_orderer_domain: orgorderer1
 # Options for Orderer Consensus type: solo/kafka
@@ -22,7 +22,7 @@ fabric_batch_timeout: "2s"
 # Index2: Preferred Max Bytes: The preferred maximum number of bytes allowed for
 #         the serialized messages in a batch. A message larger than the preferred
 #         max bytes will result in a batch larger than preferred max bytes.
-fabric_batchsize: ["100", "2 MB", "2 MB"]
+fabric_batchsize: ["200", "2 MB", "2 MB"]
 
 # Create CLI Pod
 fabric_create_cli: false
@@ -40,8 +40,8 @@ fabric_images:
 
 # Fabric Configuration
 # state_db options couchdb / goleveldb
-#fabric_state_db: goleveldb
-fabric_state_db: goleveldb
+fabric_state_db: couchdb
+# fabric_state_db: goleveldb
 
 # Metrics framework setting
 # inventory_dir is an ansible variable which stores location of hosts.ini file
@@ -51,19 +51,18 @@ channels:                   # List of channel objects
   - name: "mychannel"
     created: false          # Update this value to true if channel is already created
     chaincodes:
-
 #      - id: generator
 #        contractID: generator               # NOTE: This should be unique for chaincodes across channels
 #        path: "contract/generator"      # NOTE: Path to Directory where chaincode file is located
 #        metadataPath: ""
 #        language: golang
 #        version: v1
-      - id: fabcar
-        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
-        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
-        metadataPath: ""
-        language: golang
-        version: v1
+#      - id: fabcar
+#        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
+#        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: ""
+#        language: golang
+#        version: v1
 #      - id: supplychain
 #        contractID: supplychain               # NOTE: This should be unique for chaincodes across channels
 #        path: "{{ inventory_dir }}/src/contract/supplychain/"      # NOTE: Path to Directory where chaincode file is located
@@ -76,25 +75,18 @@ channels:                   # List of channel objects
 #        metadataPath: "{{ inventory_dir }}/src/contract/electronic-health-record/metadata/"
 #        language: node
 #        version: v1
-#      - id: simple
-#        contractID: simple
-#        path: "fabric/scenario/simple/go/"
-#        metadataPath: "/home/ubuntu/HyperLedgerLab/caliper-benchmarks/src/fabric/scenario/simple/go/"
-#        language: golang
-#        version: v1
-
 #      - id: e-voting
 #        contractID: e-voting
 #        path: "{{ inventory_dir }}/src/contract/e-voting"
 #        metadataPath: "{{ inventory_dir }}/src/contract/e-voting/metadata/"
 #        language: node
 #        version: v1
-#      - id: drm
-#        contractID: drm
-#        path: "{{ inventory_dir }}/src/contract/drm"
-#        metadataPath: "{{ inventory_dir }}/src/contract/drm/metadata/"
-#        language: node
-#        version: v1
+      - id: drm
+        contractID: drm
+        path: "{{ inventory_dir }}/src/contract/drm"
+        metadataPath: "{{ inventory_dir }}/src/contract/drm/metadata/"
+        language: node
+        version: v1
 # Uncomment the following lines to install and instantiate marbles chaincode on a separate channel
 #  - name: "mychannel1"
 #    created: false          # Update this value to true if channel is already created
@@ -120,9 +112,9 @@ templates_dir: "{{ fabric_config_dir }}/{{ templates_dirname }}"
 cryptogen_config: "{{ fabric_config_dir }}/crypto-config.yaml"
 
 # Logging Level:
-fabric_cli_loglevel: "DEBUG"
-fabric_peer_loglevel: "DEBUG"
-fabric_orderer_loglevel: "DEBUG"
+fabric_cli_loglevel: "INFO"
+fabric_peer_loglevel: "INFO"
+fabric_orderer_loglevel: "INFO"
 
 # Dynamic Variables
 nfs_server_ip: "{{ groups['kube-nfs'][0] }}"

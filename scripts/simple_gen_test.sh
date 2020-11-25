@@ -198,9 +198,9 @@ do
 #do
 # sed -i "29s/.*/        let readWriteProb = ${k};/" inventory/blockchain/benchmark/generator/getParameters.js
 #4.tps
-for l in 500 600 700
-do
- sed -i "23s/.*/        tps: ${l}/" /home/ubuntu/HyperLedgerLab/inventory/blockchain/benchmark/generator/config.yaml
+#for l in 700 800
+#do
+# sed -i "23s/.*/        tps: ${l}/" /home/ubuntu/HyperLedgerLab/inventory/blockchain/benchmark/generator/config.yaml
 #5.txduration
 #for m in 180
 #do
@@ -267,7 +267,7 @@ do
  done
 #fi
 done
-done
+#done
 #done
 #done
 #done

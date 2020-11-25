@@ -20,7 +20,7 @@ test:
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 150
+        tps: 200
     callback: ../inventory/blockchain/benchmark/e-voting/common.js
 
   - label: closeElection

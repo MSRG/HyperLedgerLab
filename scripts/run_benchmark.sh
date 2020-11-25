@@ -27,7 +27,8 @@ $script_dir/fabric_setup.sh -e fabric_orderer_type=kafka -e fabric_create_cli=tr
 #echo START NETWORK EMULATION
 #sleep 10s
 $script_dir/get_metrics.sh $chaincode
+sleep 20s
 $script_dir/fabric_delete.sh
 #read -p "STOP NETWORK EMULATION: " ntwrkstop
 #echo STOP NETWORK EMULATION
-sleep 10s
+sleep 120s
