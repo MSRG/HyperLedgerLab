@@ -46,6 +46,10 @@ spec:
        - name: certificate
          persistentVolumeClaim:
              claimName: $pvName 
+{% if k8s_image_pull_secret.use == true %}
+     imagePullSecrets:
+       - name: {{ k8s_image_pull_secret.name }}
+{% endif %}
 
 --- 
 apiVersion: v1

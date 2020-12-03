@@ -100,3 +100,7 @@ nfs_server_mount_dir: "/opt/share"
 
 # kubernetes kubectl command
 k8s_kubectl_cmd: "{{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/kubectl --kubeconfig={{ lookup('env', 'INVENTORY_DIR_PATH') }}/cluster/artifacts/admin.conf"
+
+k8s_image_pull_secret:
+  use: false #Set to true to use image pull secret in fabric deployments
+  name: "regcred"

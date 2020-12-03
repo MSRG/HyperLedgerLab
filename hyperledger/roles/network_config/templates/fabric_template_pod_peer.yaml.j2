@@ -125,6 +125,10 @@ spec:
              claimName: $pvName
        - name: dind-graph-storage
          emptyDir: {}
+{% if k8s_image_pull_secret.use == true %}
+      imagePullSecrets:
+        - name: {{ k8s_image_pull_secret.name }}
+{% endif %}
        
 
 ---
