@@ -44,9 +44,9 @@ spec:
           - containerPort: 2181
           - containerPort: 2888
           - containerPort: 3888
-{% if k8s_image_pull_secret.use == true %}
+{% if k8s_image_pull_secret|length %}
       imagePullSecrets:
-        - name: {{ k8s_image_pull_secret.name }}
+        - name: {{ k8s_image_pull_secret }}
 {% endif %}
 
 ---
@@ -140,9 +140,9 @@ spec:
           value: "{{ fabric_num_kafka|int }}"
         ports:
          - containerPort: 9092
-{% if k8s_image_pull_secret.use == true %}
+{% if k8s_image_pull_secret|length %}
       imagePullSecrets:
-        - name: {{ k8s_image_pull_secret.name }}
+        - name: {{ k8s_image_pull_secret }}
 {% endif %}
 
 ---

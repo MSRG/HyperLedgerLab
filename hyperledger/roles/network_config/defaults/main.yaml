@@ -65,3 +65,6 @@ nfs_server_mount_dir: "/opt/share"
 # kubernetes kubectl command
 k8s_kubectl_cmd: ""
 
+# kubernetes image pull secret
+k8s_image_pull_secret: ""
+
