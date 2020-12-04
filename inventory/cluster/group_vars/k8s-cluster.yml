@@ -415,4 +415,4 @@ kubeadm_enabled: true
 # access external addresses. To use this requires that docker is installed and running on the ansible master and that 
 # the current user is either in the docker group or can do passwordless sudo, to be able to access docker.
 download_run_once: True
-download_localhost: False
+download_localhost: True
