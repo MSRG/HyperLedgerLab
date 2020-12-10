@@ -35,11 +35,7 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('{{ orderer_domain|capitalize }}MSP.admin')"
-            Endorsement:
-                Type: Signature
-                Rule: "OR('{{ orderer_domain|capitalize }}MSP.member')"
 
-        AdminPrincipal: Role.MEMBER
 {% for i in range(fabric_num_orgs|int) %}
 {% set org_index = loop.index %}
     - &Org{{ org_index }}
@@ -71,8 +67,6 @@ Organizations:
                 Type: Signature
                 Rule: "OR('Org{{ org_index }}MSP.member')"
 
-        AdminPrincipal: Role.ADMIN
-
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
@@ -88,6 +82,99 @@ Organizations:
 
 ################################################################################
 #
+#   SECTION: Capabilities
+#
+#   - This section defines the capabilities of fabric network. This is a new
+#   concept as of v1.1.0 and should not be utilized in mixed networks with
+#   v1.0.x peers and orderers.  Capabilities define features which must be
+#   present in a fabric binary for that binary to safely participate in the
+#   fabric network.  For instance, if a new MSP type is added, newer binaries
+#   might recognize and validate the signatures from this type, while older
+#   binaries without this support would be unable to validate those
+#   transactions.  This could lead to different versions of the fabric binaries
+#   having different world states.  Instead, defining a capability for a channel
+#   informs those binaries without this capability that they must cease
+#   processing transactions until they have been upgraded.  For v1.0.x if any
+#   capabilities are defined (including a map with all capabilities turned off)
+#   then the v1.0.x peer will deliberately crash.
+#
+################################################################################
+Capabilities:
+    # Channel capabilities apply to both the orderers and the peers and must be
+    # supported by both.
+    # Set the value of the capability to true to require it.
+    Channel: &ChannelCapabilities
+        # V2_0 capability ensures that orderers and peers behave according
+        # to v2.0 channel capabilities. Orderers and peers from
+        # prior releases would behave in an incompatible way, and are therefore
+        # not able to participate in channels at v2.0 capability.
+        # Prior to enabling V2.0 channel capabilities, ensure that all
+        # orderers and peers on a channel are at v2.0.0 or later.
+        V2_0: true
+
+    # Orderer capabilities apply only to the orderers, and may be safely
+    # used with prior release peers.
+    # Set the value of the capability to true to require it.
+    Orderer: &OrdererCapabilities
+        # V2_0 orderer capability ensures that orderers behave according
+        # to v2.0 orderer capabilities. Orderers from
+        # prior releases would behave in an incompatible way, and are therefore
+        # not able to participate in channels at v2.0 orderer capability.
+        # Prior to enabling V2.0 orderer capabilities, ensure that all
+        # orderers on channel are at v2.0.0 or later.
+        V2_0: true
+
+    # Application capabilities apply only to the peer network, and may be safely
+    # used with prior release orderers.
+    # Set the value of the capability to true to require it.
+    Application: &ApplicationCapabilities
+        # V2_0 application capability ensures that peers behave according
+        # to v2.0 application capabilities. Peers from
+        # prior releases would behave in an incompatible way, and are therefore
+        # not able to participate in channels at v2.0 application capability.
+        # Prior to enabling V2.0 application capabilities, ensure that all
+        # peers on channel are at v2.0.0 or later.
+        V2_0: true
+
+################################################################################
+#
+#   SECTION: Application
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for application related parameters
+#
+################################################################################
+Application: &ApplicationDefaults
+
+    # Organizations is the list of orgs which are defined as participants on
+    # the application side of the network
+    Organizations:
+
+    # Policies defines the set of policies at this level of the config tree
+    # For Application policies, their canonical path is
+    #   /Channel/Application/<PolicyName>
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+################################################################################
+#
 #   SECTION: Orderer
 #
 #   - This section defines the values to encode into a config transaction or
@@ -100,6 +187,14 @@ Orderer: &OrdererDefaults
     # Available types are "solo" and "kafka"
     OrdererType: {{ fabric_orderer_type }}
 
+    EtcdRaft:
+        Consenters:
+{% for i in range(fabric_num_orderer|int) %}
+        - Host: orderer{{ loop.index0 }}.{{ orderer_domain }}
+          Port: 7050
+          ClientTLSCert: ../fabric-config/crypto-config/ordererOrganizations/{{ orderer_domain }}/orderers/orderer{{ loop.index0 }}.{{ orderer_domain }}/tls/server.crt
+          ServerTLSCert: ../fabric-config/crypto-config/ordererOrganizations/{{ orderer_domain }}/orderers/orderer{{ loop.index0 }}.{{ orderer_domain }}/tls/server.crt
+{% endfor %}
     Addresses:
 {% for i in range(fabric_num_orderer|int) %}
         - orderer{{ loop.index0 }}.{{ orderer_domain }}:7050
@@ -123,16 +218,6 @@ Orderer: &OrdererDefaults
         # max bytes will result in a batch larger than preferred max bytes.
         PreferredMaxBytes: {{ fabric_batchsize[2] }}
 
-    MaxChannels: 0
-
-    Kafka:
-        # Brokers: A list of Kafka brokers to which the orderer connects
-        # NOTE: Use IP:port notation
-        Brokers:
-{% for i in range(fabric_num_kafka|int) %}
-            - kafka{{ loop.index0 }}.{{ orderer_domain }}:9092
-{% endfor %}
-
     # Organizations is the list of orgs which are defined as participants on
     # the orderer side of the network
     Organizations:
@@ -151,36 +236,6 @@ Orderer: &OrdererDefaults
             BlockValidation:
                 Type: ImplicitMeta
                 Rule: "ANY Writers"
-
-################################################################################
-#
-#   SECTION: Application
-#
-#   - This section defines the values to encode into a config transaction or
-#   genesis block for application related parameters
-#
-################################################################################
-Application: &ApplicationDefaults
-
-    # Organizations is the list of orgs which are defined as participants on
-    # the application side of the network
-    Organizations:
-    Policies: &ApplicationDefaultPolicies
-            LifecycleEndorsement:
-                Type: ImplicitMeta
-                Rule: "MAJORITY Endorsement"
-            Endorsement:
-                Type: ImplicitMeta
-                Rule: "MAJORITY Endorsement"
-            Readers:
-                Type: ImplicitMeta
-                Rule: "ANY Readers"
-            Writers:
-                Type: ImplicitMeta
-                Rule: "ANY Writers"
-            Admins:
-                Type: ImplicitMeta
-                Rule: "MAJORITY Admins"
 
 ################################################################################
 #
@@ -208,6 +263,12 @@ Channel: &ChannelDefaults
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"  
 
+    # Capabilities describes the channel level capabilities, see the
+    # dedicated Capabilities section elsewhere in this file for a full
+    # description
+    Capabilities:
+        <<: *ChannelCapabilities
+
 ################################################################################
 #
 #   Profile
@@ -224,6 +285,8 @@ Profiles:
             <<: *OrdererDefaults
             Organizations:
                 - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
         Consortiums:
             SampleConsortium:
                 Organizations:
@@ -231,11 +294,14 @@ Profiles:
                     - *Org{{ loop.index }}
 {% endfor %}
     OrgsChannel:
-        <<: *ChannelDefaults
         Consortium: SampleConsortium
+        <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
 {% for i in range(fabric_num_orgs|int) %}
                 - *Org{{ loop.index }}
 {% endfor %}
+            Capabilities:
+                <<: *ApplicationCapabilities
+
