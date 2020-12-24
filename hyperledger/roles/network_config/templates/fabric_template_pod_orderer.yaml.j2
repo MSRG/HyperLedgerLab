@@ -30,22 +30,33 @@ spec:
           value: 0.0.0.0
         - name: ORDERER_GENERAL_KEEPALIVE_SERVERTIMEOUT
           value: "300s"
-        - name: ORDERER_GENERAL_GENESISMETHOD
+        - name: ORDERER_GENERAL_BOOTSTRAPMETHOD
           value: file
-        - name: ORDERER_GENERAL_GENESISFILE
-          value: /var/hyperledger/orderer/orderer.genesis.block
+        - name: ORDERER_GENERAL_BOOTSTRAPFILE
+          value: "/var/hyperledger/orderer/orderer.genesis.block"
         - name: ORDERER_GENERAL_LOCALMSPID
           value: $localMSPID
         - name: ORDERER_GENERAL_LOCALMSPDIR
-          value: /var/hyperledger/orderer/msp
+          value: "/var/hyperledger/orderer/msp"
         - name: ORDERER_GENERAL_TLS_ENABLED
           value: "true"
         - name: ORDERER_GENERAL_TLS_PRIVATEKEY
-          value: /var/hyperledger/orderer/tls/server.key
+          value: "/var/hyperledger/orderer/tls/server.key"
         - name: ORDERER_GENERAL_TLS_CERTIFICATE
-          value: /var/hyperledger/orderer/tls/server.crt
+          value: "/var/hyperledger/orderer/tls/server.crt"
         - name: ORDERER_GENERAL_TLS_ROOTCAS
           value: "/var/hyperledger/orderer/tls/ca.crt"
+        - name: ORDERER_GENERAL_CLUSTER_SENDBUFFERSIZE
+          value: "10"
+        - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+          value: "/var/hyperledger/orderer/tls/server.crt"
+        - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+          value: "/var/hyperledger/orderer/tls/server.key"
+        - name: ORDERER_CONSENSUS_WALDIR
+          value: "/var/hyperledger/production/orderer/etcdraft/wal"
+        - name: ORDERER_CONSENSUS_SNAPDIR
+          value: "/var/hyperledger/production/orderer/etcdraft/snapshot"
+
         workingDir: /opt/gopath/src/github.com/hyperledger/fabric/
         ports:
          - containerPort: 7050
