@@ -1,0 +1,6 @@
+allStudent: 5
+allCustodian: 2
+allReader: 15
+idSize: 5
+keySize: 20
+document_length: 1024

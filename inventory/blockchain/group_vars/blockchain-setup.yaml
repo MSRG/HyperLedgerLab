@@ -58,11 +58,17 @@ channels:                   # List of channel objects
 #        metadataPath: ""
 #        language: golang
 #        version: v1
-      - id: fabcar
-        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
-        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
-        metadataPath: ""
-        language: golang
+#      - id: fabcar
+#        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
+#        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: ""
+#        language: golang
+#        version: v1
+      - id: notarization
+        contractID: notarization               # NOTE: This should be unique for chaincodes across channels
+        path: "{{ inventory_dir }}/src/contract/notarization/"      # NOTE: Path to Directory where chaincode file is located
+        metadataPath: "{{ inventory_dir }}/src/contract/notarization/metadata/"
+        language: node
         version: v1
 #      - id: supplychain
 #        contractID: supplychain               # NOTE: This should be unique for chaincodes across channels
