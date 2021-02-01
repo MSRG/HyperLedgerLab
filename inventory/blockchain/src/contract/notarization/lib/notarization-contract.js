@@ -5,7 +5,7 @@
 'use strict';
 
 const { Contract } = require('fabric-contract-api');
-const MyDocument = require('./mydocument')
+const MyDocument = require('./mydocument');
 const sha512 = require('js-sha512');
 
 const seeds = require('./seeds.json');
@@ -24,7 +24,7 @@ class NotarizationContract extends Contract {
     async initLedger(ctx) {
         console.log('=========== START: initLedger Transaction');
 
-        for(const doc of seeds.allDocument){
+        for(const doc of seeds.initLedgerDocuments){
             // create key for storing data
             let key = doc.custodian.id.toString() + doc.student.id.toString();
 

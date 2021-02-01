@@ -12,7 +12,8 @@ const parameters = read.sync('seedParameters.yaml');
 let allReader = [];
 let allCustodian = [];
 let allStudent = [];
-let allDocument = [];
+let initLedgerDocuments = [];
+let benchmarkDocuments = [];
 
 function generateIdKeyPair(id_size, key_size){
 
@@ -22,6 +23,13 @@ function generateIdKeyPair(id_size, key_size){
         id: id,
         key: key
     }
+}
+
+function generateDocumentHash(){
+    let doc = Utils.generateRandomString(parameters.document_length);
+    let hash = crypto.createHash('sha256');
+    hash.update(doc);
+    return hash.digest('hex');
 }
 
 function generateDocument(student, custodians, readers){
@@ -40,10 +48,8 @@ function generateDocument(student, custodians, readers){
         } 
     }
 
-    let doc = Utils.generateRandomString(parameters.document_length);
-    let hash = crypto.createHash('sha256');
-    hash.update(doc);
-    let documentHash = hash.digest('hex');
+    
+    let documentHash = generateDocumentHash();
 
     return {
         documentHash: documentHash,
@@ -90,7 +96,13 @@ while(i < parameters.allStudent){
         allStudent.push(pair);
 
         let doc = generateDocument(pair, allCustodian, allReader);
-        allDocument.push(doc);
+
+        if(Math.random() < 0.75){
+            initLedgerDocuments.push(doc);
+        } else {
+            benchmarkDocuments.push(doc);
+        }
+
 
         i++;
     } else {
@@ -102,7 +114,8 @@ const json = JSON.stringify({
     allReader: allReader,
     allCustodian: allCustodian,
     allStudent: allStudent,
-    allDocument: allDocument
+    initLedgerDocuments: initLedgerDocuments,
+    benchmarkDocuments: benchmarkDocuments
 }, null, 4);
 
 fs.writeFile('seeds.json', json, function(err) {
