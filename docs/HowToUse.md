@@ -31,7 +31,7 @@
     * SSH into CLI and all following commands should be executed from this instance.
 
 3. Clone the repository:
-    * `git clone https://github.com/MSRG/HyperLedgerLab.git`
+    * `git clone --recursive https://github.com/MSRG/HyperLedgerLab.git`
     * `cd HyperLedgerLab`
 
 3. Create .env file with details about Openstack authentication
@@ -65,6 +65,7 @@
     * Estimated time to complete: **30 seconds**
     * What will happen ?
         * It will delete Openstack infra with command: `ansible-playbook -i inventory/infra/hosts.ini -v infra_delete.yaml`
+    * If there are dependency issues when deleting and restarting the cluster, run comman: `rm -rf venv`
 
 5. Create Fabric Blockchain on kubernetes:
     * Run Command: `./scripts/fabric_setup.sh`
@@ -85,6 +86,8 @@
     * What will happen ?
         * It will delete Fabric Blockchain on kubernetes with command: `ansible-playbook -i inventory/blockchain/hosts.ini -v blockchain_delete.yaml`
         * `crypto_config` and `channel_artifacts` will be deleted as well
+    * If you want to force delete the kubernetes pods and namespaces replace hyperledger/roles/network_setup/files/delete_k8s_blockchain.py with the force_delete_k8s_blockchain.py file in the same folder.
+    * If there are node dependency issues when deleting and restarting a fabric network, run comman: `rm -rf node_modules`
 
 7. Benchmarking: Get chaincode metrics:
     * Run Command: `./scripts/get_metrics.sh <chaincode>`
@@ -96,10 +99,12 @@
         * It will install, instantiate chaincode on the network using Caliper
         * Then it will run some rounds of testing
         * A HTML report will be created with the metrics gathered. Location of report will be displayed at the end of testing
-    * For use-case based chaincodes and generated chaincodes do not run `./scripts/get_metrics.sh <chaincode>`. Instead follow the instructions given below.
+    * For using different chaincodes specify the chaincode in inventory/blockchain/group_vars/blockchain-setup.yaml
+    * For use-case based chaincodes and generated chaincodes follow the instructions given below.
 
 8. Using the use-case based chaincodes and workloads (electronic-health-record, e-voting, supplychain, drm)
     * Run Command: `./scripts/run_benchmark.sh <chaincode>`
+    * This script includes the fabric_setup, get_metrics and fabric_delete as well as chaincode specific scripts that is required for setting up the workload.
 
 9. Using the chaincode and workload generator
     * `cd inventory/blockchain/Generator/`
@@ -116,6 +121,9 @@
     * Use the script inventory/blockchain/benchmark/generator/workload/splitfiles.sh to split large workloads.
     * The generated chaincode is copied to inventory/blockchain/src/contract/generator/
     * To run the benchmark with generated chaincode and workload: `./scripts/gen_run_benchmark.sh <chaincode>`
+
+11. Collecting additional metrics from the blockchain
+    * You can extend the caliper scripts to collect additional metrics regarding transaction failures by replacing the specific files in the caliper/ folder with the corresponding files in the editedcaliperfiles/ folder.
         
 Fabric-Metrics Workflow:
 -----
