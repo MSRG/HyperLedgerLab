@@ -27,9 +27,13 @@ then
     then
         # Setup node environment
         set -x
+        sudo apt-get remove nodejs npm
+        sudo apt-get update
+        sudo apt-get upgrade
         curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
         sudo apt-get install -y nodejs
-        sudo npm install -g npm
+        npm install npm@latest-6
+        #sudo npm install -g npm
         npm install
         npm run fabric-v1.4-deps
         set +x
@@ -44,7 +48,12 @@ else
         set -x
         mkdir venv
         sudo apt update
-        sudo apt-get install --yes python-pip
+        #sudo apt-get install --yes python-pip
+
+        curl -O https://bootstrap.pypa.io/2.7/get-pip.py
+        python get-pip.py
+        python -m pip install --upgrade "pip < 21.0"
+
         pip install virtualenv
         virtualenv --python=python3 venv
         source ./venv/bin/activate

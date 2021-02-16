@@ -182,7 +182,7 @@ dashboard_node_port: 30843
 efk_enabled: false
 
 # Helm deployment
-helm_enabled: true
+#helm_enabled: true
 
 # Registry deployment
 registry_enabled: false

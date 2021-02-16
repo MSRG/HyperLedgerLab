@@ -20,7 +20,7 @@ test:
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 200
+        tps: 100
     callback: ../inventory/blockchain/benchmark/drm/common.js
 
   - label: readBlockchain
