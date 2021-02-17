@@ -17,7 +17,6 @@ console.log('myArgs: ', myArgs);
 switch (myArgs[0]) {
 case '0':
         //uniform
-        //var transactionDistribution = [20, 20, 20, 20, 20, 0, 0, 0]
         var transactionDistribution = [50, 0, 50, 0, 0, 0, 0, 0]
         var stream = fs.createWriteStream("/home/ubuntu/HyperLedgerLab/inventory/blockchain/Generator/uniform_generatedtransactions.txt", {flags:'a'});
         break;
@@ -72,7 +71,6 @@ default:
                 let updateFunctions = [6, 7, 8]
                 let deleteFunctions = [9, 10, 11]
                 //let rangeFunctions = [12, 13, 14]
-                let rangeFunctions = [12]
                 let doNothingFunctions = [0, 0, 0]
                 let couchDBFunctions = [15, 16, 17]
                 let mixedFunctions = [0, 0, 0]
@@ -124,9 +122,7 @@ default:
                                         let key = keyfunc()
                                         while(deletedKeys.indexOf(key) != -1){
                                                 key = keyfunc()
-                                                //console.log('r')
                                         }
-                                        //console.log('outr')
                                         argments[i] = key.toString()
                                 }
                                 let functionNameIndex = pickedTransaction + 1
@@ -135,9 +131,6 @@ default:
                                 let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
 
                                 stream.write(args + "\n");
-                                //fs.writeFile('generatedtransactions.txt', args, function (err) {
-                                //      if (err) return console.log(err);
-                                //  });
                         }
                         //insert
                         if (transactionType == 1) {
@@ -149,9 +142,7 @@ default:
                                         let key = keyfunc()
                                         while(deletedKeys.indexOf(key) != -1){
                                                 key = keyfunc()
-                                                //console.log('i')
                                         }
-                                        //console.log('outi')
                                         argments[i] = key.toString()
                                         argments[i+1] = (key * constantMultiplier).toString()
                                 }
@@ -171,9 +162,7 @@ default:
                                         let key = keyfunc()
                                         while(deletedKeys.indexOf(key) != -1){
                                                 key = keyfunc()
-                                                //console.log('u')
                                         }
-                                        //console.log('outu')
                                         argments[i] = key.toString()
                                         argments[i+1] = constantMultiplier.toString()
                                 }
@@ -212,9 +201,7 @@ default:
                                         let key = keyfunc()
                                         while(deletedKeys.indexOf(key) != -1){
                                                 key = keyfunc()
-                                                //console.log('ran1')
                                         }
-                                        //console.log('outran1')
 
                                         argments[i] = key.toString()
                                         let range = deck.pick(rangeLength)
@@ -224,9 +211,7 @@ default:
                                         else {
                                                 while((deletedKeys.indexOf(key + range) != -1) && (range > 0)){
                                                         range = range - 1
-                                                        //console.log('ran2')
                                                 }
-                                                //console.log('outran2')
 
                                                 argments[i+1] = (key + range).toString()
                                         }
@@ -259,10 +244,4 @@ default:
 
                 }
                 stream.end();
-//              return totalTransactions;
-
-        //}
-//}
-
-//module.exports = TransactionGenerator;
 

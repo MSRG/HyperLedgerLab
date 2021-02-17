@@ -107,19 +107,19 @@
     * This script includes the fabric_setup, get_metrics and fabric_delete as well as chaincode specific scripts that is required for setting up the workload.
 
 9. Using the chaincode and workload generator
+    * Edit inventory/blockchain/Generator/chaincodeGenerator.go to give different input parameters and generate corresponding chaincode.
     * `cd inventory/blockchain/Generator/`
     * `go run chaincodeGenerator.go`
-    * edit inventory/blockchain/Generator/chaincodeGenerator.go to give different input parameters and generate corresponding chaincode.
-    * `cd inventory/blockchain/Generator/`
-    * `node transactiongenerator.js`
     * Edit inventory/blockchain/Generator/transactiongenerator.js to give different input parameters and generate corresponding workloads.
+    * `cd inventory/blockchain/Generator/`
+    * `node transactiongenerator.js <workload_type>`
 
 10. Using the generated chaincode and workload with caliper
     * inventory/blockchain/benchmark/generator/ contains the caliper benchmarking files suitable for generated workloads. 
     * Modify these files based on the type of generated workloads.
-    * The generated workloads are copied to inventory/blockchain/benchmark/generator/workload
-    * Use the script inventory/blockchain/benchmark/generator/workload/splitfiles.sh to split large workloads.
-    * The generated chaincode is copied to inventory/blockchain/src/contract/generator/
+    * If you are using the existing files then run command: `cp editedcaliperfiles/local-client.js caliper/src/comm/client/`
+    * Use the script inventory/blockchain/benchmark/generator/workload/splitfiles.sh to copy the generated workloads to inventory/blockchain/benchmark/generator/workload and split large workloads.
+    * The generated chaincode should be copied to inventory/blockchain/src/contract/generator/
     * To run the benchmark with generated chaincode and workload: `./scripts/gen_run_benchmark.sh <chaincode>`
 
 11. Collecting additional metrics from the blockchain
