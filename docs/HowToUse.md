@@ -117,13 +117,18 @@
 10. Using the generated chaincode and workload with caliper
     * inventory/blockchain/benchmark/generator/ contains the caliper benchmarking files suitable for generated workloads. 
     * Modify these files based on the type of generated workloads.
-    * If you are using the existing files then run command: `cp editedcaliperfiles/local-client.js caliper/src/comm/client/`
+    * If you are using the existing files then run command: `cp caliper_extensions/local-client.js caliper/src/comm/client/`
     * Use the script inventory/blockchain/benchmark/generator/workload/splitfiles.sh to copy the generated workloads to inventory/blockchain/benchmark/generator/workload and split large workloads.
     * The generated chaincode should be copied to inventory/blockchain/src/contract/generator/
     * To run the benchmark with generated chaincode and workload: `./scripts/gen_run_benchmark.sh <chaincode>`
 
 11. Collecting additional metrics from the blockchain
-    * You can extend the caliper scripts to collect additional metrics regarding transaction failures by replacing the specific files in the caliper/ folder with the corresponding files in the editedcaliperfiles/ folder.
+    * You can extend the caliper scripts to collect additional metrics regarding transaction failures by replacing the specific files in the caliper/ folder with the corresponding files in the caliper_extensions/ folder.
+
+12. Integrating other Fabric versions or extensions
+    * To integrate other Fabric versions or extensions copy the new fabric binaries into hyperledger/roles/network_config/files/bin_<version> and add the new fabric docker image names to inventory/blockchain/group_vars/blockchain-setup.yaml
+    * Based on the type of Fabric extension other variable might also need to be changed in the yaml files.
+    * The folder fabric_versions/ contains the binaries and specific file modifications required to integrate three different fabric extensions (fabric++, fabricsharp and streamchain). These files can be directly replaced in the corresponding folders to integrate and benchmark these fabric extensions.
         
 Fabric-Metrics Workflow:
 -----
@@ -182,7 +187,7 @@ Benchmarking Options
 Extending Caliper
 -----
 
-* Use the files in the folder HyperLedgerLab/editedcaliperfiles to extend the metrics collection to include transaction failures and to use the workload generator with caliper.
+* Use the files in the folder HyperLedgerLab/caliper_extensions to extend the metrics collection to include transaction failures and to use the workload generator with caliper.
 
 Integrating Fabric++, Streamchain and FabricSharp with HyperledgerLab
 -----
