@@ -184,16 +184,6 @@ Benchmarking Options
 * For example: [fabcar/config.yaml](../inventory/blockchain/benchmark/fabcar/config.yaml)
 * See Caliper [documentation for configuration options](https://hyperledger.github.io/caliper/docs/2_Architecture.html#configuration-file)
 
-Extending Caliper
------
-
-* Use the files in the folder HyperLedgerLab/caliper_extensions to extend the metrics collection to include transaction failures and to use the workload generator with caliper.
-
-Integrating Fabric++, Streamchain and FabricSharp with HyperledgerLab
------
-
-* Replace the original files with the corresponding files in the folders fabricplus_binaries, streamchain_binaries and fabricsharp_binaries
-
 Common Errors
 -----
 1. `Error: got unexpected status: SERVICE_UNAVAILABLE -- backing Kafka cluster has not completed booting; try again later`
