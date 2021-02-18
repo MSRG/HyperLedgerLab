@@ -1,9 +1,16 @@
-node transactiongenerator.js 0
-node transactiongenerator.js 1
-node transactiongenerator.js 2
-node transactiongenerator.js 3
-node transactiongenerator.js 4
-node transactiongenerator.js 5
-node transactiongenerator.js 6
-node transactiongenerator.js 7
-
+npm i zipfian-integer
+npm i random-picker
+npm i deck
+#node transactiongenerator.js 0
+#node transactiongenerator.js 1
+#node transactiongenerator.js 2
+#node transactiongenerator.js 3
+#node transactiongenerator.js 4
+#node transactiongenerator.js 5
+#node transactiongenerator.js 6
+#node transactiongenerator.js 7
+node transactiongenerator.js 8
+#node transactiongenerator.js 9
+#node transactiongenerator.js 10
+#node transactiongenerator.js 11
+#node transactiongenerator.js 12

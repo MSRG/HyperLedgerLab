@@ -27,7 +27,7 @@ fabricCcp:
     timeout:
         chaincodeInstantiate: 600000
         chaincodeInstantiateEvent: 100000
-        invokeOrQuery: 60000
+        invokeOrQuery: 600000
     loadBalancing: tx
     overwriteGopath: false
     latencyThreshold: 1.0

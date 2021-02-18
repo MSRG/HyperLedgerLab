@@ -38,6 +38,8 @@ fi
 #usecase=(electronic-health-record e-voting supplychain drm)
 #./scripts/run_benchmark.sh ${usecase[${i}]} > ${x}_${ExpNum}log.txt
 #./scripts/run_benchmark.sh electronic-health-record > ${x}_${ExpNum}log.txt
+./scripts/fabric_delete.sh
+sleep 120s
 ./scripts/gen_run_benchmark.sh generator  > ${x}_${ExpNum}log.txt
 
 
@@ -54,6 +56,7 @@ printf "%.2f\t" $((l * m)) >> "${x}metricslog.csv"
 totsucc=$(grep 'Total Tx Succeeds' ${x}_${ExpNum}log.txt | awk '{print $9}')
 init=$(grep '| 1    | initLedger' ${x}_${ExpNum}log.txt | awk '{print $6}')
 succ=$((totsucc - init))
+#succ=$((totsucc))
 printf "%.2f\t" $succ >> "${x}metricslog.csv"
 #SuccTxCal
 printf "%.2f\t" $(grep '| 2    | common' ${x}_${ExpNum}log.txt | awk '{print $6}') >> "${x}metricslog.csv"
@@ -61,6 +64,7 @@ printf "%.2f\t" $(grep '| 2    | common' ${x}_${ExpNum}log.txt | awk '{print $6}
 totfail=$(grep 'Total Tx Failures =' ${x}_${ExpNum}log.txt | awk '{print $9}')
 init=$(grep '| 1    | initLedger' ${x}_${ExpNum}log.txt | awk '{print $8}')
 fail=$((totfail - init))
+#fail=$((totfail))
 printf "%.2f\t" $fail >> "${x}metricslog.csv"
 #FailTxCal
 printf "%.2f\t" $(grep '| 2    | common' ${x}_${ExpNum}log.txt | awk '{print $8}') >> "${x}metricslog.csv"
@@ -139,6 +143,7 @@ printf "%.2f\t" $(grep '| 2    | common' ${x}_${ExpNum}log.txt | awk '{print $24
 printf "%.2f" "$(grep -o 'ordering_broadcast_timeout' ${x}_${ExpNum}log.txt | wc -l)" >> "${x}metricslog.csv"
 
 #Delete temporary files
+cp nohup.out ${x}__nohup.out
 true > nohup.out
 rm /home/ubuntu/HyperLedgerLab/report*
 rm -rf /home/ubuntu/.ansible/tmp/
@@ -168,7 +173,7 @@ x=0
 #### CONTROL VARIABLES ####
 #0 Experiment repeated how many times
 #7 and 8 NOT COMPLETED 
-for h in 3 
+for h in 1 
 do
 x=${h}
 ExpNum=0
@@ -188,10 +193,13 @@ do
   #usecase=(ehr dv scm drm)
  # cp /home/ubuntu/HyperLedgerLab/inventory/blockchain/group_vars/${usecase[${i}]}.yaml /home/ubuntu/HyperLedgerLab/inventory/blockchain/group_vars/blockchain-setup.yaml
 #2.WorkloadType values: 0==Uniform, 1==ReadHeavy, 2==WriteHeavy
-for j in 0 1 2 3 4
+for j in 0 1 2
 do
- workload=(wreadheavy winsertheavy wupdateheavy wrangeheavy wdeleteheavy)
- sed -i "55s/.*/                filearray = fs.readFileSync(__dirname + \'\/workload\/${workload[${j}]}\' + zeroPad(clientIdx, 2)).toString().split(\"\\\n\");/" inventory/blockchain/benchmark/generator/common.js
+ #workload=(wreadheavy winsertheavy wupdateheavy wrangeheavy wdeleteheavy)
+ #sed -i "55s/.*/                filearray = fs.readFileSync(__dirname + \'\/workload\/${workload[${j}]}\' + zeroPad(clientIdx, 2)).toString().split(\"\\\n\");/" inventory/blockchain/benchmark/generator/common.js
+ workload=(wuniform)
+ zkew=(skew0 skew1 skew2)
+ sed -i "55s/.*/                filearray = fs.readFileSync(__dirname + \'\/workload\/${zkew[${j}]}\/${workload[0]}\' + zeroPad(clientIdx, 2)).toString().split(\"\\\n\");/" inventory/blockchain/benchmark/generator/common.js
  #sed -i "69s/.*/                args = nthLine.readSync(__dirname + \'\/${workload[${j}]}_generatedtransactions.txt\', fileIndex);/" inventory/blockchain/benchmark/generator/common.js
  #sed -i "25s/.*/        let chaincodeType = ${j};/" inventory/blockchain/benchmark/generator/getParameters.js
 #3.RWProbability
@@ -199,7 +207,7 @@ for k in 80
 do
  sed -i "29s/.*/        let readWriteProb = ${k};/" inventory/blockchain/benchmark/generator/getParameters.js
 #4.tps
-for l in 100
+for l in 50
 do
  sed -i "23s/.*/        tps: ${l}/" /home/ubuntu/HyperLedgerLab/inventory/blockchain/benchmark/generator/config.yaml
 #5.txduration
@@ -211,11 +219,11 @@ for n in 100
 do
  sed -i "s/^fabric_batchsize: .*$/fabric_batchsize: [\"${n}\", \"2 MB\", \"2 MB\"]/" /home/ubuntu/HyperLedgerLab/inventory/blockchain/group_vars/blockchain-setup.yaml
 #7.NumOfOrgs
-for o in 2
+for o in 8
 do
  sed -i "s/^fabric_num_orgs: .*$/fabric_num_orgs: ${o}/" /home/ubuntu/HyperLedgerLab/inventory/blockchain/group_vars/blockchain-setup.yaml
 #8.PeersPerOrg
-for p in 2
+for p in 4
 do
  sed -i "s/^fabric_peers_per_org: .*$/fabric_peers_per_org: ${p}/" /home/ubuntu/HyperLedgerLab/inventory/blockchain/group_vars/blockchain-setup.yaml
 #9.EndorsePolicy 1ofeachOrg = 0, 0org&Anyotherorg, 1-N/2orgs&N/2-Norgs
@@ -237,7 +245,7 @@ do
 if [ $s -eq 0 ]
 then
  #12.ZipSkew 0==uniform, Negative==HigherValues, Positive==LowerValues
- for t in 1
+ for t in 2
  do
   sed -i "11s/.*/        let zipfianSkew = ${t};/" inventory/blockchain/benchmark/generator/getParameters.js
 

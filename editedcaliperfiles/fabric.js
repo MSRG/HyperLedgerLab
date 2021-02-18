@@ -44,7 +44,7 @@ let totalEndorsementFailures = 0;
 let totalPhantomReads = 0;
 let totalOtherFailures = 0;
 let oneclient = 0
-
+//let commonBlockIndex = 0;
 
 //const sortOp = new TopologicalSort();
 //const nodes = new Map();
@@ -1073,7 +1073,7 @@ class Fabric extends BlockchainInterface {
                     logger.info(`${chaincodeInfo.id}@${chaincodeInfo.version} is already instantiated in ${channel}`);
                     continue;
                 }
-
+		
                 chaincodeInstantiated = true;
 
                 let txId = admin.newTransactionID(true);
@@ -1990,8 +1990,14 @@ class Fabric extends BlockchainInterface {
     //Count all transaction failures
     getTransactionFailures(blockchain, blockchainheight) {
 
+	 //logger.info("getTransactionFailures-commonBlockIndex:");
+         //logger.info(commonBlockIndex);
+
+
+	//for (let blockindex = 0; blockindex < (blockchainheight-commonBlockIndex); blockindex++) {
 	for (let blockindex = 0; blockindex < blockchainheight; blockindex++) {
-		
+		logger.info("getTransactionFailures-blockindex:");
+                logger.info(blockindex);	
 		let blocksize = blockchain[blockindex].data.data.length;
 		let txstatus = blockchain[blockindex].metadata.metadata[2];
 		for (let txindex = 0; txindex < blocksize; txindex++) {
@@ -2020,7 +2026,7 @@ class Fabric extends BlockchainInterface {
 			}
 
 		}
-		this.getconflictGraphCycles(blockchain[blockindex], blocksize);
+		//this.getconflictGraphCycles(blockchain[blockindex], blocksize);
 
 	}
 
@@ -2134,6 +2140,32 @@ class Fabric extends BlockchainInterface {
             }
         }
 
+
+	//if (name == 'initLedgerGen' && clientIdx == 0) {
+/*	if (name == 'initLedgerGen') {
+		logger.info('Inside IF initLedgerGen fabric-cpp.js');
+
+                let channelObj = null;
+                for (let channel of this.networkUtil.getChannels()) {
+                        for (let org of this.networkUtil.getOrganizationsOfChannel(channel)) {
+                                let admin = this.adminProfiles.get(org);
+                                channelObj = admin.getChannel(channel, true);
+                                //logger.info(JSON.stringify(channelObject));
+                                //logger.info(JSON.stringify(blockchaininfo));
+                        }
+                }
+                let blockchaininfo = await channelObj.queryInfo();
+		let blockchainheight = blockchaininfo.height;
+                blockchainheight = blockchainheight|0;
+		if (blockchainheight > commonBlockIndex) {
+
+			commonBlockIndex = blockchainheight;
+		}
+                //commonBlockIndex = blockchainheight;
+		logger.info("initLedgerGen commonBlockIndex:");
+                logger.info(commonBlockIndex);
+	}*/
+
 	if (name == 'readBlockchain' && clientIdx == 0) {
 	//if (name == 'readBlockchain' && oneclient == 1) {
 		//oneclient = 1
@@ -2144,17 +2176,20 @@ class Fabric extends BlockchainInterface {
                 	for (let org of this.networkUtil.getOrganizationsOfChannel(channel)) {
                     		let admin = this.adminProfiles.get(org);
 	                        channelObj = admin.getChannel(channel, true);
-				//console.log(JSON.stringify(channelObject));
-				//console.log(JSON.stringify(blockchaininfo));
+				//logger.info(JSON.stringify(channelObject));
+				//logger.info(JSON.stringify(blockchaininfo));
 			}
 		}
 		let blockchaininfo = await channelObj.queryInfo();
 		let blockchainheight = blockchaininfo.height;
 		blockchainheight = blockchainheight|0;
-		console.log("BlockchainHeight:");
-		console.log(blockchainheight);
+		logger.info("BlockchainHeight:");
+		logger.info(blockchainheight);
 		let blocksize = 0;
 		const block = [];
+		//logger.info("readBlockchain-commonBlockIndex:");
+                //logger.info(commonBlockIndex);
+                //for (let index = commonBlockIndex; index < blockchainheight; index++) {
                 for (let index = 0; index < blockchainheight; index++) {
                     block.push(await channelObj.queryBlock(index));
                 }
@@ -2368,20 +2403,20 @@ class Fabric extends BlockchainInterface {
                     logger.info('TxFailuresInfo: Total Failures in Block ' + index + ' = ' + blockFailures);
 		    //if (index == 5) {
 					//logger.info('GRAPH JSON');
-                                        //console.log(graphlib.json.write(g));
-					console.log('GRAPH CYCLES IN BLOCK', index, ': ', graphlib.alg.findCycles(g));
+                                        //logger.info(graphlib.json.write(g));
+					logger.info('GRAPH CYCLES IN BLOCK', index, ': ', graphlib.alg.findCycles(g));
 					totalirresolvableFailures = totalirresolvableFailures + graphlib.alg.findCycles(g).length;
-					console.log('Number of CYCLES IN BLOCK', index, ': ', graphlib.alg.findCycles(g).length);
-					console.log(graphlib.alg.findCycles(g));
-					console.log('GRAPH IN BLOCK', index, ': ', 'Is ACYCLIC: ', graphlib.alg.isAcyclic(g));
-					console.log('NodeNumber: ', g.nodeCount());
-					console.log('EdgeNumber: ', g.edgeCount());
+					logger.info('Number of CYCLES IN BLOCK', index, ': ', graphlib.alg.findCycles(g).length);
+					logger.info(graphlib.alg.findCycles(g));
+					logger.info('GRAPH IN BLOCK', index, ': ', 'Is ACYCLIC: ', graphlib.alg.isAcyclic(g));
+					logger.info('NodeNumber: ', g.nodeCount());
+					logger.info('EdgeNumber: ', g.edgeCount());
 					if (index == 5) {
-						console.log('Edges: ', g.edges());
+						logger.info('Edges: ', g.edges());
 					}
 					//logger.info('GRAPH TOPSORT');
 					//if (graphlib.alg.isAcyclic(g)) {
-					//	console.log(graphlib.alg.topsort(g));
+					//	logger.info(graphlib.alg.topsort(g));
 					//}
 
 					for (let i = 0; i < g.nodeCount(); i++) {
@@ -2392,11 +2427,11 @@ class Fabric extends BlockchainInterface {
                                         logger.info(sortOp);
                                         logger.info(JSON.stringify(sortOp));
                                         logger.info(JSON.stringify(sortOp.nodes));
-					console.log(sortOp.nodes);
-					console.log(sortOp.nodes);
+					logger.info(sortOp.nodes);
+					logger.info(sortOp.nodes);
                                         logger.info('TOPSORTGRAPH');
-                                        console.log(sortOp.sort());
-                                        console.log(JSON.stringify(sortOp.sort()));
+                                        logger.info(sortOp.sort());
+                                        logger.info(JSON.stringify(sortOp.sort()));
                                         logger.info(sortOp.sort());
                                         logger.info(JSON.stringify(sortOp.sort()));
                               //  }

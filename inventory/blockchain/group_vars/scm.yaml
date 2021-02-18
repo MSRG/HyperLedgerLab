@@ -51,6 +51,12 @@ channels:                   # List of channel objects
   - name: "mychannel"
     created: false          # Update this value to true if channel is already created
     chaincodes:
+#      - id: generator
+#        contractID: generator               # NOTE: This should be unique for chaincodes across channels
+#        path: "contract/generator"      # NOTE: Path to Directory where chaincode file is located
+#        metadataPath: ""
+#        language: golang
+#        version: v1
 #      - id: fabcar
 #        contractID: fabcar               # NOTE: This should be unique for chaincodes across channels
 #        path: "contract/fabcar/go/"      # NOTE: Path to Directory where chaincode file is located

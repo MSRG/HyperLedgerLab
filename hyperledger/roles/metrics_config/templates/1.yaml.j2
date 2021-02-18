@@ -73,15 +73,18 @@ channels:
               mspId: Org{{ org_num }}MSP
 {% endfor %}
         policy:
-	  2-of: [
-      	    { signed-by: 0},
-	    {% set number = fabric_num_orgs | int %}
-	    {% set looprange = (number-1) %}
-	    {% for i in range(looprange) %}
+          2-of: [
+            { signed-by: 0},
+            { 1-of: [
+            {% set number = fabric_num_orgs | int %}
+            {% set looprange = (number-1) %}
+            {% for i in range(looprange) %}
             {% set org_num = loop.index|string %}
-            { 1-of: [{ signed-by: {{ org_num }}}]}
-	    {% endfor %}
-          ] 
+                { signed-by: {{ org_num }}},
+            {% endfor %}
+                    ]
+            }
+                ]
 {% endfor %}
 {% endfor %}
 

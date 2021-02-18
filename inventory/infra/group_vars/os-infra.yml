@@ -9,6 +9,8 @@ os_project_domain_name: "default"
 # Cluster instances 3 control nodes, 3 worker nodes, 1 lb/dns node and 1 nfs
 k8s_ctl_instances: ["k8sctl1", "k8sctl2", "k8sctl3"]
 k8s_wrk_instances: ["k8swrk1", "k8swrk2", "k8swrk3"]
+#k8s_wrk_instances: ["xk8swrk1", "xk8swrk2", "xk8swrk3", "xk8swrk4", "xk8swrk5", "xk8swrk6", "xk8swrk7", "xk8swrk8", "xk8swrk9", "xk8swrk10", "xk8swrk11", "xk8swrk12", "xk8swrk13", "xk8swrk14", "xk8swrk15", "xk8swrk16", "xk8swrk17", "xk8swrk18", "xk8swrk19", "xk8swrk20", "xk8swrk21", "xk8swrk22", "xk8swrk23", "xk8swrk24", "xk8swrk25", "xk8swrk26", "xk8swrk27", "xk8swrk28", "xk8swrk29", "xk8swrk30", "xk8swrk31", "xk8swrk32"] 
+#"xk8swrk33", "xk8swrk34", "xk8swrk35", "xk8swrk36", "xk8swrk37", "xk8swrk38", "xk8swrk39", "xk8swrk40", "xk8swrk41", "xk8swrk42", "xk8swrk43", "xk8swrk44", "xk8swrk45", "xk8swrk46", "xk8swrk47", "xk8swrk48", "xk8swrk49", "xk8swrk50", "xk8swrk51", "xk8swrk52", "xk8swrk53", "xk8swrk54", "xk8swrk55", "xk8swrk56", "xk8swrk57", "xk8swrk58", "xk8swrk59", "xk8swrk60", "xk8swrk61", "xk8swrk62", "xk8swrk63", "xk8swrk64"]
 k8s_lb_instance: "k8slb"
 k8s_nfs_instance: "k8snfs"
 k8s_instance_flavour: "m1.medium"
@@ -16,8 +18,8 @@ k8s_ctl_instance_flavour: "m1.large"                  # Size of k8s control node
 k8s_wrk_instance_flavour: "m1.large"                  # Size of k8s worker nodes
 k8s_instance_image: "kvm-ubuntu-xenial"
 k8s_instance_availability_zone: "kvm-ssd"
-k8s_instance_security_groups: ["kube-cluster"]        # Security groups to assign to k8s worker and control nodes
-k8s_instance_dns_security_groups: ["kube-cluster", "dns", "load-balancer"]    # Security groups to assign to DNS node
+k8s_instance_security_groups: ["default"]        # Security groups to assign to k8s worker and control nodes
+k8s_instance_dns_security_groups: ["default"]    # Security groups to assign to DNS node
 k8s_instance_nfs_security_groups: ["default"]         # Security Groups to assign to NFS node. default allows everything
 k8s_instance_image_key: "default-image-key"           # Key to use when creating an instance. Name should match the key in "Key-pairs" in openstack account
 

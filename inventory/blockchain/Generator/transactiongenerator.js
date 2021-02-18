@@ -55,6 +55,31 @@ case '7':
         var transactionDistribution = [5, 5, 5, 5, 0, 0, 80, 0]
         var stream = fs.createWriteStream("/home/ubuntu/HyperLedgerLab/inventory/blockchain/Generator/couchdbheavy_generatedtransactions.txt", {flags:'a'});
         break;
+case '8':
+        //norangeuniform
+        var transactionDistribution = [25, 25, 25, 25, 0, 0, 0, 0]
+        var stream = fs.createWriteStream("/home/ubuntu/HyperLedgerLab/inventory/blockchain/Generator/norangeuniform_generatedtransactions.txt", {flags:'a'});
+        break;
+case '9':
+        //norangereadheavy
+        var transactionDistribution = [80, 6.67, 6.67, 6.67, 0, 0, 0, 0]
+        var stream = fs.createWriteStream("/home/ubuntu/HyperLedgerLab/inventory/blockchain/Generator/norangereadheavy_generatedtransactions.txt", {flags:'a'});
+        break;
+case '10':
+        //norangeinsertheavy
+        var transactionDistribution = [6.67, 80, 6.67, 6.67, 0, 0, 0, 0]
+        var stream = fs.createWriteStream("/home/ubuntu/HyperLedgerLab/inventory/blockchain/Generator/norangeinsertheavy_generatedtransactions.txt", {flags:'a'});
+        break;
+case '11':
+        //norangeupdateheavy
+        var transactionDistribution = [6.67, 6.67, 80, 6.67, 0, 0, 0, 0]
+        var stream = fs.createWriteStream("/home/ubuntu/HyperLedgerLab/inventory/blockchain/Generator/norangeupdateheavy_generatedtransactions.txt", {flags:'a'});
+        break;
+case '12':
+        //norangedeleteheavy
+        var transactionDistribution = [6.67, 6.67, 6.67, 80, 0, 0, 0, 0]
+        var stream = fs.createWriteStream("/home/ubuntu/HyperLedgerLab/inventory/blockchain/Generator/norangedeleteheavy_generatedtransactions.txt", {flags:'a'});
+        break;
 default:
         //uniform
         var transactionDistribution = [20, 20, 20, 20, 20, 0, 0, 0]
@@ -62,15 +87,16 @@ default:
 }
 
 
+
                 let totalTransactions = 144000  //duration * tps
-                let keyDisttribution = 1 //Zipfian skew 0: uniform 1, -1 skewed
+                let keyDisttribution = 2 //Zipfian skew 0: uniform 1, -1 skewed
 
                 //Index in funcdef
 /*              let readFunctions = [0, 1, 2]
                 let insertFunctions = [3, 4, 5]
                 let updateFunctions = [6, 7, 8]
                 let deleteFunctions = [9, 10, 11]
-                //let rangeFunctions = [12, 13, 14]
+                let rangeFunctions = [12, 13, 14]
                 let doNothingFunctions = [0, 0, 0]
                 let couchDBFunctions = [15, 16, 17]
                 let mixedFunctions = [0, 0, 0]
