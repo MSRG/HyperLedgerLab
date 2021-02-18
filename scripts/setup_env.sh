@@ -48,7 +48,7 @@ else
         set -x
         mkdir venv
         sudo apt update
-        #sudo apt-get install --yes python-pip
+        sudo apt-get install --yes python
 
         curl -O https://bootstrap.pypa.io/2.7/get-pip.py
         python get-pip.py
