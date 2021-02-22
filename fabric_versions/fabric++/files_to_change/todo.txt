@@ -21,17 +21,3 @@ inventory/blockchain/group_vars/blockchain-setup.yaml
     orderer: "jeetachacko/ankur-orderer:latest"
     tools: "jeetachacko/ankur-tools:latest"
 
-
-git clone --recursive
-
-cp editedcaliperfiles/bench-flow.js caliper/src/comm/
-cp editedcaliperfiles/fabric.js caliper/src/adapters/fabric-ccp/
-
-npm i zipfian-integer
-npm i @dagrejs/graphlib
-npm i deck
-npm i random-picker
-
-sudo apt-get install -y python-pandas
-sudo pip install -U matplotlib
-sudo apt-get install -y python-numpy

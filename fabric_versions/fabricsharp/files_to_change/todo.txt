@@ -1,64 +1,20 @@
-BUILDING FABRIC SHARP -- Sigmod
-git clone --single-branch --branch sigmod20 https://github.com/ooibc88/FabricSharp.git
-
-No Nexus support 
-
-MakeFile:
-Comment Nexus repo and change chaintool url to:
-CHAINTOOL_URL ?= https://hyperledger.jfrog.io/hyperledger/fabric-maven/org/hyperledger/fabric-chaintool/$(CHAINTOOL_RELEASE)/fabric-chaintool-$(CHAINTOOL_RELEASE).jar
-
-Copy vendor folder contents from master branch
-
-make all binaries and dockers
-
-TAG AND PUSH ALL DOCKERS  peer, orderer, ccenv, tools
-docker login --username=jeetachacko
-docker tag hyperledger/fabric-ccenv hyperledger/fabric-ccenv:forkbase jeetachacko/fabricsharpccenv:latest
-docker push jeetachacko/fabricsharpccenv:latest
-
-HyperledgerLab
-
-git clone --recursive https://github.com/MSRG/HyperLedgerLab.git
-
-NO COUCHDB
-NO RANGE
-
-hyperledger/roles/metrics_config/templates/fabric_ccp_network.yaml.j2
-c    ENDORSEMENT POLICY --- 1-of
-
-Copy editted
-comment queryInstantiate
-        vi caliper/src/adapters/fabric/fabric.js
-        vi caliper/src/adapters/fabric-ccp/fabric.js
-        Couldn't query whether
-        this.configVerifyReadWriteSets = false
+comment queryInstantiate in caliper/src/adapters/fabric-ccp/fabric.js
 
 hyperledger/roles/network_config/defaults/main.yaml
          peer: "jeetachacko/fabricsharppeer:latest"  
           orderer: "jeetachacko/fabricsharporderer:latest"
           tools: "jeetachacko/fabricsharptools:latest"
         
-
 hyperledger/roles/network_config/files/bin_1.4.0/get-docker-images.sh
-        # set of Hyperledger Fabric images
-#FABRIC_IMAGES=(fabric-peer fabric-orderer fabric-ccenv fabric-tools)
-#FABRIC_IMAGES=(fabric-tools)
-
-#for image in ${FABRIC_IMAGES[@]}; do
-#  echo "Pulling ${DOCKER_NS}/$image:${ARCH}-${VERSION}"
-#  docker pull ${DOCKER_NS}/$image:${ARCH}-${VERSION}
-#done
-
-docker pull jeetachacko/fabricsharpccenv:latest
-docker pull jeetachacko/fabricsharppeer:latest
-docker pull jeetachacko/fabricsharporderer:latest
-docker pull jeetachacko/fabricsharptools:latest
+	docker pull jeetachacko/fabricsharpccenv:latest
+	docker pull jeetachacko/fabricsharppeer:latest
+	docker pull jeetachacko/fabricsharporderer:latest
+	docker pull jeetachacko/fabricsharptools:latest
 
 inventory/blockchain/group_vars/blockchain-setup.yaml
           peer: "jeetachacko/fabricsharppeer:latest"  
           orderer: "jeetachacko/fabricsharporderer:latest"
           tools: "jeetachacko/fabricsharptools:latest"
-
         
 hyperledger/roles/network_config/templates/fabric_template_pod_peer.yaml.j2
         - name: CORE_LEDGER_STATE_STATEDATABASE
@@ -73,6 +29,3 @@ hyperledger/roles/network_config/templates/fabric_template_pod_orderer.yaml.j2
           value: "10"
         - name: STORE_PATH
           value: "/tmp/mvs"
-
-inventory/blockchain/fabric-config/core.yaml ---- NO DIfference
-    builder: jeetachacko/fabricsharpccenv:latest

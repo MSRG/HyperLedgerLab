@@ -1,69 +1,49 @@
 hyperledger/roles/network_config/defaults/main.yaml
-peer: "jeetachacko/streamchain-peer:latest"
-tools: "jeetachacko/streamchain-tools:latest"
-orderer: "jeetachacko/streamchain-orderer:latest"
-kafka: "jeetachacko/streamchain-kafka:latest"
+	peer: "jeetachacko/streamchain-peer:latest"
+	tools: "jeetachacko/streamchain-tools:latest"
+	orderer: "jeetachacko/streamchain-orderer:latest"
+	kafka: "jeetachacko/streamchain-kafka:latest"
 
-hyperledger/roles/network_config/files/bin_1.4.0/
-    Add binaries -- copy streamchain_binaries/*
 hyperledger/roles/network_config/files/bin_1.4.0/get-docker-images.sh
     docker pull
 
 inventory/blockchain/group_vars/blockchain-setup.yaml
-+  peer: "jeetachacko/streamchain-peer:latest"
-+  tools: "jeetachacko/streamchain-tools:latest"
-+  orderer: "jeetachacko/streamchain-orderer:latest"
-+  kafka: "jeetachacko/streamchain-kafka:latest"
+	peer: "jeetachacko/streamchain-peer:latest"
+	tools: "jeetachacko/streamchain-tools:latest"
+	orderer: "jeetachacko/streamchain-orderer:latest"
+	kafka: "jeetachacko/streamchain-kafka:latest"
 
 hyperledger/roles/network_config/templates/fabric_template_pod_orderer.yaml.j2
           - mountPath: /var/hyperledger/orderer/orderer.genesis.block
             name: orderer-crypto-pv
             subPath: genesis.block
-+#         - mountPath: /var/hyperledger/production/
-+#           name: ram-tmp-store
+          - mountPath: /var/hyperledger/production/
+            name: ram-tmp-store
        volumes:
         - name: orderer-crypto-pv
           persistentVolumeClaim:
               claimName: $pvName
-+#       - name: ram-tmp-store
-+#         emptyDir:
-+#           medium: Memory
+        - name: ram-tmp-store
+          emptyDir:
+            medium: Memory
 
 /hyperledger/roles/network_config/templates/fabric_template_pod_peer.yaml.j2
           - mountPath: /etc/hyperledger/fabric/tls
             name: org-crypto-pv
             subPath: $tlsPath
-+#         - mountPath: /var/hyperledger/production
-+#           name: ram-tmp-store
-+#         - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/stateLeveldb
-+#           name: ram-tmp-store-new
+          - mountPath: /var/hyperledger/production
+            name: ram-tmp-store
+          - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/stateLeveldb
+            name: ram-tmp-store-new
 
        volumes:
         - name: org-crypto-pv
-@@ -125,6 +129,12 @@ spec:
               claimName: $pvName
         - name: dind-graph-storage
           emptyDir: {}
-+#       - name: ram-tmp-store
-+#         emptyDir:
-+#           medium: Memory
-+#       - name: ram-tmp-store-new
-+#         emptyDir:
-+#           medium: Memory
-
-BLOCKSIZE 1
-
-
-git clone --recursive
-
-cp editedcaliperfiles/bench-flow.js caliper/src/comm/
-cp editedcaliperfiles/fabric.js caliper/src/adapters/fabric-ccp/
-
-npm i zipfian-integer
-npm i @dagrejs/graphlib
-npm i deck
-npm i random-picker
-
-sudo apt-get install -y python-pandas
-sudo pip install -U matplotlib
-sudo apt-get install -y python-numpy
+        - name: ram-tmp-store
+          emptyDir:
+            medium: Memory
+        - name: ram-tmp-store-new
+          emptyDir:
+            medium: Memory
