@@ -30,9 +30,11 @@ then
         sudo apt-get remove nodejs npm
         sudo apt-get update
         sudo apt-get upgrade
+        sudo apt-get install build-essential
         curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
         sudo apt-get install -y nodejs
-        npm install npm@latest-6
+        npm install npm@latest-5
+        sudo chown -R 1000:1000 "/home/ubuntu/.npm"
         #sudo npm install -g npm
         npm install
         npm run fabric-v1.4-deps
