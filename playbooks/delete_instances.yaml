@@ -32,7 +32,7 @@
 
         - name: Restart networking in CLI
           service:
-            name: networking
+            name: systemd-networkd
             state: restarted
       when: prompt_delete_infra|bool
 

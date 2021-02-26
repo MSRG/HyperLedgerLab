@@ -4,7 +4,7 @@ version: "1.0"
 mutual-tls: false
 
 caliper:
-  blockchain: fabric-ccp
+  blockchain: fabric
 
 info:
   Version: "{{ fabric_version }}"
@@ -56,7 +56,7 @@ channels:
         eventSource: true
 {% endfor %}
 {% endfor %}
-    chaincodes:
+    contracts:
 {% for chaincode in channel["chaincodes"] %}
     - id: {{ chaincode["id"] }}
       contractID: {{ chaincode["contractID"] }}

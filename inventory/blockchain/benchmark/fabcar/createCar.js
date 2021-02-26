@@ -1,67 +1,68 @@
+/*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 'use strict';
 
-module.exports.info = 'Fabcar: Creating cars.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
-let carModels = {
-    "Toyota": ["Prius", "Camry"],
-    "Ford": ["Focus", "EcoSport"],
-    "Hyundai": ["i20", "i30"],
-    "Volkswagon": ["Polo GT", "Golf"],
-    "BMW": ["320", "535i"],
-    "Audi": ["A3", "A5"],
-    "Suzuki": ["Swift", "Vitara"],
-    "Honda": ["Civic", "CR-V"],
-    "Mercedes Benz": ["A180", "AMG GT"],
-    "Tesla": ["Roadster", "Model X"],
-    "Tata": ["Nano", "Range Rover"]
-};
-let carColors = ["White", "Red", "Metallic Black", "Matte Black", "Blue", "Chrome Blue"];
-let carOwners = ["David", "Sahil", "Philip", "Andrea", "Max", "Zack", "Tom", "Sam", "Akash"];
+const colors = ['blue', 'red', 'green', 'yellow', 'black', 'purple', 'white', 'violet', 'indigo', 'brown'];
+const makes = ['Toyota', 'Ford', 'Hyundai', 'Volkswagen', 'Tesla', 'Peugeot', 'Chery', 'Fiat', 'Tata', 'Holden'];
+const models = ['Prius', 'Mustang', 'Tucson', 'Passat', 'S', '205', 'S22L', 'Punto', 'Nano', 'Barina'];
+const owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav', 'Pari', 'Valeria', 'Shotaro'];
 
-let bc, contx;
-module.exports.init = function (blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-    return Promise.resolve();
-};
-
-module.exports.run = function () {
-    txIndex++;
-
-    let myCarMake = Object.keys(carModels)[txIndex % Object.keys(carModels).length];
-    let myCarModels = carModels[myCarMake];
-    let args;
-    if (bc.bcType === 'fabric-ccp') {
-        args = {
-            chaincodeFunction: 'createCar',
-            chaincodeArguments: [
-                'car_' + txIndex.toString() + '_' + process.pid.toString(),
-                myCarMake,
-                myCarModels[Math.floor(Math.random() * myCarModels.length)],
-                carColors[Math.floor(Math.random() * carColors.length)],
-                carOwners[Math.floor(Math.random() * carOwners.length)]
-            ]
-        };
-    } else {
-        args = {
-            transaction_type: "createCar",
-            CarID: 'car_' + txIndex.toString() + '_' + process.pid.toString(),
-            Make: myCarMake,
-            Model: myCarModels[Math.floor(Math.random() * myCarModels.length)],
-            Colour: carColors[Math.floor(Math.random() * carColors.length)],
-            Owner: carOwners[Math.floor(Math.random() * carOwners.length)]
-        };
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
     }
-    return bc.invokeSmartContract(
-        contx,
-        'fabcar',
-        'v1',
-        [args],
-        30
-    );
-};
 
-module.exports.end = function () {
-    return Promise.resolve();
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+        let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
+        let carColor = colors[Math.floor(Math.random() * colors.length)];
+        let carMake = makes[Math.floor(Math.random() * makes.length)];
+        let carModel = models[Math.floor(Math.random() * models.length)];
+        let carOwner = owners[Math.floor(Math.random() * owners.length)];
+
+        let args = {
+            contractId: 'fabcar',
+            contractVersion: 'v1',
+            contractFunction: 'createCar',
+            contractArguments: [carNumber, carMake, carModel, carColor, carOwner],
+            timeout: 30
+        };
+
+        await this.sutAdapter.sendRequests(args);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

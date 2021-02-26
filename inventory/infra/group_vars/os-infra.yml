@@ -16,7 +16,7 @@ k8s_nfs_instance: "k8snfs"
 k8s_instance_flavour: "m1.medium"
 k8s_ctl_instance_flavour: "m1.large"                  # Size of k8s control nodes
 k8s_wrk_instance_flavour: "m1.large"                  # Size of k8s worker nodes
-k8s_instance_image: "kvm-ubuntu-xenial"
+k8s_instance_image: "kvm-ubuntu-bionic"
 k8s_instance_availability_zone: "kvm-ssd"
 k8s_instance_security_groups: ["default"]        # Security groups to assign to k8s worker and control nodes
 k8s_instance_dns_security_groups: ["default"]    # Security groups to assign to DNS node

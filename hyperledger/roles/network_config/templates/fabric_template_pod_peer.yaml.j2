@@ -106,6 +106,8 @@ spec:
 # Error: panic: Failed to create chaincode server: listen tcp ip:7052: bind: cannot assign requested address
         - name: CORE_PEER_CHAINCODELISTENADDRESS
           value: localhost:7052
+        - name: CORE_CHAINCODE_BUILDER
+          value: hyperledger/fabric-ccenv:{{ fabric_version }}
         - name: GOPATH
           value: /opt/gopath
         workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer

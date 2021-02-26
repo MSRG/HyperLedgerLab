@@ -61,7 +61,7 @@
           "org1",          "org2"        ]
       }
     ],
-    "chaincodes": [{"path": "contract/fabcar/go/", "metadataPath": "", "language": "golang", "id": "fabcar", "channel": "mychannel", "version": "v1"}],
+    "chaincodes": [{"path": "contract/fabcar/go/", "metadataPath": "contract/fabcar/go/metadata", "language": "golang", "id": "fabcar", "channel": "mychannel", "version": "v1"}],
     "endorsement-policy": {
       "identities": [
         {
