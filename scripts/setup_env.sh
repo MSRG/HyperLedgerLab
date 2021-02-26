@@ -9,6 +9,9 @@ cd `dirname $0`/..
 set -x
 git submodule sync
 git submodule update --init --recursive
+git submodule update 
+git submodule foreach git checkout master 
+git submodule foreach git pull origin master 
 set +x
 
 # Set environment variables required for Openstack and k8s cluster setup

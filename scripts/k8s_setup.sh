@@ -11,4 +11,6 @@ sleep 30
 
 # Setup k8s cluster
 ansible-playbook -i inventory/cluster/hosts.ini -v cluster_setup.yaml
+sudo chown -R ubuntu:ubuntu /home/ubuntu/HyperLedgerLab/inventory/cluster/artifacts
+ansible-playbook -i inventory/cluster/hosts.ini -v cluster_setup_complete.yaml
 set +x
