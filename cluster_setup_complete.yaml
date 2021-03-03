@@ -1,4 +1,0 @@
-# To be called with -i inventory/cluster/hosts.ini
----
-- import_playbook: kubespray/cluster.yml
-- import_playbook: playbooks/cluster_admin.yaml
