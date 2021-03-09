@@ -11,7 +11,7 @@ test:
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 100
+        tps: 500
     callback: ../inventory/blockchain/benchmark/generator/initLedger.js
 
   - label: commonGen
@@ -23,6 +23,16 @@ test:
         tps: 100
     callback: ../inventory/blockchain/benchmark/generator/common.js
 
+#  - label: cool-down
+#    txDuration:
+#    - 60
+#    rateControl:
+#    - type: zero-rate
+#      opts:
+#    callback: ../inventory/blockchain/benchmark/generator/common.js
+
+
+
   - label: readBlockchain
     txNumber:
     - 1
@@ -30,6 +40,7 @@ test:
     - type: fixed-rate
       opts:
         tps: 1
+#    callback: ../inventory/blockchain/benchmark/generator/initLedger.js
     callback: ../inventory/blockchain/benchmark/generator/doNothing.js
 
 monitor:

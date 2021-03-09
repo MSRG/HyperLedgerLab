@@ -41,9 +41,12 @@ class queryEhr {
 
 	    //console.info(ehrId);
 
-	    args = {
-                chaincodeFunction: 'viewEHR',
-                chaincodeArguments: [ehrId, `${actor}`]
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'viewEHR',
+                contractArguments: [ehrId, `${actor}`],
+                timeout: 30
             };
 
 	    return args;

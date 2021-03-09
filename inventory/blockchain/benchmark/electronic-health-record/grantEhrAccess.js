@@ -58,15 +58,23 @@ class grantEhrAccess {
 	        const ehrId = profile.allEhr[0].id;
 
 	        //console.log(`Patient ${profile} giving ${ehrId} access to ${actor}`);
-		args = {
-              	    chaincodeFunction: 'grantEHRAccess',
-                    chaincodeArguments: [ssn, ehrId, key, `${actor}`]
-            	};
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'grantEHRAccess',
+                contractArguments: [ssn, ehrId, key, `${actor}`],
+                timeout: 30
+            };
+
 	    } else {
-		args = {
-                    chaincodeFunction: 'doNothing',
-                    chaincodeArguments: []
-                };
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'doNothing',
+                contractArguments: [],
+                timeout: 30
+            };
+
             }
 
 	    return args;

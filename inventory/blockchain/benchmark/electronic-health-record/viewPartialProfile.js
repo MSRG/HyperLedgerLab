@@ -39,10 +39,14 @@ class viewPartialProfile {
     let ssn = seeds.allSSN[randomAccessKey2];
 
     //if (bc.bcType === 'fabric-ccp') {
-        args = {
-            chaincodeFunction: 'viewPartialProfile',
-            chaincodeArguments: [ssn, `${actor}`]
-        };
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'viewPartialProfile',
+                contractArguments: [ssn, `${actor}`],
+                timeout: 30
+            };
+
     //}
         return args;
 

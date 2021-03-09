@@ -38,8 +38,11 @@ class addEhr {
 	    //console.info(ehr);
 
 	    args = {
-                chaincodeFunction: 'addEHR',
-                chaincodeArguments: [ssn, `${actor}`, ehr, ehrId]
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'addEHR',
+                contractArguments: [ssn, `${actor}`, ehr, ehrId],
+                timeout: 30
             };
 
 	    return args;

@@ -30,10 +30,14 @@ class getAllEHRforActor {
 	    let actor = seeds.allActor[randomAccessKey];
 	    //console.log(`Getting all EHR for ${actor}`);
 
-	     args = {
-            	 chaincodeFunction: 'getAllEHRforActor',
-            	 chaincodeArguments: [`${actor}`]
-	     };
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'getAllEHRforActor',
+                contractArguments: [`${actor}`],
+                timeout: 30
+            };
+
              return args;
 
         }

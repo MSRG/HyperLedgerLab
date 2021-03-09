@@ -42,10 +42,14 @@ class grantProfileAccess {
 	    const key = seeds.allKey[randomAccessKey2];
 
 	    //console.log(`Patient ${ssn} giving profile access to ${actor}`);
-	    args = {
-                chaincodeFunction: 'grantProfileAccess',
-                chaincodeArguments: [ssn, key, `${actor}`]
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'grantProfileAccess',
+                contractArguments: [ssn, key, `${actor}`],
+                timeout: 30
             };
+
 	    return args;
 
         }

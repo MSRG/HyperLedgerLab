@@ -1,42 +1,34 @@
----
 test:
-  clients:
+  workers:
     type: local
-    number: 5
-
+    number: 1
   rounds:
-  - label: initLedger
-    txNumber:
-    - 1             
-    rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 1
-    callback: ../inventory/blockchain/benchmark/electronic-health-record/initLedger.js
+    - label: initLedger 
+      txNumber: 1
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 1
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/initLedger.js
 
-  - label: common
-    txDuration:
-    - 180
-    rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 100
-    callback: ../inventory/blockchain/benchmark/electronic-health-record/common.js
+    - label: common
+      txDuration: 3
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 500
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/common.js
+#        arguments:
+#          assets: 10
 
-  - label: readBlockchain
-    txNumber:
-    - 1
-    rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 1
-    callback: ../inventory/blockchain/benchmark/electronic-health-record/doNothing.js
+    - label: readBlockchain 
+      txDuration: 1
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 1
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/doNothing.js
 
-monitor:
-  type:
-  - process
-  process:
-  - command: node
-    arguments: local-client.js
-    multiOutput: avg
-  interval: 1

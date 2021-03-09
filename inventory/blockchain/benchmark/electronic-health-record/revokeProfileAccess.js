@@ -51,16 +51,24 @@ class revokeProfileAccess {
 
         //if (bc.bcType === 'fabric-ccp') {
             args = {
-                chaincodeFunction: 'revokeProfileAccess',
-                chaincodeArguments: [ssn, key, `${actor}`]
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'revokeProfileAccess',
+                contractArguments: [ssn, key, `${actor}`],
+                timeout: 30
             };
+
         //}
     } else {
         //if (bc.bcType === 'fabric-ccp') {
             args = {
-                chaincodeFunction: 'doNothing',
-                chaincodeArguments: []
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'doNothing',
+                contractArguments: [],
+                timeout: 30
             };
+
         //}
     }
 

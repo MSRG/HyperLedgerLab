@@ -1,4 +1,8 @@
 'use strict';
+
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+
+
 const getParameters = require('./getParameters');
 const addEhr = require('./addEhr');
 const getAllEHRforActor = require('./getAllEHRforActor');
@@ -56,6 +60,87 @@ function isDefined(t) {
 }
 
 
+
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+    }
+
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+    let args;
+    let chaincodeType = getParameters.chaincodeType();
+    //picker.removeAll();
+    var picker = new Picker();
+    let prob = getParameters.readWriteProb();
+    picker.option(0, prob);
+    picker.option(1, 100 - prob);
+
+    if (chaincodeType == 0) {
+        let uniformPick = deck.pick(testCasePermuation);
+        args = ALLTESTCASE[uniformPick].get();
+        //console.info('CURRENT CHAINCODE FUNCTION:');
+        //console.info(ALLTESTCASE[uniformPick]);
+    }
+    else if (chaincodeType == 1) {
+        let weightedPick = 0;
+        if (picker.pick() == 0) {
+                weightedPick = deck.pick(readHeavy);
+        }
+        else {
+                weightedPick = deck.pick(writeHeavy);
+        }
+        args = ALLTESTCASE[weightedPick].get();
+        //console.info('CURRENT CHAINCODE FUNCTION:');
+        //console.info(ALLTESTCASE[weightedPick]);
+    }
+    else if (chaincodeType == 2) {
+        let weightedPick = 0;
+        if (picker.pick() == 0) {
+                weightedPick = deck.pick(writeHeavy);
+        }
+        else {
+                weightedPick = deck.pick(readHeavy);
+        }
+        args = ALLTESTCASE[weightedPick].get();
+        //console.info('CURRENT CHAINCODE FUNCTION:');
+        //console.info(ALLTESTCASE[weightedPick]);
+    }
+
+       /* let args = {
+            contractId: 'electronic-health-record',
+            contractVersion: 'v1',
+            contractFunction: 'initLedger',
+            contractArguments: [],
+            timeout: 30
+        };*/
+
+        await this.sutAdapter.sendRequests(args);
+    }
+}
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;
+
+
+/*
 module.exports.info = 'Electronic Health Record Chaincode function randomizer';
 
 let bc, contx;
@@ -169,6 +254,6 @@ module.exports.end = function () {
 return Promise.resolve();
 };
 
-
+*/
 
 

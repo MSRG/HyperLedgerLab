@@ -16,10 +16,53 @@
 
 'use strict';
 
-module.exports.info  = 'Initializing Electronic Health Record.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+    }
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+        let args = {
+            contractId: 'electronic-health-record',
+            contractVersion: 'v1',
+            contractFunction: 'initLedger',
+            contractArguments: [],
+            timeout: 30
+        };
+
+        await this.sutAdapter.sendRequests(args);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;
+
+//module.exports.info  = 'Initializing Electronic Health Record.';
+
+/*let txIndex = 0;
 let bc, contx;
+
+
 
 module.exports.init = function(blockchain, context, args) {
     bc = blockchain;
@@ -48,4 +91,4 @@ module.exports.run = function() {
 
 module.exports.end = function() {
     return Promise.resolve();
-};
+};*/

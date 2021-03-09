@@ -30,10 +30,14 @@ class readProfile {
 	    let ssn = seeds.allSSN[randomAccessKey];
 	    let key = seeds.allKey[randomAccessKey];
 
-	    args = {
-                chaincodeFunction: 'readProfile',
-                chaincodeArguments: [ssn, key]
-	    };
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'readProfile',
+                contractArguments: [ssn, key],
+                timeout: 30
+            };
+
             return args;
 
         }

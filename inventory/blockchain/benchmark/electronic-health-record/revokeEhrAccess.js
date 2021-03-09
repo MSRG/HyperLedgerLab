@@ -59,16 +59,22 @@ class revokeEhrAccess {
         	const actor = profile.allEhr[0].accessList[0];
 
         	//console.log(`Patient ${ssn} revoking ${ehrId} access from ${actor}`);
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'revokeEHRAccess',
+                contractArguments: [ssn, ehrId, key, `${actor}`],
+                timeout: 30
+            };
 
-	            args = {
-        	        chaincodeFunction: 'revokeEHRAccess',
-                	chaincodeArguments: [ssn, ehrId, key, `${actor}`]
-            	    };
     		} else {
-	            args = {
-        	        chaincodeFunction: 'doNothing',
-                	chaincodeArguments: []
-            	    };
+            args = {
+                contractId: 'electronic-health-record',
+                contractVersion: 'v1',
+                contractFunction: 'doNothing',
+                contractArguments: [],
+                timeout: 30
+            };
     		}
 
 		return args;
