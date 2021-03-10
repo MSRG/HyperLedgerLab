@@ -17,10 +17,13 @@ class unload {
     }
     let ssccKey = seeds.allSSCC[randomAccessKey];
     
-        args = {
-            chaincodeFunction: 'unload',
-            chaincodeArguments: [ssccKey]
-        };
+	args = {
+                contractId: 'supplychain',
+                contractVersion: 'v1',
+                contractFunction: 'unload',
+                contractArguments: [ssccKey],
+                timeout: 30
+            };
 
             return args;
 

@@ -11,10 +11,16 @@ class singleQuery {
     let standardDerivation = getParameters.keyPickerType();
     let randomAccessKey = rand.randomIndex(seeds.allSSCC.length, standardDerivation);
     let ssccKey = seeds.allSSCC[randomAccessKey].toString();
-        args = {
-            chaincodeFunction: 'queryLogisticUnit',
-            chaincodeArguments: [ssccKey]
-        };
+
+            args = {
+                contractId: 'supplychain',
+                contractVersion: 'v1',
+                contractFunction: 'queryLogisticUnit',
+                contractArguments: [ssccKey],
+                timeout: 30
+            };
+
+
 
             return args;
 

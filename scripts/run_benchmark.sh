@@ -21,13 +21,13 @@ cd $contract_dir/lib && node generator.js
 cp $contract_dir/lib/seeds.json $benchmark_dir/
 cd $benchmark_dir && npm install
 #cd $benchmark_dir && node configGenerator.js
-$script_dir/fabric_setup.sh -e fabric_orderer_type=kafka -e fabric_create_cli=true
+#$script_dir/fabric_setup.sh -e fabric_orderer_type=kafka -e fabric_create_cli=true
 #$script_dir/fabric_setup.sh
 #read -p "START NETWORK EMULATION: " ntwrkstart
 #echo START NETWORK EMULATION
 #sleep 10s
-$script_dir/get_metrics.sh $chaincode
-$script_dir/fabric_delete.sh
+#$script_dir/get_metrics.sh $chaincode
+#$script_dir/fabric_delete.sh
 #read -p "STOP NETWORK EMULATION: " ntwrkstop
 #echo STOP NETWORK EMULATION
-sleep 10s
+#sleep 10s

@@ -16,7 +16,6 @@ class pushASN {
         randomAccessKey = rand.randomIndex(seeds.allSSCC.length, standardDerivation);
     }
     let ssccKey = seeds.allSSCC[randomAccessKey];
-
     while (seeds.allLsp[randomAccessKey] === undefined) {
         randomAccessKey = rand.randomIndex(seeds.allLsp.length, standardDerivation);
     }
@@ -27,10 +26,15 @@ class pushASN {
     tomorrow.setDate(today.getDate() + rand.randomZeroToTen());
     let dateString = tomorrow.toString();
 
-        args = {
-            chaincodeFunction: 'pushASN',
-            chaincodeArguments: [ssccKey, lspName, dateString]
-        };
+
+            args = {
+                contractId: 'supplychain',
+                contractVersion: 'v1',
+                contractFunction: 'pushASN',
+                contractArguments: [ssccKey, lspName, dateString],
+                timeout: 30
+            };
+
 
 	return args;
 

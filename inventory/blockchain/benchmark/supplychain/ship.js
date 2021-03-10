@@ -26,10 +26,15 @@ class ship {
     let gln = new GLN(seeds.allLsp[randomAccessKey].gln.gs1CompanyPrefix, seeds.allLsp[randomAccessKey].gln.locationReference);
     let newLSPGlnString = gln.toString();
 
-        args = {
-            chaincodeFunction: 'ship',
-            chaincodeArguments: [ssccKey, newLSPNameString, newLSPGlnString]
-        };
+
+            args = {
+                contractId: 'supplychain',
+                contractVersion: 'v1',
+                contractFunction: 'ship',
+                contractArguments: [ssccKey, newLSPNameString, newLSPGlnString],
+                timeout: 30
+            };
+
 
             return args;
 

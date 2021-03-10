@@ -12,10 +12,15 @@ class queryASN {
     let randomAccessKey = rand.randomIndex(seeds.allLsp.length, standardDerivation);
     let lsp = seeds.allLsp[randomAccessKey];
     let lspName = lsp !== undefined ? lsp.name : 'LSPA';
-        args = {
-            chaincodeFunction: 'queryASN',
-            chaincodeArguments: [lspName]
-        };
+
+            args = {
+                contractId: 'supplychain',
+                contractVersion: 'v1',
+                contractFunction: 'queryASN',
+                contractArguments: [lspName],
+                timeout: 30
+            };
+
     return args;
 
         }

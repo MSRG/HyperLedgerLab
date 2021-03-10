@@ -1,4 +1,7 @@
 'use strict';
+
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+
 const getParameters = require('./getParameters');
 const queryStock = require('./queryStock');
 const singleQuery = require('./singleQuery');
@@ -15,7 +18,6 @@ var Picker = require('random-picker').Picker;
 //const parameters = read.sync('parameters.yaml');
 
 const ALLTESTCASE = [
-    queryStock,
     singleQuery,
     pushASN,
     ship,
@@ -25,19 +27,22 @@ const ALLTESTCASE = [
 
 //let readHeavy = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 10, 5 : 10, 6 : 1, 7 : 1, 8 : 10};
 //let writeHeavy = {0 : 10, 1 : 10, 2 : 10, 3 : 10, 4 : 1, 5 : 1, 6 : 10, 7 : 10, 8 : 1};
-let readHeavy = [0, 1, 5];
-let writeHeavy = [ 2, 3, 4];
-
+let readHeavy = [0];
+let writeHeavy = [ 1, 2, 3];
+//let readHeavy = [0];
+//let writeHeavy = [0];
 
 // PROVIDE NUMBER OF TESTCASES
 let testCasePermuation = [
     0,
     1,
     2,
-    3,
-    4,
-    5
+    3
 ];
+/*let testCasePermuation = [
+    0
+];*/
+
 
 let permutationsToCompute = 1;
 
@@ -49,16 +54,24 @@ function isDefined(t) {
 }
 
 
-module.exports.info = 'Electronic Health Record Chaincode function randomizer';
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+    }
 
-let bc, contx;
-
-module.exports.init = function (blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-    return Promise.resolve();
-};
-module.exports.run = function () {
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
 
     let args;
     let chaincodeType = getParameters.chaincodeType();
@@ -99,68 +112,18 @@ module.exports.run = function () {
         //console.info(ALLTESTCASE[weightedPick]);
     }
 
-    let txstatus = bc.invokeSmartContract(contx, 'supplychain', 'v1', args, 120);
-    //console.info('TRANSACTION STATUS');
+        await this.sutAdapter.sendRequests(args);
+    }
+}
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
 
-    txstatus.then(function(result) {
-	//Endorse errors
-	if (isDefined(result[0].Get('endorse_error'))){
-		console.info('endorse_error: ', result[0].Get('endorse_error'));
-	}
-	if (isDefined(result[0].Get('endorse_sig_error'))){
-                console.info('endorse_sig_error: ', result[0].Get('endorse_sig_error'));
-        }
-	if (isDefined(result[0].Get('endorse_denied_error'))){
-                console.info('endorse_denied_error: ', result[0].Get('endorse_denied_error'));
-        }
-
-	if (isDefined(result[0].Get('endorse_rwmismatch_error'))){
-                console.info('endorse_rwmismatch_error: ', result[0].Get('endorse_rwmismatch_error'));
-        }
-
-	//Ordering errors
-	if (isDefined(result[0].Get('ordering_error'))){
-                console.info('ordering_error: ', result[0].Get('ordering_error'));
-        }
-	//Commit error
-	if (isDefined(result[0].Get('commit_error'))){
-                console.info('commit_error: ', result[0].Get('commit_error'));
-        }
-	//Submit Tx all other caught errors (unexpected errors)
-	if (isDefined(result[0].Get('submittx_error'))){
-                console.info('submittx_error: ', result[0].Get('submittx_error'));
-        }
-	if (isDefined(result[0].Get('submittx_expected_error'))){
-                console.info('submittx_expected_error: ', result[0].Get('submittx_expected_error'));
-        }
-	//Latencies
-	if (isDefined(result[0].Get('endorse_latency'))){
-                console.info('endorse_latency: ', result[0].Get('endorse_latency'));
-        }
-	if (isDefined(result[0].Get('ordering_submission_latency'))){
-                console.info('ordering_submission_latency: ', result[0].Get('ordering_submission_latency'));
-        }
-	if (isDefined(result[0].Get('commit_success_time'))){
-                console.info('commit_success_time: ', result[0].Get('commit_success_time'));
-        }
-	if (isDefined(result[0].Get('orderingandvalidation_time'))){
-                console.info('orderingandvalidation_time: ', result[0].Get('orderingandvalidation_time'));
-        }
-	if (isDefined(result[0].Get('total_transaction_time'))){
-                console.info('total_transaction_time: ', result[0].Get('total_transaction_time'));
-        }
-	if (isDefined(result[0].Get('ordering_broadcast_timeout'))){
-                console.info('ordering_broadcast_timeout: ', result[0].Get('ordering_broadcast_timeout'));
-        }
-
-
-    })
-    return txstatus;
-};
-
-module.exports.end = function () {
-return Promise.resolve();
-};
+module.exports.createWorkloadModule = createWorkloadModule;
 
 
 

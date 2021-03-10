@@ -14,10 +14,16 @@ class queryStock {
     let randomAccessKey = rand.randomIndex(seeds.allLsp.length, standardDerivation);
     let lsp = seeds.allLsp[randomAccessKey];
     let lspName = lsp !== undefined ? lsp.name : 'LSPA';
-        args = {
-            chaincodeFunction: 'queryStock',
-            chaincodeArguments: [lspName]
-        };
+
+            args = {
+                contractId: 'supplychain',
+                contractVersion: 'v1',
+                contractFunction: 'queryStock',
+                contractArguments: [lspName],
+                timeout: 30
+            };
+
+
             return args;
 
         }

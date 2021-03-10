@@ -1,43 +1,50 @@
----
 test:
-  clients:
+  workers:
     type: local
-    number: 5
-
+    number: 1
   rounds:
-  - label: initLedger
-    txNumber:
-    - 1             
-    rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 1
-    callback: ../inventory/blockchain/benchmark/supplychain/initLedger.js
+    - label: initLedger
+      txNumber: 1
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 1
+      workload:
+        module: inventory/blockchain/benchmark/supplychain/initLedger.js
 
-  - label: common
-    txDuration:
-    - 180
-    rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 100
-    callback: ../inventory/blockchain/benchmark/supplychain/common.js
+    - label: common
+      txDuration: 30
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 100
+      workload:
+        module: inventory/blockchain/benchmark/supplychain/common.js
 
-  - label: readBlockchain
-    txNumber:
-    - 1
-    rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 1
-    callback: ../inventory/blockchain/benchmark/supplychain/doNothing.js
+#    - label: common
+#      txDuration: 10
+#      rateControl:
+#          type: fixed-rate
+#          opts:
+#            tps: 10
+#      workload:
+#        module: inventory/blockchain/benchmark/supplychain/common.js
+#
+#    - label: common
+#      txDuration: 10
+#      rateControl:
+#          type: fixed-rate
+#          opts:
+#            tps: 50
+#      workload:
+#        module: inventory/blockchain/benchmark/supplychain/common.js
 
-monitor:
-  type:
-  - process
-  process:
-  - command: node
-    arguments: local-client.js
-    multiOutput: avg
-  interval: 1
+    - label: readBlockchain
+      txDuration: 1
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 1
+      workload:
+        module: inventory/blockchain/benchmark/supplychain/doNothing.js
 

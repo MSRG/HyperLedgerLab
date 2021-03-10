@@ -1,34 +1,42 @@
 'use strict';
 
-module.exports.info = 'Supplychain initLedger: One time operation';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let bc, contx;
-module.exports.init = function (blockchain, context, args) {
-    console.info("1init function");
-    bc = blockchain;
-    contx = context;
-    return Promise.resolve();
-};
-
-module.exports.run = function () {
-    console.info("2run function");
-    let args;
-    if (bc.bcType === 'fabric-ccp') {
-	console.info("3if function");
-        args = {
-            chaincodeFunction: 'initLedger',
-            chaincodeArguments: []
-        };
-    } else {
-	console.info("4else function");
-        args = {
-            verb: 'initLedger'
-        };
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
     }
-    return bc.invokeSmartContract(contx, 'supplychain', 'v1', args, 300000);
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
+        let args = {
+            contractId: 'supplychain',
+            contractVersion: 'v1',
+            contractFunction: 'initLedger',
+            contractArguments: [],
+            timeout: 300000
+        };
 
-module.exports.end = function () {
-    console.info("5end function");
-    return Promise.resolve();
-};
+        await this.sutAdapter.sendRequests(args);
+    }
+}
+
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;
