@@ -16,66 +16,59 @@
 
 'use strict';
 
-module.exports.info  = 'Initializing Electronic Health Record.';
-//var AsyncLock = require('async-lock');
-//var lock = new AsyncLock();
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
+//let txIndex = 0;
 let keyIndex = 0;
 let err = 0
 let ret = 0
-let bc, contx;
 
 let nclients = 25
 let ntransactions = 100000
 let tranperclient = ntransactions/nclients
 
 
-module.exports.init = function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+    }
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
 
-    return Promise.resolve();
-};
 
-module.exports.run = function(clientIdx) {
-
-
-    keyIndex = txIndex + (clientIdx * tranperclient);
-    txIndex++;
+    keyIndex = this.txIndex + (clientIdx * tranperclient);
+    this.txIndex++;
     
-/*    console.info('Inside INIT run function');
-    console.info(process.pid);
-    console.info(clientIdx);
-    console.info(txIndex);
-    console.info(keyIndex);*/
-/*    lock.acquire(txIndex, function(done) {
-                        // async work
-			console.info('Inside INIT lock');
-                        console.info(process.pid);
-			txIndex++;
-                        done(err, ret);
-                }, function(err, ret) {
-                        // lock released
-                });
-*/
-
     let args;
     let value = keyIndex * 100
-    if (bc.bcType === 'fabric-ccp') {
-        args = {
-            chaincodeFunction: 'initLedger',
-            chaincodeArguments: [keyIndex.toString(), value.toString()],
+	let args = {
+            contractId: 'generator',
+            contractVersion: 'v1',
+            contractFunction: 'initLedger',
+            contractArguments: [keyIndex.toString(), value.toString()],
+            timeout: 30
         };
-    } else {
-        args = {
-            verb: 'initLedger'
-        };
+
+        await this.sutAdapter.sendRequests(args);
     }
+}
 
-    return bc.invokeSmartContract(contx, 'generator', 'v1', args, 30);
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+module.exports.createWorkloadModule = createWorkloadModule;

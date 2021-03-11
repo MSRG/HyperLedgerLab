@@ -16,36 +16,46 @@
 
 'use strict';
 
-module.exports.info  = 'doNothing Electronic Health Record.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
-let bc, contx;
-
-module.exports.init = function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-
-    return Promise.resolve();
-};
-
-module.exports.run = function() {
-    txIndex++;
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+    }
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
 
     let args;
-    if (bc.bcType === 'fabric-ccp') {
-        args = {
-            chaincodeFunction: 'doNothing',
-            chaincodeArguments: [],
+        let args = {
+            contractId: 'generator',
+            contractVersion: 'v1',
+            contractFunction: 'doNothing',
+            contractArguments: [],
+            timeout: 30
         };
-    } else {
-        args = {
-            verb: 'doNothing'
-        };
+
+        await this.sutAdapter.sendRequests(args);
     }
+}
 
-    return bc.invokeSmartContract(contx, 'generator', 'v1', args, 30);
-};
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+module.exports.createWorkloadModule = createWorkloadModule;
+

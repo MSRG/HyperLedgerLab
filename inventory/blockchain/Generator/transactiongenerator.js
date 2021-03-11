@@ -88,6 +88,10 @@ default:
 
 
 
+                let contractId = 'generator'
+                let contractVersion = 'v1'
+                let timeout = 30
+
                 let totalTransactions = 144000  //duration * tps
                 let keyDisttribution = 2 //Zipfian skew 0: uniform 1, -1 skewed
 
@@ -154,7 +158,8 @@ default:
                                 let functionNameIndex = pickedTransaction + 1
                                 let functionName = 'func' + functionNameIndex
                                 var quotedAndCommaSeparated = "\"" + argments.join("\",\"") + "\"";
-                                let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                //let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                let args = '\{ \"contractId\":\"'+contractId+'\"\, \"contractVersion\":\"'+contractVersion+'\"\, \"contractFunction\":\"'+functionName+'\"\, \"contractArguments\":['+quotedAndCommaSeparated+'], \"timeout\":\"'+timeout+'\"\ }'
 
                                 stream.write(args + "\n");
                         }
@@ -175,7 +180,8 @@ default:
                                 let functionNameIndex = pickedTransaction + 1
                                 let functionName = 'func' + functionNameIndex
                                 var quotedAndCommaSeparated = "\"" + argments.join("\",\"") + "\"";
-                                let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                //let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                let args = '\{ \"contractId\":\"'+contractId+'\"\, \"contractVersion\":\"'+contractVersion+'\"\, \"contractFunction\":\"'+functionName+'\"\, \"contractArguments\":['+quotedAndCommaSeparated+'], \"timeout\":\"'+timeout+'\"\ }'
                                 stream.write(args + "\n");
                         }
                         //update
@@ -195,7 +201,8 @@ default:
                                 let functionNameIndex = pickedTransaction + 1
                                 let functionName = 'func' + functionNameIndex
                                 var quotedAndCommaSeparated = "\"" + argments.join("\",\"") + "\"";
-                                let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                //let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                let args = '\{ \"contractId\":\"'+contractId+'\"\, \"contractVersion\":\"'+contractVersion+'\"\, \"contractFunction\":\"'+functionName+'\"\, \"contractArguments\":['+quotedAndCommaSeparated+'], \"timeout\":\"'+timeout+'\"\ }'
                                 stream.write(args + "\n");
 
                         }
@@ -213,7 +220,8 @@ default:
                                 let functionNameIndex = pickedTransaction + 1
                                 let functionName = 'func' + functionNameIndex
                                 var quotedAndCommaSeparated = "\"" + argments.join("\",\"") + "\"";
-                                let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                //let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                let args = '\{ \"contractId\":\"'+contractId+'\"\, \"contractVersion\":\"'+contractVersion+'\"\, \"contractFunction\":\"'+functionName+'\"\, \"contractArguments\":['+quotedAndCommaSeparated+'], \"timeout\":\"'+timeout+'\"\ }'
                                 stream.write(args + "\n");
 
                         }
@@ -245,7 +253,8 @@ default:
                                 let functionNameIndex = pickedTransaction + 1
                                 let functionName = 'func' + functionNameIndex
                                 var quotedAndCommaSeparated = "\"" + argments.join("\",\"") + "\"";
-                                let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                //let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                let args = '\{ \"contractId\":\"'+contractId+'\"\, \"contractVersion\":\"'+contractVersion+'\"\, \"contractFunction\":\"'+functionName+'\"\, \"contractArguments\":['+quotedAndCommaSeparated+'], \"timeout\":\"'+timeout+'\"\ }'
                                 stream.write(args + "\n");
                         }
                         if (transactionType == 5) {
@@ -260,7 +269,8 @@ default:
                                 let functionNameIndex = pickedTransaction + 1
                                 let functionName = 'func' + functionNameIndex
                                 var quotedAndCommaSeparated = "\"" + argments.join("\",\"") + "\"";
-                                let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                //let args = '\{ \"chaincodeFunction\":\"'+functionName+'\"\, \"chaincodeArguments\":['+quotedAndCommaSeparated+'] }'
+                                let args = '\{ \"contractId\":\"'+contractId+'\"\, \"contractVersion\":\"'+contractVersion+'\"\, \"contractFunction\":\"'+functionName+'\"\, \"contractArguments\":['+quotedAndCommaSeparated+'], \"timeout\":\"'+timeout+'\"\ }'
                                 stream.write(args + "\n");
 
                         }
@@ -270,4 +280,8 @@ default:
 
                 }
                 stream.end();
+
+
+
+
 
