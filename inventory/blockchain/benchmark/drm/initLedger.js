@@ -16,36 +16,47 @@
 
 'use strict';
 
-module.exports.info  = 'Initializing DRM.';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
-let bc, contx;
-
-module.exports.init = function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
-
-    return Promise.resolve();
-};
-
-module.exports.run = function() {
-    txIndex++;
-
-    let args;
-    if (bc.bcType === 'fabric-ccp') {
-        args = {
-            chaincodeFunction: 'initLedger',
-            chaincodeArguments: [],
-        };
-    } else {
-        args = {
-            verb: 'initLedger'
-        };
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
     }
 
-    return bc.invokeSmartContract(contx, 'drm', 'v1', args, 30);
-};
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+    let args;
+
+     args = {
+                contractId: 'drm',
+                contractVersion: 'v1',
+                contractFunction: 'initLedger',
+                contractArguments: [],
+                timeout: 30
+            };
+
+        await this.sutAdapter.sendRequests(args);
+    }
+}
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;
+

@@ -22,10 +22,14 @@ class calcRevenue {
 
     //console.info(`${ipiName} aggregated revenue is calculated`);
 
-        args = {
-            chaincodeFunction: 'calcRevenue',
-            chaincodeArguments: [ipiName]
-        };
+	args = {
+                contractId: 'drm',
+                contractVersion: 'v1',
+                contractFunction: 'calcRevenue',
+                contractArguments: [ipiName],
+                timeout: 30
+            };
+
 
             return args;
 

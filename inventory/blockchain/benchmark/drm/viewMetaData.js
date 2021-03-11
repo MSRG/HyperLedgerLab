@@ -22,10 +22,15 @@ class viewMetaData {
 
     //console.info(`${artworkId} metadata is queried`);
 
-        args = {
-            chaincodeFunction: 'viewMetaData',
-            chaincodeArguments: [artworkId]
-        };
+
+	args = {
+                contractId: 'drm',
+                contractVersion: 'v1',
+                contractFunction: 'viewMetaData',
+                contractArguments: [artworkId],
+                timeout: 30
+            };
+
             return args;
 
         }

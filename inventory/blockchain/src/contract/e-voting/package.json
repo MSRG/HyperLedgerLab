@@ -17,8 +17,8 @@
     "author": "Luca A. Mueller",
     "license": "Apache-2.0",
     "dependencies": {
-        "fabric-contract-api": "1.4.1",
-        "fabric-shim": "1.4.1",
+        "fabric-contract-api": "2.2.1",
+        "fabric-shim": "2.2.1",
         "read-yaml": "1.1.0",
         "unirand": "2.4.5"
     },

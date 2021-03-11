@@ -22,10 +22,15 @@ class play {
 
 //    console.info(`${artworkId} was played`);
 
-        args = {
-            chaincodeFunction: 'play',
-            chaincodeArguments: [artworkId]
-        };
+
+	args = {
+                contractId: 'drm',
+                contractVersion: 'v1',
+                contractFunction: 'play',
+                contractArguments: [artworkId],
+                timeout: 30
+            };
+
             return args;
 
         }

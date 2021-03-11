@@ -16,33 +16,50 @@
 
 'use strict';
 
-module.exports.info  = 'Close eVoting election';
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-let txIndex = 0;
-let bc, contx;
 const seeds = require('./seeds.json');
 const electionId = seeds.electionId;
 
-module.exports.init = function(blockchain, context, args) {
-    bc = blockchain;
-    contx = context;
+/**
+ * Workload module for the benchmark round.
+ */
+class CreateCarWorkload extends WorkloadModuleBase {
+    /**
+     * Initializes the workload module instance.
+     */
+    constructor() {
+        super();
+        this.txIndex = 0;
+    }
 
-    return Promise.resolve();
-};
-
-module.exports.run = function() {
-    txIndex++;
+    /**
+     * Assemble TXs for the round.
+     * @return {Promise<TxStatus[]>}
+     */
+    async submitTransaction() {
+        this.txIndex++;
 
     let args;
-    if (bc.bcType === 'fabric-ccp') {
-        args = {
-            chaincodeFunction: 'closeElection',
-            chaincodeArguments: [electionId],
-        };
-    }
-    return bc.invokeSmartContract(contx, 'e-voting', 'v1', args, 120);
-};
 
-module.exports.end = function() {
-    return Promise.resolve();
-};
+	    args = {
+                contractId: 'e-voting',
+                contractVersion: 'v1',
+                contractFunction: 'closeElection',
+                contractArguments: [electionId],
+                timeout: 30
+            };
+
+	     await this.sutAdapter.sendRequests(args);
+    }
+}
+/**
+ * Create a new instance of the workload module.
+ * @return {WorkloadModuleInterface}
+ */
+function createWorkloadModule() {
+    return new CreateCarWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;
+

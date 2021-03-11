@@ -24,9 +24,13 @@ class queryRightHolders {
     console.info(`${artworkId} rightholder get queried`);
 
         args = {
-            chaincodeFunction: 'queryRightHolders',
-            chaincodeArguments: [artworkId]
-        };
+                contractId: 'drm',
+                contractVersion: 'v1',
+                contractFunction: 'queryRightHolders',
+                contractArguments: [artworkId],
+                timeout: 30
+            };
+
 
 	return args;
         }

@@ -24,10 +24,15 @@ class seeResults {
     static get() {
 
     let args;
-        args = {
-            chaincodeFunction: 'seeResults',
-            chaincodeArguments: [electionId],
-        };
+
+	args = {
+                contractId: 'e-voting',
+                contractVersion: 'v1',
+                contractFunction: 'seeResults',
+                contractArguments: [electionId],
+                timeout: 30
+            };
+
         return args;
 
         }

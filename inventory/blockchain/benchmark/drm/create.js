@@ -30,10 +30,14 @@ class create {
     //const extraroyaltyManagementId = extraroyaltyManagementId1[royaltyManagementId];
     //console.info(`extraroyaltyManagementId: ${extraroyaltyManagementId}`);
 
-        args = {
-            chaincodeFunction: 'create',
-            chaincodeArguments: [artworkId, artwork, royaltyManagementId, royaltyManagement]
-        };
+	    args = {
+                contractId: 'drm',
+                contractVersion: 'v1',
+                contractFunction: 'create',
+                contractArguments: [artworkId, artwork, royaltyManagementId, royaltyManagement],
+                timeout: 30
+            };
+
 
             return args;
 

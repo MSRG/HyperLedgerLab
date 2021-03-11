@@ -28,11 +28,17 @@ class vote {
 
     console.info(`${ballotId} voted in ${electionId}`);
 
-        args = {
-            chaincodeFunction: 'vote',
-            chaincodeArguments: [ballotId, electionId, partyId]
-        };
-            return args;
+
+	    args = {
+                contractId: 'e-voting',
+                contractVersion: 'v1',
+                contractFunction: 'vote',
+                contractArguments: [ballotId, electionId, partyId],
+                timeout: 30
+            };
+
+
+	    return args;
 
         }
 }

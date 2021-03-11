@@ -25,11 +25,15 @@ class queryParties {
     static get() {
 
     let args;
-        args = {
-            chaincodeFunction: 'queryParties',
-            chaincodeArguments: [electionId],
-        };
-            return args;
+	    args = {
+                contractId: 'e-voting',
+                contractVersion: 'v1',
+                contractFunction: 'queryParties',
+                contractArguments: [electionId],
+                timeout: 30
+            };
+
+	    return args;
 
         }
 }
