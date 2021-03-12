@@ -194,3 +194,14 @@ Common Errors
     * Follow this link: https://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting
     * Then remove the environment first by `rm -rf venv` and then run the `k8s_setup.sh`
 
+
+Extracting Blockchain logs
+-----
+
+* cp inventory/blockchain/fabric_ccp_network.yaml inventory/blockchain/connectionprofile.yaml
+* edit connectionprofile.yaml such that there is only one client.
+* mkdir data if it does not exist. rm data/* if it exists.
+* mkdir csv  if it does not exist. rm csv/* if it exists.
+* node scripts/getBlockchainLogs.js
+* python3 scripts/convert_blockchain_logs_to_csv.py
+* The blockchain logs as json data will be available in that data directory and the extracted/decoded data is available as csv files in the csv directory.
