@@ -27,6 +27,9 @@ const FabricClient = require('fabric-client');
 
 var args = process.argv.slice(2);
 
+let conflictTxs = new Map();
+
+
 async function setClient() {
 	 
 	let client =  FabricClient.loadFromConfig('/home/ubuntu/HyperLedgerLab/inventory/blockchain/connectionprofile.yaml')
@@ -40,9 +43,9 @@ async function setClient() {
 				let blockchaininfo = await channel.queryInfo();
 				let blockchainheight = blockchaininfo.height;
 				blockchainheight = blockchainheight|0;
-				console.log(args[0]);
+				//console.log(args[0]);
 				let startingIndex = (blockchainheight -  parseInt(args[0]))|0;
-				console.log(startingIndex);
+				//console.log(startingIndex);
 			        const blockchain = [];
 				let b = 0;
 				for (let index = startingIndex; index < blockchainheight; index++) {
@@ -57,18 +60,22 @@ async function setClient() {
 					//console.log('blockchain', blockchain);
 
                 		}
-			        for (let blockindex = 0; blockindex < (blockchainheight - 5); blockindex++) {
-				        console.log('block contents', blockchain[blockindex]);					
+			        for (let blockindex = 0; blockindex < blockchain.length ; blockindex++) {
+				        //console.log('block contents', blockchain[blockindex]);					
     					let blocksize = blockchain[blockindex].data.data.length;
                 			let txstatus = blockchain[blockindex].metadata.metadata[2];
                 			for (let txindex = 0; txindex < blocksize; txindex++) {
+						let conflictpair1 = '';
+						let conflictpair2 = '';
+						let conflictpair = '';
 					        var readKeys = new Array();
 						if (txstatus[txindex] == 11) {
 							let txactions = blockchain[blockindex].data.data[txindex].payload.data.actions
 							if (txactions != undefined) {
 								let rwsetsize = txactions[0].payload.action.proposal_response_payload.extension.results.ns_rwset.length;
 								if (rwsetsize > 1) {
-									for (let rwindex = 0; rwindex < rwsetsize; rwindex++) {
+									//rwindex maybe 0 or 1 for different use cases
+									for (let rwindex = 1; rwindex < rwsetsize; rwindex++) {
 						  				let rwset = txactions[0].payload.action.proposal_response_payload.extension.results.ns_rwset[rwindex];
 						  				let readsetsize = rwset.rwset.reads.length;
         	                                  				let rindex = 0;
@@ -85,16 +92,79 @@ async function setClient() {
 							
 							}
 
-							//console.log('Conflict pair element1:', txactions[0].payload.chaincode_proposal_payload.input.chaincode_spec.input.args[0].data)
-							//res[x]['payload']['data']['actions'][0]['payload']['chaincode_proposal_payload']['input']['chaincode_spec']['input']['args'][0]['data']
+							let txbuffer = txactions[0].payload.chaincode_proposal_payload.input.chaincode_spec.input.args[0];
+							let txname = String.fromCharCode.apply(null, txbuffer);
+							conflictpair1 = txname;
+							//console.log('Conflict pair1', txname);
+						let pairDetected = 0;
+
+						for (let newindex = (txindex - 1); newindex >= 0; newindex--) {
+						
+							let txactions = blockchain[blockindex].data.data[newindex].payload.data.actions
+							if (txactions != undefined) {
+							
+								let rwsetsize = txactions[0].payload.action.proposal_response_payload.extension.results.ns_rwset.length;
+								if (rwsetsize > 1) {
+									//rwindex maybe 0 or 1 for different use cases
+                                                                        for (let rwindex = 1; rwindex < rwsetsize; rwindex++) {
+									
+										let rwset = txactions[0].payload.action.proposal_response_payload.extension.results.ns_rwset[rwindex];
+                                                                                let writesetsize = rwset.rwset.writes.length;
+                                                                                let windex = 0;
+                                                                                if (rwset.namespace != 'lscc') {
+                                                                                        while (windex < writesetsize) {
+
+												if (readKeys.includes(rwset.rwset.writes[windex].key)) {
+                                                                 				      
+													pairDetected = 1;
+													let txbuffer = txactions[0].payload.chaincode_proposal_payload.input.chaincode_spec.input.args[0];
+                                                        						let txname = String.fromCharCode.apply(null, txbuffer);
+                                                        						//console.log('Conflict pair2', txname);
+													//console.log(' ');
+													conflictpair2 = txname;
+													conflictpair = conflictpair1 + ' ' + conflictpair2;
+													if (conflictTxs.has(conflictpair)){
+														conflictTxs.set(conflictpair, (conflictTxs.get(conflictpair))+1);
+													}
+													else {
+														conflictTxs.set(conflictpair, 1);
+													}
+                                                                        				break;
+                                                                				}
+
+                                                                                                windex++;
+                                                                                        }
+											if (pairDetected == 1){
+												break;
+											}
+                                                                                }
+
+									
+									
+									}
+									if (pairDetected == 1){
+                                                                        	break;
+                                                                        }
+
+								
+								}
+							}
+						
 						}
+						if (pairDetected == 0){
+                                                	console.log('No conflict pair2');
+							console.log(' ');
+                                                }
+
 					
 					}
 				
 				
 				}
 
+				}
 
+				//console.log(conflictTxs);
 
 				/*for (let index = startingIndex; index < blockchainheight; index++) {
 					

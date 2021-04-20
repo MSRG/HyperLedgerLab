@@ -19,6 +19,11 @@ let currentBlockSize = 100;
 //const chaincodeFunctions = ['addEhr', 'grantEhrAccess', 'grantProfileAccess', 'queryEhr', 'readProfile', 'revokeEhrAccess', 'revokeProfileAccess', 'viewPartialProfile'];
 const chaincodeFunctions=['common', 'common1'];
 
+
+
+
+
+
 //code reference: https://stackoverflow.com/questions/45531690/how-to-create-an-infinite-loop-in-nodejs
 function adaptationCycle(adaptationCount) {
     setTimeout(() => {
@@ -92,8 +97,8 @@ function adaptationCycle(adaptationCount) {
 		console.log('delayRequired for the transaction:', transactionToDelay);
 	}
 	//read blockchain log
-	child_process.fork('self_adaptive_unit/getBlockchainLogs.js', [blockchainLogSize]);
-	
+	let test = child_process.fork('self_adaptive_unit/getBlockchainLogs.js', [blockchainLogSize]);
+	console.log('TEST', test)
 	    //generate tx dependency graph
         //adaptation logic
 	    //reordering logic
