@@ -1,0 +1,8 @@
+grantEHRAccess
+revokeEHRAccess
+viewEHR
+revokeProfileAccess
+addEHR
+grantProfileAccess
+readProfile
+viewPartialProfile

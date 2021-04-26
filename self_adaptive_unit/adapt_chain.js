@@ -1,6 +1,6 @@
 'use strict';
 
-////const fs = require('fs');
+const fs = require('fs');
 const shell = require('shelljs')
 //const child_process = require('child_process')
 const toposort = require('toposort')
@@ -133,21 +133,21 @@ async function setClient() {
                                                         						//console.log('Conflict pair2', txname);
 													//console.log(' ');
 													conflictpair2 = txname;
-													conflict[1] = txname;
+													//conflict[1] = txname;
 													conflictpair = conflictpair1 + ' ' + conflictpair2;
 													if (conflictTxs.has(conflictpair)){
 														conflictTxs.set(conflictpair, (conflictTxs.get(conflictpair))+1);
 													}
 													else {
 														conflictTxs.set(conflictpair, 1);
-														if (!(acyclicgraph.addEdge(conflictpair1, conflictpair2))){
+														/*if (!(acyclicgraph.addEdge(conflictpair1, conflictpair2))){
 															cyclicedge[y] = conflictpair;
 															y++;
 														}
 														else {
 															graph[x] = conflict;
 															x++;
-														}
+														}*/
 													}
                                                                         				break;
                                                                 				}
@@ -293,21 +293,16 @@ function adaptationCycle(adaptationCount) {
 		shell.exec('cp ' + config_location + transactionToDelay + '_config.yaml' + ' ' + config_location + 'config.yaml');
 	}
 
-	//read blockchain log
- 	//console.log(conflictTxs);
+	//read blockchain log if failures are very high
 	try {
-        	//console.log('Topologically sorted', toposort(graph).reverse());
-		//console.log('Cyclic edges', cyclicedge);
-		//console.log('All conflict pairs:', conflictTxs);
+		console.log('conflictTxs',conflictTxs);
 		var acyclic_conflict = [];
 		var acyclic_graph = [];
 		let p = 0
 		for (let [key, value] of conflictTxs) {
 			let txpair = key.split(' ');
 			let rev_txpair = txpair[1] + ' ' + txpair[0]
-			//console.log(rev_txpair);
 			if (!(conflictTxs.has(rev_txpair))){
-				acyclic_conflictTxs.set(key, value);
 				acyclic_conflict[0] = txpair[0];
 				acyclic_conflict[1] = txpair[1];
 				acyclic_graph[p] = acyclic_conflict.slice();
@@ -315,10 +310,12 @@ function adaptationCycle(adaptationCount) {
 			}
 		}
 		
- 		//console.log('All acyclic conflict pairs:', acyclic_conflictTxs);
- 		//console.log('Acyclic graph:', acyclic_graph);
 		console.log('Topologically sorted', toposort(acyclic_graph).reverse());
-
+		let topsort_list = toposort(acyclic_graph).reverse();
+		var file = fs.createWriteStream('./self_adaptive_unit/topsort_list.txt', {flags:'w'});
+		file.on('error', function(err) { /* error handling */ });
+		topsort_list.forEach(function(v) { file.write(v + '\n'); });
+		file.end();
 
 		//TODO logic
 		//var intersection = orderArray.filter(inWorkingArray);
