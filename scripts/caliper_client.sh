@@ -20,8 +20,8 @@ init=1
 rounds=0
 delay=10
 
-durationrange=(5 10 20 30)
-tpsrange=(50 100 150)
+durationrange=(5 10 15 20 25 30)
+tpsrange=(20 40 60 80 100 120)
 
 declare -a durationlist=()
 declare -a tpslist=()
@@ -40,7 +40,7 @@ declare -a tpslist=()
 echo $((1 + $RANDOM % 10))
 
 #while :
-while [ $rounds -lt 10 ]
+while [ $rounds -lt 6 ]
 do
 # loop infinitely
 if [[ $init -eq 1 ]]
@@ -50,8 +50,8 @@ then
 	init=0
 	echo "START ADAPTATION"
 else
-	txDuration=${durationrange[$(($RANDOM % 4))]}
-	tps=${tpsrange[$(($RANDOM % 3))]}
+	txDuration=${durationrange[$(($RANDOM % 6))]}
+	tps=${tpsrange[$(($RANDOM % 6))]}
 	durationlist+=($txDuration)	
 	tpslist+=($tps)
 	#txDuration=${durationrange[$rangeindex]}

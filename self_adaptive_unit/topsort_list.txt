@@ -1,8 +1,8 @@
-revokeProfileAccess
 grantProfileAccess
 grantEHRAccess
 revokeEHRAccess
 viewEHR
 addEHR
+revokeProfileAccess
 viewPartialProfile
 readProfile

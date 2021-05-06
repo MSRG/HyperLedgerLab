@@ -22,13 +22,16 @@ const adaptationInterval = 25000;
 const adaptationSize = 2;
 //blockchainLogSize: how many blocks to extract from the blockchain
 const blockchainLogSize = 10;
-const blocksizeThreshold = 0.5;
+const blocksizeThreshold = 0.2;
+const blocksizeThreshold2 = 0.3;
 const delayThreshold = 0.3;
 const reorderingThreshold = 0.3;
 //TODO: extract blocksize from config files
 const doc = yaml.load(fs.readFileSync('inventory/blockchain/group_vars/blockchain-setup.yaml', 'utf8'));
 let currentBlockSize = doc.fabric_batchsize[0];
 let prevBlockSize = currentBlockSize
+
+let prevFT = 0;
 
 //TODO: extract chaincode functions from config files
 //const chaincodeFunctions = ['addEhr', 'grantEhrAccess', 'grantProfileAccess', 'queryEhr', 'readProfile', 'revokeEhrAccess', 'revokeProfileAccess', 'viewPartialProfile'];
@@ -285,9 +288,10 @@ function adaptationCycle(adaptationCount) {
 	//adaptation logic
 	    //ideal block size logic
 	//if ( (avgSR > (currentBlockSize + (blocksizeThreshold*currentBlockSize))) || (avgSR < (currentBlockSize - (blocksizeThreshold*currentBlockSize)))) {
-	if ((currentBlockSize < (avgSR - (blocksizeThreshold*avgSR))) || (currentBlockSize > (avgSR + (blocksizeThreshold*avgSR)))) 	
+	//if ((currentBlockSize < (avgSR - (blocksizeThreshold*avgSR))) || (currentBlockSize > (avgSR + (blocksizeThreshold*avgSR)))) 	
+	if ((currentBlockSize <= ((blocksizeThreshold*avgSR))) || (currentBlockSize > ((blocksizeThreshold2*avgSR)))) 	
 	{	
-		let newBlockSize = Math.floor(avgSR);
+		let newBlockSize = Math.floor(blocksizeThreshold*avgSR);
 		console.log('newBlockSize:', newBlockSize);
 		const { stdout, stderr } = shell.exec('./self_adaptive_unit/config_tx.sh ' + newBlockSize)
 		//console.log('stderr:', stderr);
@@ -319,16 +323,34 @@ function adaptationCycle(adaptationCount) {
 	if ((chaincodeFunctions.length - 1) > 0) {
 		averageOtherSendRates = averageOtherSendRates/(chaincodeFunctions.length - 1);
 	}*/
-	else if (avgT < (avgSR - (avgSR*delayThreshold))) {
+	/*else if (avgT < (avgSR - (avgSR*delayThreshold))) {
 		console.log('DELAY STRATEGY CHOSEN ');
 		shell.exec('cp inventory/blockchain/benchmark/electronic-health-record/delay_config.yaml inventory/blockchain/benchmark/electronic-health-record/config.yaml');
 		//shell.exec('cp ' + config_location + transactionToDelay + '_config.yaml' + ' ' + config_location + 'config.yaml');
 		prevAdaptStrategy = 2
-	}
+	}*/
 
+
+	else if ((prevAdaptStrategy == 3) && (prevFT > avgFT)){
+
+		var f = fs.createWriteStream('./self_adaptive_unit/reorder.txt', {flags:'w'});
+                f.on('error', function(err) { /* error handling */ });
+                f.write('');
+                f.end();
+                console.log('REORDERING STRATEGY REVERTED ');
+		prevAdaptStrategy = 4;
+
+
+	}
+	else if ((prevAdaptStrategy == 4)){
+	
+		prevAdaptStrategy = 4;
+	
+	}
 	//read blockchain log if failures are very high
 	//else if (avgFT > (avgST - (avgST*reorderingThreshold))) {
-	else if (avgFT > avgST) {
+	//else if (avgFT > avgST) {
+	else if (avgFT > 40) {
 		setClient()
                 .then((channel) => {
 
@@ -360,9 +382,10 @@ function adaptationCycle(adaptationCount) {
 
 		var f = fs.createWriteStream('./self_adaptive_unit/reorder.txt', {flags:'w'});
 		f.on('error', function(err) { /* error handling */ });
-		f.write(true);
+		f.write('true');
 		f.end();
 		console.log('REORDERING STRATEGY CHOSEN ');
+		prevFT = avgFT
 		prevAdaptStrategy = 3
 
 
