@@ -1,6 +1,15 @@
 'use strict';
 
+let prevAdaptStrategy = 0; // 0 no adaptation 1 blocksize 2 delay 3 reordering
+let avgST = 0;
+let avgFT = 0;
+let avgSR = 0;
+let avgL = 0;
+let avgT = 0;
+let relativeT = 0;
+
 const fs = require('fs');
+const yaml = require('js-yaml');
 const shell = require('shelljs')
 //const child_process = require('child_process')
 const toposort = require('toposort')
@@ -8,16 +17,19 @@ const { GenericGraphAdapter } = require("incremental-cycle-detect");
 
 
 //adaptation interval in milliseconds
-const adaptationInterval = 5000;
+const adaptationInterval = 25000;
 //adaptationSize: how many metrics to extract from the log
 const adaptationSize = 2;
 //blockchainLogSize: how many blocks to extract from the blockchain
 const blockchainLogSize = 10;
 const blocksizeThreshold = 0.5;
-const delayThreshold = 0.5;
-const reorderingThreshold = 20;
+const delayThreshold = 0.3;
+const reorderingThreshold = 0.3;
 //TODO: extract blocksize from config files
-let currentBlockSize = 100; 
+const doc = yaml.load(fs.readFileSync('inventory/blockchain/group_vars/blockchain-setup.yaml', 'utf8'));
+let currentBlockSize = doc.fabric_batchsize[0];
+let prevBlockSize = currentBlockSize
+
 //TODO: extract chaincode functions from config files
 //const chaincodeFunctions = ['addEhr', 'grantEhrAccess', 'grantProfileAccess', 'queryEhr', 'readProfile', 'revokeEhrAccess', 'revokeProfileAccess', 'viewPartialProfile'];
 const chaincodeFunctions=['common'];
@@ -205,16 +217,16 @@ async function setClient() {
 function adaptationCycle(adaptationCount) {
     setTimeout(() => {
         console.log(adaptationCount, 'th adaptation cycle begins');
-        setClient()
-                .then((channel) => {
+        //setClient()
+          //      .then((channel) => {
                         //console.log('Client setup successful')
 
 
-	let avgST = 0;
-	let avgFT = 0;
-	let avgSR = 0;
-	let avgL = 0;
-	let avgT = 0;
+	avgST = 0;
+	avgFT = 0;
+	avgSR = 0;
+	avgL = 0;
+	avgT = 0;
         let sendRateRange = new Array(chaincodeFunctions.length);
 	//read latest blockchain monitoring reports per chaincodeFunction
 	for(let i=0; i<chaincodeFunctions.length; i++) {
@@ -253,26 +265,46 @@ function adaptationCycle(adaptationCount) {
                 //console.log('averageSendRate:', avgSR);
                 //console.log('averageLatency:', avgL);
                 //console.log('averageThroughput:', avgT);
-	
+
+	let totalTx = avgST + avgFT
+            avgFT = (Number(avgFT)/Number(totalTx)) * 100
+            avgST = (Number(avgST)/Number(totalTx)) * 100
+            relativeT = ((avgSR-avgT)/avgSR) * 100
+
+                var metricsf = fs.createWriteStream("./self_adaptive_unit/metrics.txt", {flags:'a'});
+                metricsf.write('prevAdaptStrategy ' + prevAdaptStrategy + '\n');
+                metricsf.write('Succ ' + avgST + '\n');
+                metricsf.write('Fail ' + avgFT + '\n');
+                metricsf.write('SendRate ' + avgSR + '\n');
+                metricsf.write('Latency ' + avgL + '\n');
+                metricsf.write('Throughput ' + avgT + '\n');
+                metricsf.write('RelativeThroughput ' + relativeT + '\n');
+                metricsf.end();
+
+
 	//adaptation logic
 	    //ideal block size logic
-	if ( (avgSR > (currentBlockSize + (blocksizeThreshold*currentBlockSize))) || (avgSR < (currentBlockSize - (blocksizeThreshold*currentBlockSize)))) {
-		
-		
+	//if ( (avgSR > (currentBlockSize + (blocksizeThreshold*currentBlockSize))) || (avgSR < (currentBlockSize - (blocksizeThreshold*currentBlockSize)))) {
+	if ((currentBlockSize < (avgSR - (blocksizeThreshold*avgSR))) || (currentBlockSize > (avgSR + (blocksizeThreshold*avgSR)))) 	
+	{	
 		let newBlockSize = Math.floor(avgSR);
 		console.log('newBlockSize:', newBlockSize);
 		const { stdout, stderr } = shell.exec('./self_adaptive_unit/config_tx.sh ' + newBlockSize)
 		//console.log('stderr:', stderr);
 		if (stderr.includes("error")) {
 			console.log('BLOCKSIZE NOT ADAPTED');
+			prevAdaptStrategy = 0
 		}
 		else {
+			console.log('BLOCKSIZE  ADAPTED');
 			currentBlockSize = newBlockSize;
+			prevAdaptStrategy = 1
 		}
 		
 	
 	}
 	    //delay logic
+	/*
 	var maxSendRate = Math.max.apply(Math, sendRateRange);
 	var averageOtherSendRates = 0;
 	var transactionToDelay = '';
@@ -286,14 +318,23 @@ function adaptationCycle(adaptationCount) {
 	}
 	if ((chaincodeFunctions.length - 1) > 0) {
 		averageOtherSendRates = averageOtherSendRates/(chaincodeFunctions.length - 1);
-	}
-	if ((chaincodeFunctions.length > 1) && (maxSendRate > (averageOtherSendRates + (delayThreshold*averageOtherSendRates)))) {
-		console.log('delayRequired for the transaction:', transactionToDelay);
-		//shell.exec('cp inventory/blockchain/benchmark/electronic-health-record/delay_config.yaml inventory/blockchain/benchmark/electronic-health-record/config.yaml');
-		shell.exec('cp ' + config_location + transactionToDelay + '_config.yaml' + ' ' + config_location + 'config.yaml');
+	}*/
+	else if (avgT < (avgSR - (avgSR*delayThreshold))) {
+		console.log('DELAY STRATEGY CHOSEN ');
+		shell.exec('cp inventory/blockchain/benchmark/electronic-health-record/delay_config.yaml inventory/blockchain/benchmark/electronic-health-record/config.yaml');
+		//shell.exec('cp ' + config_location + transactionToDelay + '_config.yaml' + ' ' + config_location + 'config.yaml');
+		prevAdaptStrategy = 2
 	}
 
 	//read blockchain log if failures are very high
+	//else if (avgFT > (avgST - (avgST*reorderingThreshold))) {
+	else if (avgFT > avgST) {
+		setClient()
+                .then((channel) => {
+
+	
+	
+	
 	try {
 		console.log('conflictTxs',conflictTxs);
 		var acyclic_conflict = [];
@@ -317,38 +358,31 @@ function adaptationCycle(adaptationCount) {
 		topsort_list.forEach(function(v) { file.write(v + '\n'); });
 		file.end();
 
-		//TODO logic
-		//var intersection = orderArray.filter(inWorkingArray);
-		//var c=0;
-		//workingArray.map(function(x){
-    		//	return notInOrderArray(x) ? x : intersection[c++];
-		//});
-
-
-
+		var f = fs.createWriteStream('./self_adaptive_unit/reorder.txt', {flags:'w'});
+		f.on('error', function(err) { /* error handling */ });
+		f.write(true);
+		f.end();
+		console.log('REORDERING STRATEGY CHOSEN ');
+		prevAdaptStrategy = 3
 
 
 	}
 	catch(error) {
 		console.log(error);
+		prevAdaptStrategy = 0
 	
 	}
-        //adaptation logic
-            //reordering logic
-        ////if (frequencyOfMaxDependencyPairConflicts > reorderingThreshold){
-
-        ////}
-
-
-
-
 
 
   	})
   	.then(() => { 
 		//console.log('Client setup complete')
 	});
+	}
 
+	else {
+		prevAdaptStrategy = 0;
+	}
         adaptationCycle(++adaptationCount);
     }, adaptationInterval)
 }

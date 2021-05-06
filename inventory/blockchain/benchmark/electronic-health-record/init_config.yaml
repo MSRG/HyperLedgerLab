@@ -1,0 +1,32 @@
+test:
+  workers:
+    type: local
+    number: 1
+  rounds:
+    - label: initLedger 
+      txNumber: 1
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 1
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/initLedger.js
+
+    - label: common
+      txDuration: 10
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 100
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/common.js
+
+#    - label: readBlockchain 
+#      txDuration: 1
+#      rateControl:
+#          type: fixed-load
+#          opts:
+#            transactionLoad: 1
+#      workload:
+#        module: inventory/blockchain/benchmark/electronic-health-record/doNothing.js
+

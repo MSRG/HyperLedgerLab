@@ -21,10 +21,10 @@ rounds=0
 delay=10
 
 durationrange=(5 10 20 30)
-tpsrange=(50 100 150)
+tpsrange=(10 50 100)
 
-declare -a durationlist=()
-declare -a tpslist=()
+#declare -a durationlist=()
+#declare -a tpslist=()
 
 #totaldurationrange=(5 10 20 30)
 #totaltpsrange=(10 50 100 150)
@@ -48,10 +48,10 @@ then
 	node inventory/blockchain/benchmark/electronic-health-record/workload/transactiongenerator.js
 	npx caliper launch manager --caliper-bind-sut fabric:latest-v2 --caliper-benchconfig $benchmark_dir/init_config.yaml --caliper-networkconfig $INVENTORY_DIR_PATH/blockchain/fabric_ccp_network.yaml --caliper-fabric-gateway-enabled --caliper-flow-only-test
 	init=0
-	echo "START ADAPTATION"
+	echo "START METRICS COLLECTION"
 else
-	txDuration=${durationrange[$(($RANDOM % 4))]}
-	tps=${tpsrange[$(($RANDOM % 3))]}
+	txDuration=${durationrange[$rounds]}
+	tps=${tpsrange[$rounds]}
 	durationlist+=($txDuration)	
 	tpslist+=($tps)
 	#txDuration=${durationrange[$rangeindex]}
@@ -91,6 +91,10 @@ rounds=$[$rounds+1]
 #fi
 done
 pkill -f node
+echo ${durationlist[@]}
+echo ${tpslist[@]}
 echo "${durationlist[@]}" > self_adaptive_unit/dur.txt
 echo "${tpslist[@]}" > self_adaptive_unit/tps.txt
+#printf $durationlist >> self_adaptive_unit/dur.txt
+#printf $tpslist >> self_adaptive_unit/tps.txt
 set +x

@@ -1,0 +1,32 @@
+test:
+  workers:
+    type: local
+    number: 1
+  rounds:
+
+    - label: common
+      txDuration: 15
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/common.js
+
+    - label: common
+      txDuration: 10
+      rateControl:
+          type: zero-rate
+          opts:
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/common.js
+
+    - label: common
+      txDuration: 15
+      rateControl:
+          type: fixed-rate
+          opts:
+            tps: 
+      workload:
+        module: inventory/blockchain/benchmark/electronic-health-record/common.js
+
