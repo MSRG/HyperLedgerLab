@@ -1,0 +1,45 @@
+test:
+  workers:
+    type: local
+    number: 5
+  rounds:
+    - label: Change car owner.
+      txDuration: 30
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: benchmark/fabcar/changeCarOwner.js
+        arguments:
+          assets: 10
+    - label: Query all cars.
+      txDuration: 30
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: benchmark/fabcar/queryAllCars.js
+        arguments:
+          assets: 10
+          startKey: '1'
+          endKey: '50'
+    - label: Query a car.
+      txDuration: 30
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: benchmark/fabcar/queryCar.js
+        arguments:
+          assets: 10
+    - label: Create a car.
+      txDuration: 30
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: benchmark/fabcar/createCar.js

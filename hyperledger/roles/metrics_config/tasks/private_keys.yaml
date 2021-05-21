@@ -14,7 +14,15 @@
 
 - name: Populate private_keys
   set_fact:
-    private_keys: "{{ private_keys|default({})|combine({org_num: [user1_key.files[0].path, admin_key.files[0].path] }) }}"
+    private_keys: "{{ private_keys|default({})|combine({org_num: [user1_key.files[0], admin_key.files[0]] }) }}"
+
+- name: Get privatekey
+  set_fact:
+     key_contents: "{{ lookup('file', '/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/priv_sk') }}"
+
+- name: Get cert
+  set_fact:
+     cert_contents: "{{ lookup('file', '/home/ubuntu/HyperLedgerLab/inventory/blockchain/fabric-config/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/admincerts/Admin@org1-cert.pem') }}"
 
 #- debug:
 #    msg: "{{ private_keys }}"

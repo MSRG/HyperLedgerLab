@@ -1,0 +1,15 @@
+# scikit-build
+tensorflow
+lockfile
+joblib
+PyYAML
+bs4
+boto3
+matplotlib
+yq
+pymongo
+dnspython
+psutil
+python-telegram-bot
+python-dotenv
+stable-baselines

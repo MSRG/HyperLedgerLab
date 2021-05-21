@@ -1,0 +1,40 @@
+---
+name: network-org1
+version: "1.0.0"
+
+client:
+  organization: Org1
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Org1:
+    mspid: Org1MSP
+    peers:
+    - peer0.org1
+    - peer1.org1
+    certificateAuthorities:
+    - ca.org1
+peers:
+  peer0.org1:
+    url: grpcs://peer0.org1:30001
+    grpcOptions:
+      ssl-target-name-override: peer0.org1
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: /hyperledger/caliper/workspace/fabric-config/crypto-config/peerOrganizations/org1/peers/peer0.org1/msp/tlscacerts/tlsca.org1-cert.pem
+  peer1.org1:
+    url: grpcs://peer1.org1:30004
+    grpcOptions:
+      ssl-target-name-override: peer1.org1
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: /hyperledger/caliper/workspace/fabric-config/crypto-config/peerOrganizations/org1/peers/peer1.org1/msp/tlscacerts/tlsca.org1-cert.pem
+certificateAuthorities:
+  ca.org1:
+    url: https://ca.org1:30000
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /hyperledger/caliper/workspace/fabric-config/crypto-config/peerOrganizations/org1/tlsca/tlsca.org1-cert.pem

@@ -14,7 +14,7 @@
 
 'use strict';
 
-const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+const { WorkloadModuleInterface  } = require('@hyperledger/caliper-core');
 
 const colors = ['blue', 'red', 'green', 'yellow', 'black', 'purple', 'white', 'violet', 'indigo', 'brown'];
 const makes = ['Toyota', 'Ford', 'Hyundai', 'Volkswagen', 'Tesla', 'Peugeot', 'Chery', 'Fiat', 'Tata', 'Holden'];
@@ -24,13 +24,27 @@ const owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav
 /**
  * Workload module for the benchmark round.
  */
-class CreateCarWorkload extends WorkloadModuleBase {
+class CreateCarWorkload extends WorkloadModuleInterface {
     /**
      * Initializes the workload module instance.
      */
     constructor() {
-        super();
-        this.txIndex = 0;
+	super();
+        this.workerIndex = -1;
+        this.totalWorkers = -1;
+        this.roundIndex = -1;
+        this.roundArguments = undefined;
+        this.sutAdapter = undefined;
+        this.sutContext = undefined;
+    }
+
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        this.workerIndex = workerIndex;
+        this.totalWorkers = totalWorkers;
+        this.roundIndex = roundIndex;
+        this.roundArguments = roundArguments;
+        this.sutAdapter = sutAdapter;
+        this.sutContext = sutContext;
     }
 
     /**
@@ -53,7 +67,11 @@ class CreateCarWorkload extends WorkloadModuleBase {
             timeout: 30
         };
 
+	//return this.sutAdapter.invokeSmartContract('mycontract', 'v1', txArgs, 30);
         await this.sutAdapter.sendRequests(args);
+    }
+    async cleanupWorkloadModule() {
+        // NOOP
     }
 }
 

@@ -15,6 +15,7 @@ fi
 
 benchmark_dir=$base_dir/$chaincode
 
-set -x
-npx caliper launch manager --caliper-bind-sut fabric:latest-v2 --caliper-benchconfig $benchmark_dir/config.yaml --caliper-networkconfig $INVENTORY_DIR_PATH/blockchain/fabric_ccp_network.yaml --caliper-fabric-gateway-enabled --caliper-flow-only-test
-set +x
+#set -x
+#kubectl -f distrib-caliper/k8s_calip apply
+#npx caliper launch manager --caliper-bind-sut fabric:latest-v2 --caliper-benchconfig $benchmark_dir/config.yaml --caliper-networkconfig $INVENTORY_DIR_PATH/blockchain/fabric_ccp_network.yaml --caliper-fabric-gateway-enabled --caliper-flow-only-test
+#set +x

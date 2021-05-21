@@ -1,0 +1,79 @@
+version: "3"
+
+services:
+    ####################
+    # CALIPER SERVICES #
+    ####################
+
+    caliper-manager:
+        image: hyperledger/caliper:0.4.2
+        container_name: caliper-manager
+        command: launch manager
+        environment:
+            # install/bind the required SDK packages
+            - CALIPER_BIND_SUT=fabric:latest-v2
+            # the relative path of the bench config in your workspace
+            - CALIPER_BENCHCONFIG=./benchmark/fabcar/config_pod.yaml
+            # the relative path of the network config in your workspace
+            - CALIPER_NETWORKCONFIG=./fabric_ccp_network.yaml
+            - CALIPER_FABRIC_GATEWAY_ENABLED=true
+            - CALIPER_FLOW_ONLY_TEST=true
+        # volumes:
+        #     - /home/ubuntu/HyperLedgerLab/inventory/blockchain:/hyperledger/caliper/workspace
+        depends_on:
+            - mosquitto
+
+    caliper-worker:
+        image: hyperledger/caliper:0.4.2
+        container_name: caliper-worker1
+        command: launch worker
+        environment:
+            # install/bind the required SDK packages
+            - CALIPER_BIND_SUT=fabric:latest-v2
+            # the relative path of the bench config in your workspace
+            - CALIPER_BENCHCONFIG=./benchmark/fabcar/config_pod.yaml
+            # the relative path of the network config in your workspace
+            - CALIPER_NETWORKCONFIG=./fabric_ccp_network.yaml
+            - CALIPER_FABRIC_GATEWAY_ENABLED=true
+            - CALIPER_FLOW_ONLY_TEST=true
+        # volumes:
+        #     - /home/ubuntu/HyperLedgerLab/inventory/blockchain:/hyperledger/caliper/workspace
+        depends_on:
+            - mosquitto
+
+    caliper-worker1:
+        image: hyperledger/caliper:0.4.2
+        container_name: caliper-worker1
+        command: launch worker
+        environment:
+            # install/bind the required SDK packages
+            - CALIPER_BIND_SUT=fabric:latest-v2
+            # the relative path of the bench config in your workspace
+            - CALIPER_BENCHCONFIG=./benchmark/fabcar/config_pod.yaml
+            # the relative path of the network config in your workspace
+            - CALIPER_NETWORKCONFIG=./fabric_ccp_network.yaml
+            - CALIPER_FABRIC_GATEWAY_ENABLED=true
+            - CALIPER_FLOW_ONLY_TEST=true
+        # volumes:
+        #     - /home/ubuntu/HyperLedgerLab/inventory/blockchain:/hyperledger/caliper/workspace
+        depends_on:
+            - mosquitto
+
+    ###############
+    # MQTT BROKER #
+    ###############
+
+    mosquitto:
+        image: eclipse-mosquitto
+        hostname: mosquitto
+        container_name: mosquitto
+        restart: always
+        ports:
+            - "1883:1883"
+            - "9001:9001"
+            - "7050:7050"
+            - "7051:7051"
+            - "7054:7054"
+            - "30000:30000"
+        # volumes:
+        #     - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf

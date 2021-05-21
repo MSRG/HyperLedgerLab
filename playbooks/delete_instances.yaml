@@ -15,6 +15,12 @@
 - hosts: os-infra
   become: true
   tasks:
+    - name: Install resolvconf on all instances
+      apt:
+        name: resolvconf
+        state: present
+    - name: Setup DNS nameserver in etc/resolv on all instances
+      template: src=/home/ubuntu/HyperLedgerLab/openstack_infra/roles/prepare_instances/templates/resolv.conf.d.head.j2 dest=/etc/resolvconf/resolv.conf.d/head mode=0644
     - name: Prepare CLI for infra delete
       block:
         - name: Unmount /opt/share in CLI

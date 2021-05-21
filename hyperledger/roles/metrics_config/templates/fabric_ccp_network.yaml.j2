@@ -22,7 +22,7 @@ info:
 clients:
 {% for i in range(fabric_num_orgs|int) %}
 {% set org_num = loop.index|string %}
-  client0.org{{ org_num }}:
+  admin.Org{{ org_num }}:
     client:
       organization: Org{{ org_num }}
       credentialStore:
@@ -30,15 +30,17 @@ clients:
         cryptoStore:
           path: /tmp/{{ random_credential_val.stdout }}-crypto/org{{ org_num }}
       clientPrivateKey:
-        path: {{ private_keys[org_num][0] }}
+        pem: |-
+{{ key_contents | indent( width=10, indentfirst=True) }}
       clientSignedCert:
-        path: {{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/User1@org{{ org_num }}/msp/signcerts/User1@org{{ org_num }}-cert.pem
+        pem: |-
+{{ cert_contents | indent( width=10, indentfirst=True) }}
 {% endfor %}
 
 channels:
 {% for channel in channels %}
   {{ channel["name"] }}:
-    configBinary: {{ channel_artifacts_dir }}/{{ channel["name"] }}.tx
+    configBinary: /hyperledger/caliper/workspace/fabric-config/channel-artifacts/{{ channel["name"] }}.tx
     created: {{ channel["created"] }}
     orderers:
 {% for k in range(fabric_num_orderer|int) %}
@@ -62,8 +64,8 @@ channels:
       contractID: {{ chaincode["contractID"] }}
       version: {{ chaincode["version"] }}
       language: {{ chaincode["language"] }}
-      path: {{ chaincode["path"] }}
-      metadataPath: {{ chaincode["metadataPath"] }}
+      path: /hyperledger/caliper/workspace/src/contract/fabcar/
+      metadataPath: /hyperledger/caliper/workspace/src/contract/fabcar/metadata
       endorsement-policy:
         identities:
 {% for i in range(fabric_num_orgs|int) %}
@@ -94,20 +96,22 @@ organizations:
     certificateAuthorities:
     - ca.org{{ org_num }}
     adminPrivateKey:
-      path: {{ private_keys[org_num][1] }}
+      pem: |-
+{{ key_contents | indent( width=10, indentfirst=True) }}
     signedCert:
-      path: {{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/users/Admin@org{{ org_num }}/msp/signcerts/Admin@org{{ org_num }}-cert.pem
+      pem: |-
+{{ cert_contents | indent( width=10, indentfirst=True) }}
 {% endfor %}
 
 orderers:
 {% for i in range(fabric_num_orderer|int) %}
 {% set orderer_num=loop.index0|string %}
   orderer{{ orderer_num }}:
-    url: grpcs://orderer{{ orderer_num }}.{{ fabric_orderer_domain }}:{{ node_port_mapping['orderer' + orderer_num + '.' + fabric_orderer_domain]['7050'] }}
+    url: grpcs://orderer{{ orderer_num }}.{{ fabric_orderer_domain }}:7050
     grpcOptions:
       ssl-target-name-override: orderer{{ orderer_num }}.{{ fabric_orderer_domain }}
     tlsCACerts:
-      path: {{ crpto_config_dir }}/ordererOrganizations/{{ fabric_orderer_domain }}/orderers/orderer{{ orderer_num }}.{{ fabric_orderer_domain }}/msp/tlscacerts/tlsca.{{ fabric_orderer_domain }}-cert.pem
+      path: /hyperledger/caliper/workspace/fabric-config/crypto-config/ordererOrganizations/{{ fabric_orderer_domain }}/orderers/orderer{{ orderer_num }}.{{ fabric_orderer_domain }}/msp/tlscacerts/tlsca.{{ fabric_orderer_domain }}-cert.pem
 {% endfor %}
 
 peers:
@@ -116,12 +120,12 @@ peers:
 {% for j in range(fabric_peers_per_org|int) %}
 {% set peer_num = loop.index0|string %}
   peer{{ peer_num }}.org{{ org_num }}:
-    url: grpcs://peer{{ peer_num }}.org{{ org_num }}:{{ node_port_mapping['peer' + peer_num + '.org' + org_num]['7051'] }}
+    url: grpcs://peer{{ peer_num }}.org{{ org_num }}:7051
     grpcOptions:
       ssl-target-name-override: peer{{ peer_num }}.org{{ org_num }}
       grpc.keepalive_time_ms: 600000
     tlsCACerts:
-      path: {{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/peers/peer{{ peer_num }}.org{{ org_num }}/msp/tlscacerts/tlsca.org{{ org_num }}-cert.pem
+      path: /hyperledger/caliper/workspace/fabric-config/crypto-config/peerOrganizations/org{{ org_num }}/peers/peer{{ peer_num }}.org{{ org_num }}/msp/tlscacerts/tlsca.org{{ org_num }}-cert.pem
 {% endfor %}
 {% endfor %}
 
@@ -129,11 +133,11 @@ certificateAuthorities:
 {% for i in range(fabric_num_orgs|int) %}
 {% set org_num = loop.index|string %}
   ca.org{{ org_num }}:
-    url: https://ca.org{{ org_num }}:{{ node_port_mapping['ca.org' + org_num]['7054'] }}
+    url: https://ca.org{{ org_num }}:7054
     httpOptions:
       verify: false
     tlsCACerts:
-      path: {{ crpto_config_dir }}/peerOrganizations/org{{ org_num }}/tlsca/tlsca.org{{ org_num }}-cert.pem
+      path: /hyperledger/caliper/workspace/fabric-config/crypto-config/peerOrganizations/org{{ org_num }}/tlsca/tlsca.org{{ org_num }}-cert.pem
     registrar:
     - enrollId: admin
       enrollSecret: adminpw

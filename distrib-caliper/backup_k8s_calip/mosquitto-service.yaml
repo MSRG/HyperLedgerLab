@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: ./kompose -f caliper-compose.yaml convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mosquitto
+  name: mosquitto
+spec:
+  ports:
+    - name: "1883"
+      port: 1883
+      targetPort: 1883
+    - name: "9001"
+      port: 9001
+      targetPort: 9001
+  selector:
+    io.kompose.service: mosquitto
+status:
+  loadBalancer: {}

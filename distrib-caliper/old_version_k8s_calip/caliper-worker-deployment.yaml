@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: caliperpv
+spec:
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /opt/share/caliper/blockchain
+    server: 172.24.55.138
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ namespace: default
+ name: caliperpv
+spec:
+ accessModes:
+   - ReadWriteMany
+ resources:
+   requests:
+     storage: 10Mi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose -f caliper-compose.yaml convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: caliper-worker
+  name: caliper-worker
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      io.kompose.service: caliper-worker
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose -f caliper-compose.yaml convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: caliper-worker
+    spec:
+      containers:
+        - args:
+            - launch
+            - worker
+          env:
+            - name: CALIPER_BENCHCONFIG
+              value: ./benchmark/fabcar/config_pod.yaml
+            - name: CALIPER_NETWORKCONFIG
+              value: ./fabric_ccp_network_pod.yaml
+            - name: CALIPER_BIND_SUT
+              value: fabric:latest-v2
+            - name: CALIPER_FABRIC_GATEWAY_USEGATEWAY
+              value: "true"
+            - name: CALIPER_FABRIC_GATEWAY_DISCOVERY
+              value: "false"
+            - name: CALIPER_FABRIC_GATEWAY_LOCALHOST
+              value: "false"
+            - name: CALIPER_FLOW_ONLY_TEST
+              value: "true"  
+            - name: CALIPER_WORKER_REMOTE
+              value: "true"
+            - name: CALIPER_WORKER_COMMUNICATION_METHOD
+              value: mqtt
+            - name: CALIPER_WORKER_COMMUNICATION_ADDRESS
+              value: mqtt://mosquitto:1883
+          image: hyperledger/caliper:0.3.2
+          name: caliper-worker
+          volumeMounts:
+          - mountPath: /hyperledger/caliper/workspace
+            name: benchmark-volume
+          resources: {}
+      restartPolicy: Always
+      volumes:
+      - name: benchmark-volume
+        persistentVolumeClaim:
+              claimName: caliperpv
+status: {}

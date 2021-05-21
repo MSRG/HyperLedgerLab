@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: caliperpv
+spec:
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /opt/share/caliper/blockchain
+    server: 172.24.55.138
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: default
+  name: caliperpv
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose -f caliper-compose.yaml convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: caliper-manager
+  name: caliper-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: caliper-manager
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose -f caliper-compose.yaml convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: caliper-manager
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      restartPolicy: Never
+      containers:
+        - name: caliper-manager
+          image: hyperledger/caliper:0.4.2
+          command:
+            - caliper
+          args:
+            - launch
+            - manager
+          tty: true
+          env:
+            - name: CALIPER_BENCHCONFIG
+              value: ./benchmark/fabcar/config_pod.yaml
+            - name: CALIPER_NETWORKCONFIG
+              value: ./fabric_ccp_network.yaml
+            - name: CALIPER_BIND_SUT
+              value: fabric:2.1
+            - name: CALIPER_FABRIC_GATEWAY_ENABLED
+              value: "true"
+            - name: CALIPER_FABRIC_GATEWAY_LOCALHOST
+              value: "false"
+            - name: CALIPER_FLOW_ONLY_TEST
+              value: "true"
+            - name: CALIPER_WORKER_REMOTE
+              value: "true"
+            - name: CALIPER_REPORT_PATH
+              value: /opt/share/caliper/report.html
+            - name: CALIPER_WORKER_COMMUNICATION_METHOD
+              value: "mqtt"
+            - name: CALIPER_WORKER_COMMUNICATION_ADDRESS
+              value: "mqtt://mosquitto.default.svc.cluster.local:1883"
+              #value: mqtt://mosquitto:1883
+            - name: CALIPER_BIND_ARGS
+              value: "-g"
+            - name: CXXFLAGS
+              value: "-Wno-cast-function-type"
+          volumeMounts:
+            - mountPath: /hyperledger/caliper/workspace
+              name: benchmark-volume
+#            - mountPath: /caliper-network
+#              name: caliper-network
+          resources: {}
+      restartPolicy: Always
+      volumes:
+        - name: benchmark-volume
+          persistentVolumeClaim:
+            claimName: caliperpv
+#        - name: caliper-network
+#          configMap:
+#            name: network
+status: {}

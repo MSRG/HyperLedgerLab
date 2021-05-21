@@ -3,47 +3,44 @@ test:
     type: local
     number: 5
   rounds:
-    - label: Change car owner.
-      txDuration:
-        - 30
-      rateControl:
-        - type: fixed-load
-          opts:
-            transactionLoad: 5
-      workload:
-        module: inventory/blockchain/benchmark/fabcar/changeCarOwner.js
-        arguments:
-          assets: 1000
-    - label: Query all cars.
-      txDuration:
-        - 30
-      rateControl:
-        - type: fixed-load
-          opts:
-            transactionLoad: 5
-      workload:
-        module: inventory/blockchain/benchmark/fabcar/queryAllCars.js
-        arguments:
-          assets: 1000
-          startKey: '1'
-          endKey: '50'
-    - label: Query a car.
-      txDuration:
-        - 30
-      rateControl:
-        - type: fixed-load
-          opts:
-            transactionLoad: 5
-      workload:
-        module: inventory/blockchain/benchmark/fabcar/queryCar.js
-        arguments:
-          assets: 1000
+#    - label: Change car owner.
+#      txDuration: 30
+#      rateControl:
+#          type: fixed-load
+#          opts:
+#            transactionLoad: 5
+#      workload:
+#        module: inventory/blockchain/benchmark/fabcar/changeCarOwner.js
+#        arguments:
+#          assets: 10
+#    - label: Query all cars.
+#      txDuration: 30
+#      rateControl:
+#          type: fixed-load
+#          opts:
+#            transactionLoad: 5
+#      workload:
+#        module: inventory/blockchain/benchmark/fabcar/queryAllCars.js
+#        arguments:
+#          assets: 10
+#          startKey: '1'
+#          endKey: '50'
+#    - label: Query a car.
+#      txDuration: 30
+#      rateControl:
+#          type: fixed-load
+#          opts:
+#            transactionLoad: 5
+#      workload:
+#        module: inventory/blockchain/benchmark/fabcar/queryCar.js
+#        arguments:
+#          assets: 10
     - label: Create a car.
-      txDuration:
-        - 30
+      txDuration: 3
       rateControl:
-        - type: fixed-load
+          type: fixed-load
           opts:
-            transactionLoad: 5
+            tps: 500
       workload:
         module: inventory/blockchain/benchmark/fabcar/createCar.js
+

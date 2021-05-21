@@ -1,0 +1,32 @@
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: default
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: distributed-caliper
+  namespace: default
+spec:
+  containers:
+    - name: caliper-manager
+      # replica: 1
+      image: hyperledger/caliper:0.4.2
+    - name: caliper-worker
+      # replica: 4
+      image: hyperledger/caliper:0.4.2
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   namespace: default
+#   name: hyperledger-caliper
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 10Mi

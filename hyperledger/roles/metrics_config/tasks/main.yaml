@@ -17,6 +17,22 @@
   register: random_credential_val
 
 - name: Generate blockchain network config for Metrics tool
-  template: src={{ item.src }} dest={{ metrics_network_file }} mode=0644
+  template: src={{ item.src }} dest={{ inventory_dir }}/{{ item.file }} mode=0644
   with_items:
-    - { src: "fabric_ccp_network.yaml.j2" }
+    - { src: "fabric_ccp_network.yaml.j2", file: "fabric_ccp_network.yaml" }
+    - { src: "fabric_ccp_network_pod.yaml.j2", file: "fabric_ccp_network_pod.yaml" }
+
+# modified from role/channel_setup
+- name: Copy inventory files to NFS
+  become: yes
+  copy:
+    src: "{{ inventory_dir }}"
+    dest: "{{ nfs_server_mount_dir }}/caliper"
+- name: Copy mosquitto conf files to NFS
+  become: yes
+  copy:
+    src: "mosquitto.conf"
+    dest: "{{ nfs_server_mount_dir }}/caliper/mosquitto"
+
+
+
