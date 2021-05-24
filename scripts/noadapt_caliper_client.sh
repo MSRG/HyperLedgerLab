@@ -20,8 +20,21 @@ init=1
 rounds=0
 delay=10
 
-durationrange=(20 5 20 5 15)
-tpsrange=(40 20 120 100 40)
+durationrange=(15 30 25 30 5)
+tpsrange=(120 150 200 100 10)
+
+#durationrange=(20 5 20 5 15)
+#tpsrange=(10 40 10 100 20)
+
+#durationrange=(20 5 20 5 15)
+#tpsrange=(40 20 120 100 40)
+
+#durationrange=(10 5 5 10 20)
+#tpsrange=(120 40 120 100 100)
+
+#durationrange=(15 30 25 30 10)
+#tpsrange=(120 80 20 100 60)
+
 
 #declare -a durationlist=()
 #declare -a tpslist=()

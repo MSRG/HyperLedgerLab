@@ -289,7 +289,7 @@ function adaptationCycle(adaptationCount) {
 	    //ideal block size logic
 	//if ( (avgSR > (currentBlockSize + (blocksizeThreshold*currentBlockSize))) || (avgSR < (currentBlockSize - (blocksizeThreshold*currentBlockSize)))) {
 	//if ((currentBlockSize < (avgSR - (blocksizeThreshold*avgSR))) || (currentBlockSize > (avgSR + (blocksizeThreshold*avgSR)))) 	
-	if ((currentBlockSize <= ((blocksizeThreshold*avgSR))) || (currentBlockSize > ((blocksizeThreshold2*avgSR)))) 	
+	if ((currentBlockSize <  Math.floor((blocksizeThreshold*avgSR))) || (currentBlockSize >  Math.floor((blocksizeThreshold2*avgSR)))) 	
 	{	
 		let newBlockSize = Math.floor(blocksizeThreshold*avgSR);
 		console.log('newBlockSize:', newBlockSize);

@@ -7,11 +7,11 @@ cd `dirname $0`/..
 
 # Update the submodule code
 set -x
-git submodule sync
-git submodule update --init --recursive
-git submodule update 
-git submodule foreach git checkout master 
-git submodule foreach git pull origin master 
+#git submodule sync
+#git submodule update --init --recursive
+#git submodule update 
+#git submodule foreach git checkout master 
+#git submodule foreach git pull origin master 
 set +x
 
 # Set environment variables required for Openstack and k8s cluster setup

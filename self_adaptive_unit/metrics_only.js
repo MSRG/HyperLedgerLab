@@ -99,7 +99,7 @@ function adaptationCycle(adaptationCount) {
 	    avgST = (Number(avgST)/Number(totalTx)) * 100
 	    relativeT = ((avgSR-avgT)/avgSR) * 100
 
-		var metricsf = fs.createWriteStream("./self_adaptive_unit/10_noadapt_metrics.txt", {flags:'a'});
+		var metricsf = fs.createWriteStream("./self_adaptive_unit/50_noadapt_metrics.txt", {flags:'a'});
 	        metricsf.write('prevAdaptStrategy 0' + '\n');
         	metricsf.write('Succ ' + avgST + '\n');
         	metricsf.write('Fail ' + avgFT + '\n');
