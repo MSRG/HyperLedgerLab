@@ -1,5 +1,13 @@
 ---
 - name: restart networking
   service:
-    name: networking
+    name: >-
+       {% if ansible_os_family == "RedHat" -%}
+       network
+       {%- elif ansible_distribution == "Ubuntu" and ansible_distribution_release == "focal" -%}
+       systemd-networkd
+       {%- elif ansible_os_family == "Debian" -%}
+       networking
+       {%- endif %}
     state: restarted
+

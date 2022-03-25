@@ -15,6 +15,11 @@
 - hosts: os-infra
   become: true
   tasks:
+    - name: Creates directory
+      file:
+        path: /etc/resolvconf/resolv.conf.d
+        state: directory
+
     - name: Prepare CLI for infra delete
       block:
         - name: Unmount /opt/share in CLI
@@ -32,8 +37,16 @@
 
         - name: Restart networking in CLI
           service:
-            name: networking
+            name: >-
+               {% if ansible_os_family == "RedHat" -%}
+               network
+               {%- elif ansible_distribution == "Ubuntu" and ansible_distribution_release == "focal" -%}
+               systemd-networkd
+               {%- elif ansible_os_family == "Debian" -%}
+               networking
+               {%- endif %}
             state: restarted
+
       when: prompt_delete_infra|bool
 
 # Delete Instances

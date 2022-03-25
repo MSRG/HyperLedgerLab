@@ -21,8 +21,8 @@ kube_api_anonymous_auth: true
 ## Change this to use another Kubernetes version, e.g. a current beta release
 kube_version: v1.11.3
 etcd_version: v3.2.24
-weave_version: "2.4.1"
-docker_version: "18.09.2"     # To change this, version information should to be provided in kubespray/roles/docker/vars/ubuntu.yml
+weave_version: "2.8.1"
+docker_version: "20.10"     # To change this, version information should to be provided in kubespray/roles/docker/vars/ubuntu.yml
 kubeadm_version: "{{ kube_version }}"
 kubeadm_checksum: 422a7a32ed9a7b1eaa2a4f9d121674dfbe80eb41e206092c13017d097f75aaec
 

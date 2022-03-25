@@ -19,7 +19,7 @@ options {
         // you will need to update your keys.  See https://www.isc.org/bind-keys
         //========================================================================
 {#        dnssec-validation {{ bind9_dnssec_validation|default(auto) }};#}
-        dnssec-enable yes;
+        //dnssec-enable yes;
         dnssec-validation yes;
 
         auth-nxdomain no;    # conform to RFC1035

@@ -1,4 +1,9 @@
 ---
+- name: Creates directory
+  file:
+    path: /etc/resolvconf/resolv.conf.d
+    state: directory
+
 - name: Setup DNS nameserver in etc/resolv on all instances
   template:
     src=resolv.conf.d.head.j2 dest=/etc/resolvconf/resolv.conf.d/head mode=0644

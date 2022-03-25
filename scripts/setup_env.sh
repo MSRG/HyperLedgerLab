@@ -7,8 +7,8 @@ cd `dirname $0`/..
 
 # Update the submodule code
 set -x
-git submodule sync
-git submodule update --init --recursive
+#git submodule sync
+#git submodule update --init --recursive
 set +x
 
 # Set environment variables required for Openstack and k8s cluster setup
@@ -27,16 +27,16 @@ then
     then
         # Setup node environment
         set -x
-        sudo apt-get remove nodejs npm
+        sudo apt-get remove -y nodejs npm
         sudo apt-get update
         sudo apt-get upgrade
         sudo apt-get install build-essential
-        curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+        curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
         sudo apt-get install -y nodejs
         npm install npm@latest-5
         sudo chown -R 1000:1000 "/home/ubuntu/.npm"
         #sudo npm install -g npm
-        npm install
+        npm install 
         npm run fabric-v1.4-deps
         set +x
     fi
@@ -50,13 +50,15 @@ else
         set -x
         mkdir venv
         sudo apt update
-        sudo apt-get install --yes python
+        sudo apt-get install --yes python3
 
-        curl -O https://bootstrap.pypa.io/2.7/get-pip.py
-        python get-pip.py
-        python -m pip install --upgrade "pip < 21.0"
+        #curl -O https://bootstrap.pypa.io/2.7/get-pip.py
+        #python get-pip.py
+        #python -m pip install --upgrade "pip < 21.0"
+	sudo apt-get install python3-pip
 
-        pip install virtualenv
+        sudo pip uninstall virtualenv -y
+        sudo pip install virtualenv
         virtualenv --python=python3 venv
         source ./venv/bin/activate
         pip install -r requirements.txt

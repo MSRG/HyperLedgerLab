@@ -76,7 +76,7 @@ channels:
           {{ fabric_num_orgs }}-of:
 {% for i in range(fabric_num_orgs|int) %}
 {% set org_num = loop.index0|string %}
-            - signed-by: {{ org_num }}
+          - signed-by: {{ org_num }}
 {% endfor %}
 {% endfor %}
 {% endfor %}

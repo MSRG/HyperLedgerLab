@@ -14,6 +14,8 @@ BASE_DOCKER_TAG=amd64-0.4.14
 # set of Hyperledger Fabric images
 FABRIC_IMAGES=(fabric-peer fabric-orderer fabric-ccenv fabric-tools)
 
+sudo usermod -aG docker ${USER}
+
 for image in ${FABRIC_IMAGES[@]}; do
   echo "Pulling ${DOCKER_NS}/$image:${ARCH}-${VERSION}"
   docker pull ${DOCKER_NS}/$image:${ARCH}-${VERSION}
