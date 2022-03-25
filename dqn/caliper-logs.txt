@@ -1,0 +1,4 @@
+Script started on 2021-09-15 16:11:12+0000
+Error from server (BadRequest): container "caliper-manager" in pod "caliper-manager-7cb999d659-2tc4q" is waiting to start: PodInitializing
+
+Script done on 2021-09-15 16:11:13+0000

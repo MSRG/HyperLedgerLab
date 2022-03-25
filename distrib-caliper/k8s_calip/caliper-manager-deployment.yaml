@@ -50,16 +50,29 @@ spec:
       labels:
         io.kompose.service: caliper-manager
     spec:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 3000
-        fsGroup: 2000
-      restartPolicy: Never
+      # securityContext:
+      #   runAsUser: 1000 # for any Containers in the Pod, all processes run with user ID
+      #   runAsGroup: 1000 # he primary group ID for all processes within any containers of the Pod.
+      #   fsGroup: 1000 # the owner of any volume attached will be owner by group ID
+      #   fsGroupChangePolicy: "OnRootMismatch" # or "Always"
+      # restartPolicy: Never
+      initContainers:
+        - name: init-volume-permission
+          image: busybox
+          command: ["chown", "-R", "1000:2000", "/hyperledger/caliper/workspace"]
+          volumeMounts:
+            - mountPath: /hyperledger/caliper/workspace
+              name: benchmark-volume
+      # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
       containers:
         - name: caliper-manager
           image: hyperledger/caliper:0.4.2
-          command:
-            - caliper
+          # securityContext:
+          #   runAsUser: 0
+          #   privileged: true
+          #   allowPrivilegeEscalation: true
+          # command:
+          #   - caliper
           args:
             - launch
             - manager
@@ -86,22 +99,22 @@ spec:
             - name: CALIPER_WORKER_COMMUNICATION_ADDRESS
               value: "mqtt://mosquitto.default.svc.cluster.local:1883"
               #value: mqtt://mosquitto:1883
-            - name: CALIPER_BIND_ARGS
-              value: "-g"
-            - name: CXXFLAGS
-              value: "-Wno-cast-function-type"
+            # - name: CALIPER_BIND_ARGS
+            #   value: "-g"
+            # - name: CXXFLAGS
+            #   value: "-Wno-cast-function-type"
           volumeMounts:
             - mountPath: /hyperledger/caliper/workspace
               name: benchmark-volume
-#            - mountPath: /caliper-network
-#              name: caliper-network
+            # - mountPath: /caliper-network
+            #   name: caliper-network
           resources: {}
       restartPolicy: Always
       volumes:
         - name: benchmark-volume
           persistentVolumeClaim:
             claimName: caliperpv
-#        - name: caliper-network
-#          configMap:
-#            name: network
+        # - name: caliper-network
+        #   configMap:
+        #     name: network
 status: {}

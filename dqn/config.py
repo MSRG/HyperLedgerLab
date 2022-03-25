@@ -35,7 +35,7 @@ OBJECTIVE_REWARD_MULTIPLIER=5
 
 # training config
 EXPECTED_THROUGHPUT = 10
-MAXIMUM_STEPS_PER_EPISODE = 20
+MAXIMUM_STEPS_PER_EPISODE = 3
 
 # notification config
 CHAT_ID = os.getenv("CHAT_ID")
@@ -57,7 +57,6 @@ REBUILD_LIMIT = 50000
 # important! changing the values will require rebuilding of q table!
 # possible value combination for multi discrete action space (see PossibleAction)
 possible_block_size = [10,50,100,150,200,250,300,350,400,450,500,600,700,800,900,1000,]
-possible_block_interval = list(range(1, 16, 1))
 
 # size of environment: maximum throughput
 SIZE = 300
@@ -83,9 +82,7 @@ def set_expected_throughput(fixed_throughput):
 === DQN CONFIG ===
 """
 
-# combined discrete action space for DQN
-# due to the action-prediction nature of DQN (citation needed), it is hard to have conditional action space since it will change the prediction behavior. the easiest course of action is to list all the possible combination movement of the agent as single discrete action list.
-discrete_action_space = list(product(possible_block_size, possible_block_interval))
+discrete_action_space = possible_block_size
 
 DQN_SIZE = 500
 

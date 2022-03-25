@@ -51,7 +51,7 @@ caliper:
         target: console
         enabled: true
         options:
-          level: debug
+          level: info # info, debug, warn
       file:
         target: file
         enabled: false

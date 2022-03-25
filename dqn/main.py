@@ -8,13 +8,7 @@ from utils.notification import send
 import config
 import pandas as pd
 
-
-# replacement of telegram context
-class TelegramContext:
-    def __init__(self, episodes, throughput) -> None:
-        self.args = [episodes, throughput]  # episodes, throughput
-
-
+# upload model to s3. please update .env with your credentials. see .env.example
 def upload_file(filename):
     uploaded_name = f"{time.strftime('%Y-%m-%d')}-{filename}"
     spaces.upload_file(
@@ -24,11 +18,10 @@ def upload_file(filename):
         uploaded_name,
     )
 
-
 if config.ALGORITHM == "DQN" or not config.ALGORITHM:
     try:
         model_name = "dqn_fabric"
-        run_dqn(40, None, model_name=model_name)  # episodes, throughput
+        run_dqn(2, None, model_name=model_name)  # episodes, throughput
         # upload_file(f"{model_name}.zip")
     except Exception as e:
         # send notification to telegram chat

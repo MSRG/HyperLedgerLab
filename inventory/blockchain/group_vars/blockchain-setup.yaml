@@ -1,6 +1,6 @@
 ## Provide fabric versions as defined here:
 # https://hyperledger-fabric.readthedocs.io/en/release-1.2/install.html
-fabric_version: 2.2.1
+fabric_version: 1.4.0
 fabric_ca_version: "{{ '1.4.9' if fabric_version == '2.2.1' else fabric_version }}"
 #fabric_ca_version: latest
 fabric_couchdb_version: 0.4.14
@@ -11,7 +11,7 @@ fabric_peers_per_org: 2
 fabric_num_orderer: 3
 fabric_orderer_domain: orgorderer1
 # Options for Orderer Consensus type: solo/kafka
-fabric_orderer_type: etcdraft
+fabric_orderer_type: kafka
 fabric_num_kafka: 3
 fabric_num_zookeeper: 3
 # Batch Timeout: The amount of time to wait before creating a batch

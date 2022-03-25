@@ -33,7 +33,7 @@ class FabricEnv(gym.Env):
         self.fixed_throughput = fixed_throughput
         # we need to use the single discrete actions
         self.action_space = Discrete(len(discrete_action_space))
-        self.observation_space = spaces.Box(low=0, high=np.inf, shape=(4,))
+        self.observation_space = spaces.Box(low=0, high=np.inf, shape=(3,))
 
         
         # record and aggregrate results for informational purposes.
@@ -54,7 +54,7 @@ class FabricEnv(gym.Env):
         self.env.set_tps(config.EXPECTED_THROUGHPUT)
         self.episode_step = 0
 
-        self.env.rebuild_network(self.agent_pos[0], self.agent_pos[1])
+        self.env.rebuild_network(self.agent_pos)
         self.initial_state = self.env.current_state
         
         # count the episodes
@@ -70,13 +70,15 @@ class FabricEnv(gym.Env):
         self.results["worst_states"].append(self.env.current_state)
         self.results["best_states"].append(self.env.current_state)
         self.results["best_configs"].append(
-            {"block_size": self.agent_pos[0], "block_interval": self.agent_pos[1],}
+            {"block_size": self.agent_pos,}
         )
 
         initial_obs = self.env.current_state
         return np.array(initial_obs).astype(np.float32)
 
-    # step(action) called to take an action with the environment, it returns the next observation, the immediate reward, whether the episode is over and additional information
+    """
+    step(action) called to take an action with the environment, it returns the next observation, the immediate reward, whether the episode is over and additional information
+    """
     def step(self, action):
         self.episode_step += 1
         # TODO decide if we're going to use rebuild pinalty or not
@@ -86,7 +88,7 @@ class FabricEnv(gym.Env):
                 f"=== state before rebuilding: {self.env.current_state} ==="
             )
             # rebuild_pinalty = self.env.current_state
-            self.env.rebuild_network(self.agent_pos[0], self.agent_pos[1])
+            self.env.rebuild_network(self.agent_pos)
             # rebuild_pinalty = total_reward(rebuild_pinalty, self.env.current_state) + 1
             self.logger.info(
                 f"=== state after rebuilding: {self.env.current_state} ==="
@@ -103,7 +105,7 @@ class FabricEnv(gym.Env):
         prev_state = copy(self.env.current_state)
 
         # update environment configuration & state
-        self.env.update_env_config(self.agent_pos[0], self.agent_pos[1])
+        self.env.update_env_config(self.agent_pos)
 
         reward = total_reward(prev_state, self.env.current_state)
 
@@ -126,8 +128,7 @@ class FabricEnv(gym.Env):
         ):
             self.results["best_states"][self.episode_count] = self.env.current_state
             self.results["best_configs"][self.episode_count] = {
-                "block_size": self.agent_pos[0],
-                "block_interval": self.agent_pos[1],
+                "block_size": self.agent_pos,
             }
         if (
             total_reward(

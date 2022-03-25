@@ -43,7 +43,6 @@ class MongoConnector:
                 fieldnames=[
                     "target_tps",
                     "batch_size",
-                    "block_interval",
                     "avg_succ",
                     "avg_fail",
                     "avg_latency",
