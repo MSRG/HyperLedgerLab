@@ -1,10 +1,12 @@
+
+**NOTE:** HyperLedgerLab 2.0 has been developed and is available here: [HyperledgerLab2](https://github.com/MSRG/HyperLedgerLab-2.0)
+
 Hyperledger Testbed on Kubernetes Cluster: Automated Deployment of a Distributed Enterprise Blockchain Network for Analysis and Testing
 
 Summary 
 -------
 This repository contains scripts we are developing to deploy a Hyperledger Testbed on a Kubernetes cluster, itself running on cloud resources. For the latter, we assume, resources provisioned via an OpenStack environment.
 
-HyperLedgerLab 2.0 has been developed and will soon be made available publicly.
 
 **CONTRIBUTOR**: Sahil Kalra (sahilkalra1991@gmail.com)
 
